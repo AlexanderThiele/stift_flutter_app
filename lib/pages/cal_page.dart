@@ -21,30 +21,33 @@ class _CalPageWidgetState extends State<CalPage> {
     return Scaffold(
       body: Zoom(
           initZoom: 0.3,
-          initialPos: Offset(-width/6, -height/5),
+          initialPos: Offset(-width / 6, -height / 5),
           centerOnScale: false,
-          maxZoomWidth: width*2,
-          maxZoomHeight: height*2,
+          maxZoomWidth: width * 2,
+          maxZoomHeight: height * 2,
+          zoomSensibility: 1,
           enabled: zoomEnabled,
           canvasColor: Colors.lime.shade50,
           backgroundColor: Colors.lime.shade50,
           doubleTapZoom: false,
           child: Container(
             margin: EdgeInsets.symmetric(
-                vertical: height / 2,
-                horizontal: width / 2),
+                vertical: height / 2, horizontal: width / 2),
             child: Stack(
               children: [
                 CalTable(2022),
-                PaintView(() {
-                  setState(() {
-                    zoomEnabled = true;
-                  });
-                }, () {
-                  setState(() {
-                    zoomEnabled = false;
-                  });
-                })
+                PaintView(
+                    color: Colors.black,
+                    enableZoom: () {
+                      setState(() {
+                        zoomEnabled = true;
+                      });
+                    },
+                    disableZoom: () {
+                      setState(() {
+                        zoomEnabled = false;
+                      });
+                    })
               ],
             ),
           )),
