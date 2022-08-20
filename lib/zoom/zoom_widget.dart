@@ -151,7 +151,6 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
                   ? globalConstraints.maxWidth / widget.maxZoomWidth
                   : globalConstraints.maxHeight / widget.maxZoomHeight);
         }
-
         scaleProcess(globalConstraints, Offset(0, 0));
         scaleFixPosition(globalConstraints);
       });
@@ -234,15 +233,16 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
     // point on widget where to scale from
     // the middle point of scale rel to the card
     var relScalePoint = Offset(
-        ((currentLeftPositionForScale) * -1 + focalPoint.dx) * (1 / scale),
-        ((currentTopPositionForScale) * -1 + focalPoint.dy) * (1 / scale));
+        ((currentLeftPosition) * -1 + focalPoint.dx) * (1 / scale),
+        ((currentTopPosition) * -1 + focalPoint.dy) * (1 / scale));
     var initialScale = (scale + -1 * (changeScaleSinceStart - 1));
     scaleLeft =
         (-1 * relScalePoint.dx * scale) + (relScalePoint.dx * initialScale);
     scaleTop =
         (-1 * relScalePoint.dy * scale) + (relScalePoint.dy * initialScale);
 
-    print("${relScalePoint.dx} $scaleLeft  $scale $changeScaleSinceStart");
+    print("${relScalePoint.dx} $currentLeftPositionForScale ${focalPoint.dx}  $scale");
+    print("$movePosLeftCurrent + $movePosLeftLast + $auxLeft + $localLeft + $centerLeft");
     // print("scaleLeft: $scaleLeft, tick: $scaleChangeLastTick Point: $relScalePoint with scale: $scale.");
 
     /*/ das ist der punkt auf der karte auf dem gescaled werden soll
@@ -330,33 +330,27 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
       builder: (BuildContext context, BoxConstraints constraints) {
         globalConstraints = constraints;
         if (!initOrientation) {
-          scale = map(
+          scale = max(min(widget.initZoom, maxZoom),minZoom);/*map(
               widget.initZoom,
               1.0,
               0.0,
               1.0,
               (constraints.maxHeight > constraints.maxWidth)
                   ? constraints.maxWidth / widget.maxZoomWidth
-                  : constraints.maxHeight / widget.maxZoomHeight);
+                  : constraints.maxHeight / widget.maxZoomHeight);*/
+          print("scale $scale");
           initOrientation = true;
           portrait =
               (constraints.maxHeight > constraints.maxWidth) ? true : false;
 
-          if (widget.centerOnScale) {
-            if (portrait) {
-              if (widget.maxZoomHeight * scale < constraints.maxHeight) {
-                centerTop =
-                    (constraints.maxHeight - widget.maxZoomHeight * scale) / 2;
-              }
-            } else {
-              if (widget.maxZoomWidth * scale < constraints.maxWidth) {
-                centerLeft =
-                    (constraints.maxWidth - widget.maxZoomWidth * scale) / 2;
-              }
-            }
-          }
           if (widget.onScaleUpdate != null) {
             widget.onScaleUpdate!(scale, widget.initZoom);
+          }
+
+          print(constraints.maxHeight);
+          movePosTopLast = (constraints.maxHeight-widget.maxZoomHeight*scale)/2;
+          if(movePosTopLast < 0){
+            movePosTopLast = 0;
           }
 
           if (widget.onPositionUpdate != null) {
@@ -471,7 +465,7 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
                 } else {
                   double preScale = scale -
                       (changeScaleSinceStart - details.scale) /
-                          widget.zoomSensibility;
+                          widget.zoomSensibility ;
                   final scaleLast = scale;
                   scale = min(max(preScale, minZoom), maxZoom);
                   scaleChangeLastTick = scaleLast - scale;

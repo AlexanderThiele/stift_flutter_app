@@ -19,38 +19,41 @@ class _CalPageWidgetState extends State<CalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Zoom(
-          initZoom: 1,
-          // initialPos: Offset(-width / 6, -height / 5),
-          centerOnScale: false,
-          maxZoomWidth: width,
-          maxZoomHeight: height,
-          zoomSensibility: 1,
-          enabled: zoomEnabled,
-          canvasColor: Colors.lime.shade50,
-          backgroundColor: Colors.lime.shade50,
-          doubleTapZoom: false,
-          child: Container(
-            margin: EdgeInsets.symmetric(
-                vertical: 50),
-            child: Stack(
-              children: [
-                CalTable(2022),
-                PaintView(
-                    color: Colors.black,
-                    enableZoom: () {
-                      setState(() {
-                        zoomEnabled = true;
-                      });
-                    },
-                    disableZoom: () {
-                      setState(() {
-                        zoomEnabled = false;
-                      });
-                    })
-              ],
-            ),
-          )),
+      body: LayoutBuilder(builder: (context, constraints) {
+
+        final initialZoom = constraints.maxWidth/width;
+        return Zoom(
+            initZoom: initialZoom,
+            // initialPos: Offset(-width / 6, -height / 5),
+            centerOnScale: false,
+            maxZoomWidth: width,
+            maxZoomHeight: height,
+            zoomSensibility: 30,
+            enabled: zoomEnabled,
+            canvasColor: Colors.lime.shade50,
+            backgroundColor: Colors.lime.shade50,
+            doubleTapZoom: false,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 50),
+              child: Stack(
+                children: [
+                  CalTable(2022),
+                  PaintView(
+                      color: Colors.black,
+                      enableZoom: () {
+                        setState(() {
+                          zoomEnabled = true;
+                        });
+                      },
+                      disableZoom: () {
+                        setState(() {
+                          zoomEnabled = false;
+                        });
+                      })
+                ],
+              ),
+            ));
+      }),
     );
   }
 }
