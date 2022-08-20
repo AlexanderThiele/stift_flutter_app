@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/cal/cal_table.dart';
 import 'package:pencalendar/cal/paint_view.dart';
+import 'package:pencalendar/controller/calendar_controller.dart';
+import 'package:pencalendar/models/Calendar.dart';
+import 'package:pencalendar/repo/firestore_repository.dart';
 import 'package:pencalendar/zoom/zoom_widget.dart';
 
 class ZoomEnabledNotifier extends ChangeNotifier {
@@ -32,6 +35,8 @@ class CalPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ZoomEnabledNotifier zoomEnabled = ref.watch(zoomEnabledProvider);
+    final List<Calendar> allCalendars = ref.watch(calendarControllerProvider);
+
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         final initialZoom = constraints.maxWidth / width;

@@ -35,4 +35,6 @@ class Calendar {
       if (name != null) "name": name
     };
   }
+
+  bool get isCrashObject => id == "crash";
 }
