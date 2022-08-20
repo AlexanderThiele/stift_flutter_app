@@ -71,13 +71,11 @@ class _PaintViewState extends State<PaintView> {
           },
           onScaleStart: (event) {
             widget.enableZoom();
-            print("scale start");
           },
           onScaleUpdate: (event) {},
           onScaleEnd: () {
             widget.disableZoom();
             _currentDrawing.clear();
-            print("scale end");
           },
           child: Stack(
             children: [

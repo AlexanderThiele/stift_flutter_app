@@ -20,11 +20,11 @@ class _CalPageWidgetState extends State<CalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Zoom(
-          initZoom: 0.3,
-          initialPos: Offset(-width / 6, -height / 5),
+          initZoom: 1,
+          // initialPos: Offset(-width / 6, -height / 5),
           centerOnScale: false,
-          maxZoomWidth: width * 2,
-          maxZoomHeight: height * 2,
+          maxZoomWidth: width,
+          maxZoomHeight: height,
           zoomSensibility: 1,
           enabled: zoomEnabled,
           canvasColor: Colors.lime.shade50,
@@ -32,7 +32,7 @@ class _CalPageWidgetState extends State<CalPage> {
           doubleTapZoom: false,
           child: Container(
             margin: EdgeInsets.symmetric(
-                vertical: height / 2, horizontal: width / 2),
+                vertical: 50),
             child: Stack(
               children: [
                 CalTable(2022),
