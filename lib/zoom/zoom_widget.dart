@@ -241,8 +241,8 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
     scaleTop =
         (-1 * relScalePoint.dy * scale) + (relScalePoint.dy * initialScale);
 
-    print("${relScalePoint.dx} $currentLeftPositionForScale ${focalPoint.dx}  $scale");
-    print("$movePosLeftCurrent + $movePosLeftLast + $auxLeft + $localLeft + $centerLeft");
+    //print("${relScalePoint.dx} $currentLeftPositionForScale ${focalPoint.dx}  $scale");
+    // print("$movePosLeftCurrent + $movePosLeftLast + $auxLeft + $localLeft + $centerLeft");
     // print("scaleLeft: $scaleLeft, tick: $scaleChangeLastTick Point: $relScalePoint with scale: $scale.");
 
     /*/ das ist der punkt auf der karte auf dem gescaled werden soll
@@ -269,7 +269,6 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
   void endEscale(constraints) {
     auxTop += localTop + scaleTop;
     auxLeft += localLeft + scaleLeft;
-    print("set");
     initialScale = scale;
     scaleLeft = 0;
     scaleTop = 0;

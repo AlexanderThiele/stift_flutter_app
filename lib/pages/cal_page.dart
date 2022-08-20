@@ -13,8 +13,10 @@ class CalPage extends StatefulWidget {
 class _CalPageWidgetState extends State<CalPage> {
   bool zoomEnabled = true;
 
-  final double width = 2048;
-  final double height = 1536;
+  //final double width = 2048;
+  //final double height = 1536;
+  final double width = 1600;
+  final double height = 1200;
 
   @override
   Widget build(BuildContext context) {
