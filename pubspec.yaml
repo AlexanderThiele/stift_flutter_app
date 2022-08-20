@@ -12,6 +12,12 @@ dependencies:
   gesture_x_detector: ^1.1.1
   go_router: ^4.2.8
   intl: ^0.17.0
+  flutter_hooks: ^0.18.5+1
+  hooks_riverpod: ^2.0.0-dev.9
+  firebase_core: ^1.21.0
+  firebase_analytics: ^9.3.2
+  cloud_firestore: ^3.4.5
+  firebase_auth: ^3.6.4
 
 dev_dependencies:
   flutter_test:

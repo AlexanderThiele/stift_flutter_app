@@ -1,29 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/cal/cal_table.dart';
 import 'package:pencalendar/cal/paint_view.dart';
 import 'package:pencalendar/zoom/zoom_widget.dart';
 
-class CalPage extends StatefulWidget {
-  const CalPage({Key? key}) : super(key: key);
+class ZoomEnabledNotifier extends ChangeNotifier {
+  bool enabled = true;
 
-  @override
-  State<CalPage> createState() => _CalPageWidgetState();
+  void enable() {
+    enabled = true;
+    notifyListeners();
+  }
+
+  void disable() {
+    enabled = false;
+    notifyListeners();
+  }
 }
 
-class _CalPageWidgetState extends State<CalPage> {
-  bool zoomEnabled = true;
+class CalPage extends HookConsumerWidget {
+  final zoomEnabledProvider =
+      ChangeNotifierProvider((_) => ZoomEnabledNotifier());
 
   //final double width = 2048;
   //final double height = 1536;
   final double width = 1600;
   final double height = 1200;
 
+  CalPage({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ZoomEnabledNotifier zoomEnabled = ref.watch(zoomEnabledProvider);
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
-
-        final initialZoom = constraints.maxWidth/width;
+        final initialZoom = constraints.maxWidth / width;
         return Zoom(
             initZoom: initialZoom,
             // initialPos: Offset(-width / 6, -height / 5),
@@ -31,7 +42,7 @@ class _CalPageWidgetState extends State<CalPage> {
             maxZoomWidth: width,
             maxZoomHeight: height,
             zoomSensibility: 30,
-            enabled: zoomEnabled,
+            enabled: zoomEnabled.enabled,
             canvasColor: Colors.lime.shade50,
             backgroundColor: Colors.lime.shade50,
             doubleTapZoom: false,
@@ -43,14 +54,10 @@ class _CalPageWidgetState extends State<CalPage> {
                   PaintView(
                       color: Colors.black,
                       enableZoom: () {
-                        setState(() {
-                          zoomEnabled = true;
-                        });
+                        zoomEnabled.enable();
                       },
                       disableZoom: () {
-                        setState(() {
-                          zoomEnabled = false;
-                        });
+                        zoomEnabled.disable();
                       })
                 ],
               ),
