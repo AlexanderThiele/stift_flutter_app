@@ -40,7 +40,7 @@ class MyApp extends HookConsumerWidget {
       routeInformationProvider: _router.routeInformationProvider,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
-      title: 'Taka',
+      title: 'Pencal',
     );
   }
 

@@ -21,9 +21,15 @@ class ZoomEnabledNotifier extends ChangeNotifier {
   }
 }
 
+class SelectedYearNotifier extends ChangeNotifier {
+  int currentYear = DateTime.now().year;
+}
+
 class CalPage extends HookConsumerWidget {
   final zoomEnabledProvider =
       ChangeNotifierProvider((_) => ZoomEnabledNotifier());
+  final selectedYearProvider =
+      ChangeNotifierProvider((ref) => SelectedYearNotifier());
 
   //final double width = 2048;
   //final double height = 1536;
@@ -35,7 +41,10 @@ class CalPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ZoomEnabledNotifier zoomEnabled = ref.watch(zoomEnabledProvider);
+    final SelectedYearNotifier selectedYear = ref.watch(selectedYearProvider);
     final List<Calendar> allCalendars = ref.watch(calendarControllerProvider);
+
+    print("got $allCalendars");
 
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
@@ -55,7 +64,7 @@ class CalPage extends HookConsumerWidget {
               margin: EdgeInsets.symmetric(vertical: 50),
               child: Stack(
                 children: [
-                  CalTable(2022),
+                  CalTable(selectedYear.currentYear),
                   PaintView(
                       color: Colors.black,
                       enableZoom: () {

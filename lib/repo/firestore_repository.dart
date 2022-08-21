@@ -16,15 +16,32 @@ class FirestoreRepository {
 
   Query<Calendar> get allCalendar {
     User? currentUser = _read(authControllerProvider);
+
     if (currentUser == null) {
-      AppLogger.d("NO USER EXCEPTION");
+      AppLogger.e("NO USER EXCEPTION");
       throw Exception("No user");
     }
+
     return _read(firebaseFirestoreProvider)
         .collection("calendar")
         .where("user_id", isEqualTo: currentUser.uid)
         .withConverter<Calendar>(
             fromFirestore: Calendar.fromFirestoreWrapped,
             toFirestore: (Calendar cal, _) => cal.toFirestore);
+  }
+
+  createCalendar(String name) {
+    User? currentUser = _read(authControllerProvider);
+
+    if (currentUser == null) {
+      AppLogger.e("NO USER EXCEPTION");
+      throw Exception("No user");
+    }
+
+    AppLogger.d("Create Calendar");
+
+    _read(firebaseFirestoreProvider)
+        .collection("calendar")
+        .add(Calendar.create(user_id: currentUser.uid, name: name).toFirestore);
   }
 }

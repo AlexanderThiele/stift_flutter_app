@@ -28,6 +28,10 @@ class CalendarController extends StateNotifier<List<Calendar>> {
     print("New FireStore Data");
     print(updatedList.length);
     state = updatedList;
+
+    if(snapshot.size == 0){
+      _createDefaultCalendar();
+    }
   }
 
   @override
@@ -39,5 +43,9 @@ class CalendarController extends StateNotifier<List<Calendar>> {
   void dispose() {
     _streamSubscription?.cancel();
     super.dispose();
+  }
+
+  _createDefaultCalendar(){
+    _read(firestoreRepositoryProvider).createCalendar("default");
   }
 }
