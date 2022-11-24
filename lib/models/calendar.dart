@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 class Calendar {
+  /// firebase ID
   String id;
   String name;
   String user_id;

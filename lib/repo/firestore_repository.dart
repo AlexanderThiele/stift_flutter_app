@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
+import 'package:pencalendar/models/calendar_with_drawings.dart';
+import 'package:pencalendar/models/single_draw.dart';
 import 'package:pencalendar/riverpod/rp_firebase.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
@@ -30,7 +33,7 @@ class FirestoreRepository {
             toFirestore: (Calendar cal, _) => cal.toFirestore);
   }
 
-  createCalendar(String name) {
+  Future createCalendar(String name) {
     User? currentUser = _read(authControllerProvider);
 
     if (currentUser == null) {
@@ -40,8 +43,28 @@ class FirestoreRepository {
 
     AppLogger.d("Create Calendar");
 
-    _read(firebaseFirestoreProvider)
+    return _read(firebaseFirestoreProvider)
         .collection("calendar")
         .add(Calendar.create(user_id: currentUser.uid, name: name).toFirestore);
+  }
+
+  Query<SingleDraw> getSingleCalendarDrawings(Calendar calendar, int year) {
+    return _read(firebaseFirestoreProvider)
+        .collection("calendar")
+        .doc(calendar.id)
+        .collection("drawings")
+        .where("year", isEqualTo: year)
+        .withConverter(
+            fromFirestore: SingleDraw.fromFirestoreWrapped,
+            toFirestore: (SingleDraw sdraw, _) => sdraw.toFirestore);
+  }
+
+  Future createSingleCalendarDrawings(
+      Calendar calendar, SingleDraw singleDraw) {
+    return _read(firebaseFirestoreProvider)
+        .collection("calendar")
+        .doc(calendar.id)
+        .collection("drawings")
+        .add(singleDraw.toFirestore);
   }
 }

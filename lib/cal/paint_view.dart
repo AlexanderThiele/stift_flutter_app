@@ -5,12 +5,16 @@ import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
 class PaintView extends StatefulWidget {
   final Function enableZoom;
   final Function disableZoom;
+  final Function(List<Offset>, Color, double) onPaintEnd;
   final Color color;
+  final double activeWidth;
 
   const PaintView(
       {required this.enableZoom,
       required this.disableZoom,
+      required this.onPaintEnd,
       required this.color,
+      required this.activeWidth,
       Key? key})
       : super(key: key);
 
@@ -19,7 +23,7 @@ class PaintView extends StatefulWidget {
 }
 
 class _PaintViewState extends State<PaintView> {
-  final List<CompletedPaint> _points = [];
+  // final List<CompletedPaint> _points = [];
   List<Offset> _currentDrawing = [];
   late double width;
   late double height;
@@ -64,8 +68,10 @@ class _PaintViewState extends State<PaintView> {
           onMoveEnd: (MoveEvent event) {
             widget.enableZoom();
             print("move end");
+            widget.onPaintEnd.call(simplifyDouglasPeucker(_currentDrawing, 0.2),
+                widget.color, widget.activeWidth);
             setState(() {
-              _points.add(CompletedPaint(_currentDrawing, widget.color));
+              //_points.add(CompletedPaint(_currentDrawing, widget.color));
               _currentDrawing = [];
             });
           },
@@ -77,49 +83,46 @@ class _PaintViewState extends State<PaintView> {
             widget.disableZoom();
             _currentDrawing.clear();
           },
-          child: Stack(
-            children: [
-              ..._points.map((completedPaint) => CustomPaint(
-                    painter: completedPaint.signature,
-                    size: Size.infinite,
-                  )),
-              CustomPaint(
-                painter:
-                    Signature(points: _currentDrawing, color: widget.color),
-                size: Size.infinite,
-              )
-            ],
-          ),
+          child: CustomPaint(
+            painter: Signature(
+                points: _currentDrawing,
+                color: widget.color,
+                strokeWidth: widget.activeWidth),
+            size: Size.infinite,
+          )
         );
       },
     );
   }
 }
 
+/*
 class CompletedPaint {
   late List<Offset> pointList;
   Color color;
 
-  CompletedPaint(List<Offset> completePointList, this.color){
+  CompletedPaint(List<Offset> completePointList, this.color) {
     pointList = simplifyDouglasPeucker(completePointList, 0.2);
     print("from ${completePointList.length} to ${pointList.length}");
   }
 
   get signature => Signature(points: pointList, color: color);
 }
-
+*/
 class Signature extends CustomPainter {
   List<Offset> points;
   Color color;
+  double strokeWidth;
 
-  Signature({required this.points, required this.color});
+  Signature(
+      {required this.points, required this.color, required this.strokeWidth});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..color = color
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 1.5;
+      ..strokeWidth = strokeWidth;
 
     for (int i = 0; i < points.length - 1; i++) {
       canvas.drawLine(points[i], points[i + 1], paint);

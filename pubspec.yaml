@@ -18,6 +18,8 @@ dependencies:
   firebase_analytics: ^9.3.2
   cloud_firestore: ^3.4.5
   firebase_auth: ^3.6.4
+  flutter_colorpicker: ^1.0.3
+  another_xlider: ^1.1.2
 
 dev_dependencies:
   flutter_test:

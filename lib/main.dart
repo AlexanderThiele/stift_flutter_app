@@ -4,14 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
-import 'package:pencalendar/pages/cal_page.dart';
+import 'package:pencalendar/pages/cal_page/cal_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  print("done");
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -37,6 +36,7 @@ class MyApp extends HookConsumerWidget {
       );
     }
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routeInformationProvider: _router.routeInformationProvider,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,

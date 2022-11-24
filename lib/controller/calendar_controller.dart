@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/repo/firestore_repository.dart';
 
@@ -29,8 +31,10 @@ class CalendarController extends StateNotifier<List<Calendar>> {
     print(updatedList.length);
     state = updatedList;
 
-    if(snapshot.size == 0){
+    if (snapshot.size == 0) {
       _createDefaultCalendar();
+    } else {
+      _read(activeCalendarControllerProvider.notifier).onNewCalendarReceived(updatedList);
     }
   }
 
@@ -45,7 +49,7 @@ class CalendarController extends StateNotifier<List<Calendar>> {
     super.dispose();
   }
 
-  _createDefaultCalendar(){
+  _createDefaultCalendar() {
     _read(firestoreRepositoryProvider).createCalendar("default");
   }
 }
