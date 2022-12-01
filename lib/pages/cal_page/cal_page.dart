@@ -44,6 +44,8 @@ class CalPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ZoomEnabledNotifier zoomEnabled = ref.watch(zoomEnabledProvider);
     final selectedYear = ref.watch(activeCalendarYearProvider);
+    // do not remove this line otherwise no calendar will be loaded.
+    ref.watch(calendarControllerProvider);
 
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
