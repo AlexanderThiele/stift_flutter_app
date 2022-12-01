@@ -32,7 +32,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   selectCalendar(Calendar calendar) async {
     var year = _read(activeCalendarYearProvider);
     await _streamSubscription?.cancel();
-    state = CalendarWithDrawings(calendar);
+    state = CalendarWithDrawings(calendar, drawingList: []);
     _streamSubscription = _read(firestoreRepositoryProvider)
         .getSingleCalendarDrawings(calendar, year)
         .snapshots()
@@ -51,16 +51,57 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   onNewDrawingReceived(QuerySnapshot<SingleDraw> snapshot) {
     print("new drawing");
     print("size ${snapshot.size}");
-    state = state!..drawingList = snapshot.docs.map((e) => e.data()).toList();
+    final List<SingleDraw> drawList = [];
+    for (var singleDraw in snapshot.docChanges) {
+      print(singleDraw.type);
+      switch (singleDraw.type) {
+        case DocumentChangeType.added:
+          state?.drawingList.add(singleDraw.doc.data()!);
+          break;
+        case DocumentChangeType.removed:
+          {
+            print("delete");
+            state?.drawingList
+                .removeWhere((element) => element.id == singleDraw.doc.id);
+          }
+      }
+    }
+    state = state;
+    // state = state!..drawingList = snapshot.docs.map((e) => e.data()).toList();
   }
 
   void saveSignatur(List<Offset> pointList, Color color, double size) {
     print("save");
+    print("save");
     var year = _read(activeCalendarYearProvider);
-    final singleDraw = SingleDraw("", pointList, color, size, year);
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
+    final singleDraw = SingleDraw(id, pointList, color, size, year);
     state = state!..drawingList.add(singleDraw);
     _read(firestoreRepositoryProvider)
-        .createSingleCalendarDrawings(state!.calendar, singleDraw);
+        .createSingleCalendarDrawings(state!.calendar, singleDraw, id).then((value) => print("value")).timeout(Duration(seconds: 4));
+  }
+
+  onDeleteCalculation(Offset offset) {
+    if (state != null) {
+      for (var drawing in state!.drawingList) {
+        final path = Path();
+
+        for (int i = 0; i < drawing.pointList.length; i++) {
+          if (i == 0) {
+            path.moveTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
+          } else {
+            path.lineTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
+          }
+        }
+        if (path.contains(offset)) {
+          print("GEFUNDEN ${drawing}");
+          print("GEFUNDEN ${drawing.id}");
+          _read(firestoreRepositoryProvider)
+              .deleteSingleCalendarDrawings(state!.calendar, drawing);
+          state = state!..drawingList.remove(drawing);
+        }
+      }
+    }
   }
 
   @override

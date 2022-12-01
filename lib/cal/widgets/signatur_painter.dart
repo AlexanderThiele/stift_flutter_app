@@ -10,6 +10,7 @@ class SignaturePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    print("do paint ${drawList.length}");
     for (SingleDraw draw in drawList) {
       Paint paint = Paint()
         ..color = draw.color
@@ -20,9 +21,11 @@ class SignaturePainter extends CustomPainter {
         canvas.drawLine(draw.pointList[i], draw.pointList[i + 1], paint);
       }
     }
-
   }
 
   @override
-  bool shouldRepaint(SignaturePainter oldDelegate) => oldDelegate.drawList.length != drawList.length;
+  bool shouldRepaint(SignaturePainter oldDelegate) {
+    print("should repaint ${oldDelegate.drawList.length != drawList.length}");
+    return oldDelegate.drawList.length != drawList.length;
+  }
 }

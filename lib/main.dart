@@ -21,29 +21,34 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var user = ref.watch(authControllerProvider);
 
+    ThemeData theme =
+        ThemeData(colorSchemeSeed: Colors.teal, brightness: Brightness.light);
+
+    ThemeData themeDark =
+        ThemeData(colorSchemeSeed: Colors.teal, brightness: Brightness.dark);
+
     if (user == null) {
-      return Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            Align(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
-            )
-          ],
-        ),
-      );
+      return MaterialApp(
+          theme: theme,
+          home: Scaffold(
+              body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: const [
+                Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator())
+              ])));
     }
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      theme: theme,
       routeInformationProvider: _router.routeInformationProvider,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
       title: 'Pencal',
     );
   }
-
 
   final GoRouter _router = GoRouter(
     routes: <GoRoute>[
@@ -56,6 +61,3 @@ class MyApp extends HookConsumerWidget {
     ],
   );
 }
-
-
-

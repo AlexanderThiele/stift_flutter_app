@@ -11,7 +11,7 @@ class ColorPickerWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final color = ref.watch(activeColorProvider);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -34,11 +34,22 @@ class ColorPickerWidget extends ConsumerWidget {
                     });
               },
               child: Container(
-                  decoration: BoxDecoration(color: color, borderRadius: const BorderRadius.all(Radius.circular(8))),
-              child:  Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8),
-                child: Center(child: Text("Color", style: Theme.of(context).textTheme.bodySmall?.apply(color: Colors.white),)),
-              ),)),
+                decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: const BorderRadius.all(Radius.circular(8))),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8),
+                  child: Center(
+                      child: Text(
+                    "Color",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.apply(color: Colors.white),
+                  )),
+                ),
+              )),
         ],
       ),
     );

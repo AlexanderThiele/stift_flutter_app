@@ -3,11 +3,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/cal/cal_table.dart';
 import 'package:pencalendar/cal/paint_view.dart';
 import 'package:pencalendar/cal/saved_paint_layer.dart';
+import 'package:pencalendar/controller/active_brush_controller.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_color_controller.dart';
 import 'package:pencalendar/controller/active_width_controller.dart';
 import 'package:pencalendar/controller/calendar_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
+import 'package:pencalendar/pages/cal_page/widgets/brushes_widget.dart';
 import 'package:pencalendar/pages/cal_page/widgets/color_widget.dart';
 import 'package:pencalendar/pages/cal_page/widgets/width_slider_widget.dart';
 import 'package:pencalendar/pages/cal_page/widgets/year_widget.dart';
@@ -27,15 +29,9 @@ class ZoomEnabledNotifier extends ChangeNotifier {
   }
 }
 
-class SelectedYearNotifier extends ChangeNotifier {
-  int currentYear = DateTime.now().year;
-}
-
-class CalPage extends HookConsumerWidget {
+class CalPage extends ConsumerWidget {
   final zoomEnabledProvider =
       ChangeNotifierProvider((_) => ZoomEnabledNotifier());
-  final selectedYearProvider =
-      ChangeNotifierProvider((ref) => SelectedYearNotifier());
 
   //final double width = 2048;
   //final double height = 1536;
@@ -47,10 +43,7 @@ class CalPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ZoomEnabledNotifier zoomEnabled = ref.watch(zoomEnabledProvider);
-    final SelectedYearNotifier selectedYear = ref.watch(selectedYearProvider);
-    final Color activeColor = ref.watch(activeColorProvider);
-    final widthProvider = ref.watch(activeWidthProvider);
-    final List<Calendar> allCalendars = ref.watch(calendarControllerProvider);
+    final selectedYear = ref.watch(activeCalendarYearProvider);
 
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
@@ -72,16 +65,17 @@ class CalPage extends HookConsumerWidget {
                   margin: const EdgeInsets.symmetric(vertical: 50),
                   child: Stack(
                     children: [
-                      CalTable(selectedYear.currentYear),
-                      SavedPaintLayer(),
+                      CalTable(selectedYear),
+                      // SavedPaintLayer(),
                       PaintView(
-                          color: activeColor,
-                          activeWidth: widthProvider,
                           enableZoom: () {
                             zoomEnabled.enable();
                           },
                           disableZoom: () {
                             zoomEnabled.disable();
+                          },
+                          checkDelete: (Offset offset) {
+
                           },
                           onPaintEnd: (List<Offset> pointList, Color color,
                               double size) {
@@ -97,7 +91,12 @@ class CalPage extends HookConsumerWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [YearWidget(), ColorPickerWidget(), WidthSliderWidget()]))
+                    children: const [
+                  YearWidget(),
+                  ColorPickerWidget(),
+                  BrushesWidget(),
+                  WidthSliderWidget()
+                ]))
           ],
         );
       }),

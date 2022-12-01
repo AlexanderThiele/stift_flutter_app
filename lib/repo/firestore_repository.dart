@@ -60,11 +60,22 @@ class FirestoreRepository {
   }
 
   Future createSingleCalendarDrawings(
+      Calendar calendar, SingleDraw singleDraw, String id) {
+    return _read(firebaseFirestoreProvider)
+        .collection("calendar")
+        .doc(calendar.id)
+        .collection("drawings")
+        .doc(id)
+        .set(singleDraw.toFirestore);
+  }
+
+  Future deleteSingleCalendarDrawings(
       Calendar calendar, SingleDraw singleDraw) {
     return _read(firebaseFirestoreProvider)
         .collection("calendar")
         .doc(calendar.id)
         .collection("drawings")
-        .add(singleDraw.toFirestore);
+        .doc(singleDraw.id)
+        .delete();
   }
 }
