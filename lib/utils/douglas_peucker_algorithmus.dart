@@ -84,13 +84,14 @@ void simplifyDPStep(points, first, last, sqTolerance, simplified) {
 
 // simplification using Ramer-Douglas-Peucker algorithm
 List<Offset> simplifyDouglasPeucker(List<Offset> pointsOffset, double sqTolerance) {
+  print("algo staert ${pointsOffset.length}");
   List<Point> points = pointsOffset.map((e) => e.toPoint).toList();
   var last = points.length - 1;
 
   var simplified = [points[0]];
   simplifyDPStep(points, 0, last, sqTolerance, simplified);
   simplified.add(points[last]);
-
+print("algo end");
   return simplified.map((e) => e.offset).toList();
 }
 

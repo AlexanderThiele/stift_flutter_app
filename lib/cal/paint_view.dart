@@ -6,28 +6,62 @@ import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_color_controller.dart';
 import 'package:pencalendar/controller/active_width_controller.dart';
 import 'package:pencalendar/models/brush.dart';
+import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
 import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
 
 class PaintView extends ConsumerWidget {
   final Function enableZoom;
   final Function disableZoom;
-  final Function(List<Offset>, Color, double) onPaintEnd;
-  final Function(Offset) checkDelete;
 
-  final currentDrawingProvider = StateProvider<List<Offset>>((ref) => []);
-
-  PaintView(
-      {required this.enableZoom,
-      required this.disableZoom,
-      required this.onPaintEnd,
-      required this.checkDelete,
-      Key? key})
+  PaintView({required this.enableZoom, required this.disableZoom, Key? key})
       : super(key: key);
 
-  // final List<CompletedPaint> _points = [];
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final Color activeColor = ref.watch(activeColorProvider);
+    final double activeWidth = ref.watch(activeWidthProvider);
+    final Brush activeBrush = ref.watch(activeBrushProvider);
+    final CalendarWithDrawings? activeCalendar =
+        ref.watch(activeCalendarControllerProvider);
+
+    return TestState(
+        ref.read(activeCalendarControllerProvider.notifier),
+        enableZoom,
+        disableZoom,
+        activeColor,
+        activeWidth,
+        activeBrush,
+        activeCalendar);
+  }
+}
+
+class TestState extends StatefulWidget {
+  final ActiveCalendarController activeCalendarController;
+  final Function enableZoom;
+  final Function disableZoom;
+  final Color activeColor;
+  final double activeWidth;
+  final Brush activeBrush;
+  final CalendarWithDrawings? activeCalendar;
+
+  TestState(
+      this.activeCalendarController,
+      this.enableZoom,
+      this.disableZoom,
+      this.activeColor,
+      this.activeWidth,
+      this.activeBrush,
+      this.activeCalendar);
+
+  @override
+  State<TestState> createState() => _TestStateState();
+}
+
+class _TestStateState extends State<TestState> {
   late double width;
   late double height;
+  List<Offset> currentDrawings = [];
 
   Offset checkPos(Offset offset) {
     double dx = offset.dx;
@@ -48,75 +82,71 @@ class PaintView extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final Color activeColor = ref.watch(activeColorProvider);
-    final activeWidth = ref.watch(activeWidthProvider);
-    final activeBrush = ref.watch(activeBrushProvider);
-    final currentDrawing = ref.watch(currentDrawingProvider);
-    final activeCalendar = ref.watch(activeCalendarControllerProvider);
-
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         width = constraints.maxWidth;
         height = constraints.maxHeight;
         return XGestureDetector(
             onMoveStart: (MoveEvent event) {
-              disableZoom();
-              if (activeBrush == Brush.eraser) {
+              widget.disableZoom();
+              if (widget.activeBrush == Brush.eraser) {
                 return;
               }
               print("move start");
-              ref.read(currentDrawingProvider.notifier).state = [
-                ...currentDrawing,
-                event.localPos
-              ];
+              setState(() {
+                currentDrawings.add(checkPos(event.localPos));
+              });
             },
             onMoveUpdate: (MoveEvent event) {
-              if (activeBrush == Brush.eraser) {
+              if (widget.activeBrush == Brush.eraser) {
                 // check points
-                ref
-                    .read(activeCalendarControllerProvider.notifier)
+                widget.activeCalendarController
                     .onDeleteCalculation(event.localPos);
                 return;
               } else {
-                ref.read(currentDrawingProvider.notifier).state = [
-                  ...currentDrawing,
-                  event.localPos
-                ];
+                setState(() {
+                  currentDrawings.add(checkPos(event.localPos));
+                });
               }
             },
             onMoveEnd: (MoveEvent event) {
-              enableZoom();
-              if (activeBrush == Brush.eraser) {
+              widget.enableZoom();
+              if (widget.activeBrush == Brush.eraser) {
                 return;
               }
-              print("move end");
+              widget.activeCalendarController.saveSignatur(
+                  simplifyDouglasPeucker(currentDrawings, 0.1),
+                  widget.activeColor,
+                  widget.activeWidth);
+              /*
               onPaintEnd.call(simplifyDouglasPeucker(currentDrawing, 0.2),
-                  activeColor, activeWidth);
-
-              ref.read(currentDrawingProvider.notifier).state = [];
+                  activeColor, activeWidth);*/
+              setState(() {
+                currentDrawings = [];
+              });
             },
             onScaleStart: (event) {
-              enableZoom();
+              widget.enableZoom();
             },
             onScaleUpdate: (event) {},
             onScaleEnd: () {
-              disableZoom();
-              ref.read(currentDrawingProvider.notifier).state = [];
+              widget.disableZoom();
+              setState(() {
+                currentDrawings = [];
+              });
             },
             child: CustomPaint(
               painter: Signature(
-                  points: currentDrawing,
-                  drawingList: activeCalendar?.drawingList,
-                  color: activeColor,
-                  strokeWidth: activeWidth),
+                  points: currentDrawings,
+                  drawingList: widget.activeCalendar?.drawingList,
+                  color: widget.activeColor,
+                  strokeWidth: widget.activeWidth),
               size: Size.infinite,
             ));
       },
     );
   }
-
-  _checkDelete() {}
 }
 
 class Signature extends CustomPainter {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,13 @@ import 'package:pencalendar/repo/firestore_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 final activeCalendarControllerProvider =
-    StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
+StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
         (ref) => ActiveCalendarController(ref.read));
 
-final activeCalendarYearProvider = StateProvider((ref) => DateTime.now().year);
+final activeCalendarYearProvider = StateProvider((ref) =>
+DateTime
+    .now()
+    .year);
 
 class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   final Reader _read;
@@ -74,15 +78,22 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     print("save");
     print("save");
     var year = _read(activeCalendarYearProvider);
-    final id = DateTime.now().millisecondsSinceEpoch.toString();
+    final id = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
     final singleDraw = SingleDraw(id, pointList, color, size, year);
-    state = state!..drawingList.add(singleDraw);
+    state = state!
+      ..drawingList.add(singleDraw);
     _read(firestoreRepositoryProvider)
-        .createSingleCalendarDrawings(state!.calendar, singleDraw, id).then((value) => print("value")).timeout(Duration(seconds: 4));
+        .createSingleCalendarDrawings(state!.calendar, singleDraw, id)
+        .then((value) => print("value"))
+        .timeout(Duration(seconds: 4));
   }
 
   onDeleteCalculation(Offset offset) {
     if (state != null) {
+      final List<SingleDraw> toBeRemoved = [];
       for (var drawing in state!.drawingList) {
         final path = Path();
 
@@ -93,20 +104,36 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
             path.lineTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
           }
         }
-        if (path.contains(offset)) {
+        if (path.contains(offset) ||
+            _checkNearbyPoints(offset, drawing.pointList)) {
           print("GEFUNDEN ${drawing}");
           print("GEFUNDEN ${drawing.id}");
-          _read(firestoreRepositoryProvider)
-              .deleteSingleCalendarDrawings(state!.calendar, drawing);
-          state = state!..drawingList.remove(drawing);
+          toBeRemoved.add(drawing);
         }
+      }
+      for(var drawing in toBeRemoved){
+        _read(firestoreRepositoryProvider)
+            .deleteSingleCalendarDrawings(state!.calendar, drawing);
+        state = state!
+          ..drawingList.remove(drawing);
       }
     }
   }
 
+  bool _checkNearbyPoints(Offset offset, List<Offset> pointList) {
+    for (Offset point in pointList) {
+      var pointDistance = sqrt(
+          pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
+      if(pointDistance < 2){
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
-  bool updateShouldNotify(
-      CalendarWithDrawings? old, CalendarWithDrawings? current) {
+  bool updateShouldNotify(CalendarWithDrawings? old,
+      CalendarWithDrawings? current) {
     return true;
   }
 

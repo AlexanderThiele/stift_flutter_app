@@ -17,7 +17,6 @@ class CalendarController extends StateNotifier<List<Calendar>> {
   StreamSubscription? _streamSubscription;
 
   CalendarController(this._read) : super(<Calendar>[]) {
-    print("listen");
     _streamSubscription = _read(firestoreRepositoryProvider)
         .allCalendar
         .snapshots()
@@ -27,8 +26,6 @@ class CalendarController extends StateNotifier<List<Calendar>> {
   onNewCalendarReceived(QuerySnapshot<Calendar> snapshot) {
     List<Calendar> updatedList = snapshot.docs.map((e) => e.data()).toList();
     updatedList.removeWhere((element) => element.isCrashObject);
-    print("New FireStore Data");
-    print(updatedList.length);
     state = updatedList;
 
     if (snapshot.size == 0) {

@@ -1,10 +1,15 @@
 library zoom_widget;
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/src/consumer.dart';
+import 'package:pencalendar/main.dart';
+import 'package:pencalendar/models/events/reset_view_event.dart';
 import 'package:pencalendar/zoom/MultiTouchGestureRecognizer.dart';
+import 'package:riverpod/src/state_provider.dart';
 
 class Zoom extends StatefulWidget {
   final double maxZoomWidth, maxZoomHeight;
@@ -128,6 +133,8 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
   double get currentTopPositionForScale =>
       movePosTopCurrent + movePosTopLast + auxTop + localTop + centerTop;
 
+  StreamSubscription? eventStreamSubscription;
+
   @override
   void initState() {
     auxTop = widget.initialPos.dy;
@@ -170,12 +177,25 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
         endEscale(globalConstraints);
       }
     });
+    print("listen yo");
+    eventStreamSubscription =
+        MyApp.eventBus.on<ResetViewEvent>().listen((event) {
+          setState((){
+            localTop = 0;
+            changeTop = 0;
+            changeLeft = 0;
+            auxTop = widget.initialPos.dy;
+            auxLeft = widget.initialPos.dx;
+            scale = 1;
+          });
+        });
     super.initState();
   }
 
   @override
   void dispose() {
     scaleAnimation.dispose();
+    eventStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -329,7 +349,8 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
       builder: (BuildContext context, BoxConstraints constraints) {
         globalConstraints = constraints;
         if (!initOrientation) {
-          scale = max(min(widget.initZoom, maxZoom),minZoom);/*map(
+          scale = max(min(widget.initZoom, maxZoom),
+              minZoom); /*map(
               widget.initZoom,
               1.0,
               0.0,
@@ -347,8 +368,9 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
           }
 
           print(constraints.maxHeight);
-          movePosTopLast = (constraints.maxHeight-widget.maxZoomHeight*scale)/2;
-          if(movePosTopLast < 0){
+          movePosTopLast =
+              (constraints.maxHeight - widget.maxZoomHeight * scale) / 2;
+          if (movePosTopLast < 0) {
             movePosTopLast = 0;
           }
 
@@ -464,7 +486,7 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
                 } else {
                   double preScale = scale -
                       (changeScaleSinceStart - details.scale) /
-                          widget.zoomSensibility ;
+                          widget.zoomSensibility;
                   final scaleLast = scale;
                   scale = min(max(preScale, minZoom), maxZoom);
                   scaleChangeLastTick = scaleLast - scale;

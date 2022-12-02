@@ -1,6 +1,9 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
+import 'package:pencalendar/main.dart';
+import 'package:pencalendar/models/events/reset_view_event.dart';
 
 class YearWidget extends ConsumerWidget {
   const YearWidget({Key? key}) : super(key: key);
@@ -13,6 +16,12 @@ class YearWidget extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          FloatingActionButton(
+              mini: true,
+              onPressed: () {
+                MyApp.eventBus.fire(ResetViewEvent());
+              },
+              child: const Icon(Icons.fullscreen, color: Colors.white)),
           FloatingActionButton(
               mini: true,
               onPressed: () {

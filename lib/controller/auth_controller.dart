@@ -22,8 +22,11 @@ class AuthController extends StateNotifier<User?> {
 
   void appStarted() async {
     final user = _read(authRepositoryProvider).getCurrentUser();
+    print("app started");
     if (user == null) {
+      print("user null");
       await _read(authRepositoryProvider).signInAnonymously();
+      print("SIGN IN anony");
       state = _read(authRepositoryProvider).getCurrentUser();
     } else {
       state = user;

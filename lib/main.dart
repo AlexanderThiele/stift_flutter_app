@@ -1,3 +1,5 @@
+import 'package:event_bus/event_bus.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,15 +13,23 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  /*await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.playIntegrity,
+  );*/
   runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends HookConsumerWidget {
   MyApp({Key? key}) : super(key: key);
 
+  static final EventBus eventBus = EventBus();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var user = ref.watch(authControllerProvider);
+
+    print("user");
+    print(user);
 
     ThemeData theme =
         ThemeData(colorSchemeSeed: Colors.teal, brightness: Brightness.light);
