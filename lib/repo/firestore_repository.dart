@@ -78,4 +78,18 @@ class FirestoreRepository {
         .doc(singleDraw.id)
         .delete();
   }
+
+  Future deleteAllCalendarDrawings(Calendar calendar, year) async {
+    final snapshots = await _read(firebaseFirestoreProvider)
+        .collection("calendar")
+        .doc(calendar.id)
+        .collection("drawings")
+        .where("year", isEqualTo: year)
+        .get();
+    final batch = FirebaseFirestore.instance.batch();
+    for (var doc in snapshots.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+  }
 }

@@ -9,8 +9,11 @@ class SingleDraw {
   Color color;
   double size;
   int year;
+  Path path = Path();
 
-  SingleDraw(this.id, this.pointList, this.color, this.size, this.year);
+  SingleDraw(this.id, this.pointList, this.color, this.size, this.year) {
+    parsePointList();
+  }
 
   SingleDraw.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -21,7 +24,9 @@ class SingleDraw {
             .toList(),
         color = HexColor.fromHex(snapshot.data()?["color"]),
         size = snapshot.data()?["size"],
-        year = snapshot.data()?["year"];
+        year = snapshot.data()?["year"] {
+    parsePointList();
+  }
 
   SingleDraw.crashObject()
       : id = "crash",
@@ -29,6 +34,16 @@ class SingleDraw {
         color = Colors.white,
         size = 1.0,
         year = 1999;
+
+  void parsePointList() {
+    for (int i = 0; i < pointList.length; i++) {
+      if (i == 0) {
+        path.moveTo(pointList[i].dx, pointList[i].dy);
+      } else {
+        path.lineTo(pointList[i].dx, pointList[i].dy);
+      }
+    }
+  }
 
   static SingleDraw fromFirestoreWrapped(
       DocumentSnapshot<Map<String, dynamic>> snapshot,

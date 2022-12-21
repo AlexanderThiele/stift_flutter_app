@@ -1,15 +1,11 @@
-library zoom_widget;
-
 import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:pencalendar/main.dart';
 import 'package:pencalendar/models/events/reset_view_event.dart';
 import 'package:pencalendar/zoom/MultiTouchGestureRecognizer.dart';
-import 'package:riverpod/src/state_provider.dart';
 
 class Zoom extends StatefulWidget {
   final double maxZoomWidth, maxZoomHeight;
@@ -28,7 +24,6 @@ class Zoom extends StatefulWidget {
   final bool enableScroll;
   final double zoomSensibility;
   final bool doubleTapZoom;
-  final BoxShadow? canvasShadow;
   final void Function()? onTap;
   final bool enabled;
 
@@ -52,7 +47,6 @@ class Zoom extends StatefulWidget {
       this.enableScroll = true,
       this.zoomSensibility = 1.0,
       this.doubleTapZoom = true,
-      this.canvasShadow,
       this.onTap,
       this.enabled = true})
       : assert(
@@ -604,10 +598,7 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
                       alignment: Alignment.topLeft,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: widget.canvasColor,
-                            boxShadow: widget.canvasShadow != null
-                                ? [widget.canvasShadow!]
-                                : null),
+                            color: widget.canvasColor),
                         width: widget.maxZoomWidth,
                         height: widget.maxZoomHeight,
                         child: widget.child,
@@ -615,7 +606,7 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
                     ),
                   ),
                   // scroll balken unten
-                  Positioned(
+                  /*Positioned(
                     top: constraints.maxHeight - widget.scrollWeight,
                     left: -(currentLeftPosition) /
                         ((widget.maxZoomWidth * scale) / constraints.maxWidth),
@@ -633,9 +624,9 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
                         color: widget.colorScrollBars,
                       ),
                     ),
-                  ),
+                  ),*/
                   // scroll balken oben
-                  Positioned(
+                  /*Positioned(
                     top: -(currentTopPosition) /
                         ((widget.maxZoomHeight * scale) /
                             constraints.maxHeight),
@@ -654,7 +645,7 @@ class _ZoomState extends State<Zoom> with TickerProviderStateMixin {
                         color: widget.colorScrollBars,
                       ),
                     ),
-                  )
+                  )*/
                 ],
               ),
             ),

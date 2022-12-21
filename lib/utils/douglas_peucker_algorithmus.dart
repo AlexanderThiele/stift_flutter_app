@@ -9,7 +9,8 @@ class Point {
 
   Point(this.x, this.y, this.offset);
 }
-extension ToPoint on Offset{
+
+extension ToPoint on Offset {
   Point get toPoint => Point(dx, dy, this);
 }
 
@@ -83,15 +84,16 @@ void simplifyDPStep(points, first, last, sqTolerance, simplified) {
 }
 
 // simplification using Ramer-Douglas-Peucker algorithm
-List<Offset> simplifyDouglasPeucker(List<Offset> pointsOffset, double sqTolerance) {
-  print("algo staert ${pointsOffset.length}");
+List<Offset> simplifyDouglasPeucker(
+    List<Offset> pointsOffset, double sqTolerance) {
+  print("DouglasPeucker: Initial points before: ${pointsOffset.length}");
   List<Point> points = pointsOffset.map((e) => e.toPoint).toList();
   var last = points.length - 1;
 
   var simplified = [points[0]];
   simplifyDPStep(points, 0, last, sqTolerance, simplified);
   simplified.add(points[last]);
-print("algo end");
+  print("DouglasPeucker: Initial points after: ${simplified.length}");
   return simplified.map((e) => e.offset).toList();
 }
 

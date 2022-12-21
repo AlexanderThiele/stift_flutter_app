@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/main.dart';
 import 'package:pencalendar/models/events/reset_view_event.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class YearWidget extends ConsumerWidget {
   const YearWidget({Key? key}) : super(key: key);
@@ -47,7 +49,34 @@ class YearWidget extends ConsumerWidget {
                     .read(activeCalendarControllerProvider.notifier)
                     .changeYear(year + 1);
               },
-              child: const Icon(Icons.arrow_forward, color: Colors.white))
+              child: const Icon(Icons.arrow_forward, color: Colors.white)),
+          PopupMenuButton<int>(
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: 0,
+                  child: Text("Clear Year"),
+                ),
+                const PopupMenuItem(
+                  value: 1,
+                  child: Text("Send Feedback"),
+                ),
+              ];
+            },
+            onSelected: (value) {
+              switch (value) {
+                case 0:
+                  ref
+                      .read(activeCalendarControllerProvider.notifier)
+                      .deleteAll();
+                  break;
+                case 1:
+                  launchUrlString(
+                      "mailto:alex@tnx-apps.com?subject=App Feedback");
+                  break;
+              }
+            },
+          )
         ],
       ),
     );

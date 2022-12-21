@@ -18,7 +18,13 @@ class CalCellHolder {
           height: height, color: color, dateTime: dateTime, context: context);
     }
     return CalCellDay(
-        height: height, color: color, dateTime: dateTime, context: context);
+      height: height,
+      color: color,
+      dateTime: dateTime,
+      dayOfMonth: DateFormat("d").format(dateTime),
+      dayOfWeek: DateFormat("E").format(dateTime).substring(0, 2),
+      bodyMedium: Theme.of(context).textTheme.bodyMedium,
+    );
   }
 }
 
@@ -27,7 +33,9 @@ class CalCellDay extends TableCell {
       {required double height,
       required Color color,
       required DateTime dateTime,
-      required BuildContext context,
+      required final String dayOfMonth,
+      required final String dayOfWeek,
+      required final TextStyle? bodyMedium,
       Key? key})
       : super(
             key: key,
@@ -39,13 +47,13 @@ class CalCellDay extends TableCell {
                 child: Row(
                   children: [
                     Text(
-                      DateFormat("d").format(dateTime),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      dayOfMonth,
+                      style: bodyMedium,
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      DateFormat("E").format(dateTime).substring(0, 2),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      dayOfWeek,
+                      style: bodyMedium,
                     ),
                   ],
                 ),

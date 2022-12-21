@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pencalendar/cal/widgets/cal_cell.dart';
-import 'package:pencalendar/cal/widgets/cal_month_row.dart';
+import 'package:pencalendar/utils/const/cal_size.dart';
 
 class CalTable extends StatelessWidget {
   final int year;
@@ -53,8 +52,11 @@ class CalTable extends StatelessWidget {
         if (day.weekday == 6 || day.weekday == 7) {
           color = monthColors[i];
         }
-        dayList.add(
-            CalCellHolder(color: color, cellType: cellType, dateTime: day));
+        dayList.add(CalCellHolder(
+          color: color,
+          cellType: cellType,
+          dateTime: day,
+        ));
       }
       list.add(dayList);
     }
@@ -63,9 +65,13 @@ class CalTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("build cal table");
     return LayoutBuilder(
       builder: (context, constraints) {
-        final cellHeight = constraints.maxHeight / maxRows;
+        final double cellHeight = calHeight / maxRows;
+        final double cellWidth = calWidth / 12;
+        // print(calHeight / maxRows);
+        // print(calWidth / 12);
         List<TableRow> tableRows = [];
 
         for (int i = 0; i < maxRows; i++) {
@@ -77,7 +83,7 @@ class CalTable extends StatelessWidget {
         }
         return Table(
           border: TableBorder.all(),
-          columnWidths: {0: FixedColumnWidth(constraints.maxWidth / 12)},
+          defaultColumnWidth: FixedColumnWidth(cellWidth),
           children: tableRows,
         );
       },

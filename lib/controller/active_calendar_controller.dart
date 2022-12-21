@@ -55,9 +55,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   onNewDrawingReceived(QuerySnapshot<SingleDraw> snapshot) {
     print("new drawing");
     print("size ${snapshot.size}");
-    final List<SingleDraw> drawList = [];
     for (var singleDraw in snapshot.docChanges) {
-      print(singleDraw.type);
       switch (singleDraw.type) {
         case DocumentChangeType.added:
           state?.drawingList.add(singleDraw.doc.data()!);
@@ -76,8 +74,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
 
   void saveSignatur(List<Offset> pointList, Color color, double size) {
     print("save");
-    print("save");
-    var year = _read(activeCalendarYearProvider);
+    final year = _read(activeCalendarYearProvider);
     final id = DateTime
         .now()
         .millisecondsSinceEpoch
@@ -86,9 +83,13 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     state = state!
       ..drawingList.add(singleDraw);
     _read(firestoreRepositoryProvider)
-        .createSingleCalendarDrawings(state!.calendar, singleDraw, id)
-        .then((value) => print("value"))
-        .timeout(Duration(seconds: 4));
+        .createSingleCalendarDrawings(state!.calendar, singleDraw, id);
+  }
+
+  void deleteAll() {
+    final year = _read(activeCalendarYearProvider);
+    _read(firestoreRepositoryProvider)
+        .deleteAllCalendarDrawings(state!.calendar, year);
   }
 
   onDeleteCalculation(Offset offset) {
@@ -111,7 +112,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
           toBeRemoved.add(drawing);
         }
       }
-      for(var drawing in toBeRemoved){
+      for (var drawing in toBeRemoved) {
         _read(firestoreRepositoryProvider)
             .deleteSingleCalendarDrawings(state!.calendar, drawing);
         state = state!
@@ -122,9 +123,9 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
 
   bool _checkNearbyPoints(Offset offset, List<Offset> pointList) {
     for (Offset point in pointList) {
-      var pointDistance = sqrt(
-          pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
-      if(pointDistance < 2){
+      var pointDistance =
+      sqrt(pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
+      if (pointDistance < 2) {
         return true;
       }
     }

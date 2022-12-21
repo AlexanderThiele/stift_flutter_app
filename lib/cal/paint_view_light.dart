@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gesture_x_detector/gesture_x_detector.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_brush_controller.dart';
@@ -10,11 +13,12 @@ import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
 import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
 
-class PaintView extends ConsumerWidget {
+class PaintViewLight extends ConsumerWidget {
   final Function enableZoom;
   final Function disableZoom;
 
-  PaintView({required this.enableZoom, required this.disableZoom, Key? key})
+  const PaintViewLight(
+      {required this.enableZoom, required this.disableZoom, Key? key})
       : super(key: key);
 
   @override
@@ -25,7 +29,7 @@ class PaintView extends ConsumerWidget {
     final CalendarWithDrawings? activeCalendar =
         ref.watch(activeCalendarControllerProvider);
 
-    return TestState(
+    return PaintViewState(
         ref.read(activeCalendarControllerProvider.notifier),
         enableZoom,
         disableZoom,
@@ -36,7 +40,7 @@ class PaintView extends ConsumerWidget {
   }
 }
 
-class TestState extends StatefulWidget {
+class PaintViewState extends StatefulWidget {
   final ActiveCalendarController activeCalendarController;
   final Function enableZoom;
   final Function disableZoom;
@@ -45,20 +49,22 @@ class TestState extends StatefulWidget {
   final Brush activeBrush;
   final CalendarWithDrawings? activeCalendar;
 
-  TestState(
+  const PaintViewState(
       this.activeCalendarController,
       this.enableZoom,
       this.disableZoom,
       this.activeColor,
       this.activeWidth,
       this.activeBrush,
-      this.activeCalendar);
+      this.activeCalendar,
+      {Key? key})
+      : super(key: key);
 
   @override
-  State<TestState> createState() => _TestStateState();
+  State<PaintViewState> createState() => _PaintViewStateState();
 }
 
-class _TestStateState extends State<TestState> {
+class _PaintViewStateState extends State<PaintViewState> {
   late double width;
   late double height;
   List<Offset> currentDrawings = [];
@@ -136,14 +142,18 @@ class _TestStateState extends State<TestState> {
                 currentDrawings = [];
               });
             },
-            child: CustomPaint(
-              painter: Signature(
-                  points: currentDrawings,
-                  drawingList: widget.activeCalendar?.drawingList,
-                  color: widget.activeColor,
-                  strokeWidth: widget.activeWidth),
-              size: Size.infinite,
-            ));
+            child: Builder(builder: (context) {
+              if (widget.activeCalendar == null) {
+                return const SizedBox();
+              }
+              return CustomPaint(
+                  painter: Signature(
+                      points: currentDrawings,
+                      drawingList: widget.activeCalendar!.drawingList,
+                      color: widget.activeColor,
+                      strokeWidth: widget.activeWidth),
+                  size: Size.infinite);
+            }));
       },
     );
   }
@@ -153,7 +163,7 @@ class Signature extends CustomPainter {
   List<Offset> points;
   Color color;
   double strokeWidth;
-  List<SingleDraw>? drawingList;
+  List<SingleDraw> drawingList;
 
   Signature(
       {required this.points,
@@ -164,17 +174,14 @@ class Signature extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // EXISTING DRAWINGS
-    if (drawingList != null) {
-      for (SingleDraw draw in drawingList!) {
-        Paint paint = Paint()
-          ..color = draw.color
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = draw.size;
-
-        for (int i = 0; i < draw.pointList.length - 1; i++) {
-          canvas.drawLine(draw.pointList[i], draw.pointList[i + 1], paint);
-        }
-      }
+    //print("paaaaint");
+    for (SingleDraw draw in drawingList) {
+      Paint paint = Paint()
+        ..color = color
+        ..strokeCap = StrokeCap.round
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = draw.size;
+      canvas.drawPath(draw.path, paint);
     }
 
     // CURRENT DRAWING
@@ -190,10 +197,12 @@ class Signature extends CustomPainter {
 
   @override
   bool shouldRepaint(Signature oldDelegate) {
+    return true;
+    print("should repaint");
     if (points != oldDelegate.points) {
       return true;
     }
-    if (drawingList?.length != oldDelegate.drawingList?.length) {
+    if (drawingList.length != oldDelegate.drawingList.length) {
       return true;
     }
     return false;

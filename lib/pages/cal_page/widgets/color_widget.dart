@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pencalendar/controller/active_brush_controller.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_color_controller.dart';
+import 'package:pencalendar/models/brush.dart';
 
 class ColorPickerWidget extends ConsumerWidget {
   const ColorPickerWidget({Key? key}) : super(key: key);
@@ -28,6 +30,7 @@ class ColorPickerWidget extends ConsumerWidget {
                             onColorChanged: (newColor) {
                               ref.read(activeColorProvider.notifier).state =
                                   newColor;
+                              ref.read(activeBrushProvider.notifier).state = Brush.pen;
                               Navigator.of(context).pop();
                             },
                           )));
