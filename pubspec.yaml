@@ -1,7 +1,7 @@
 name: pencalendar
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.3.0+3
+version: 0.4.0+4
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -36,8 +36,9 @@ flutter:
 
 flutter_icons:
   image_path_android: "assets/logo/appicon.png"
+  image_path_ios: "assets/logo/appicon_ios.png"
   android: true
-  ios: false
+  ios: true
   adaptive_icon_background: "#FAFEF2"
   adaptive_icon_foreground: "assets/logo/appicon_fg.png"
   min_sdk_android: 23

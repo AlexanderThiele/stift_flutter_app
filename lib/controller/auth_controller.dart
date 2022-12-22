@@ -31,6 +31,7 @@ class AuthController extends StateNotifier<User?> {
     } else {
       state = user;
     }
+    print("user with id: ${state?.uid}");
   }
 
   void signOut() async {
