@@ -11,13 +11,10 @@ import 'package:pencalendar/repo/firestore_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 final activeCalendarControllerProvider =
-StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
+    StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
         (ref) => ActiveCalendarController(ref.read));
 
-final activeCalendarYearProvider = StateProvider((ref) =>
-DateTime
-    .now()
-    .year);
+final activeCalendarYearProvider = StateProvider((ref) => DateTime.now().year);
 
 class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   final Reader _read;
@@ -75,13 +72,9 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   void saveSignatur(List<Offset> pointList, Color color, double size) {
     print("save");
     final year = _read(activeCalendarYearProvider);
-    final id = DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString();
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
     final singleDraw = SingleDraw(id, pointList, color, size, year);
-    state = state!
-      ..drawingList.add(singleDraw);
+    state = state!..drawingList.add(singleDraw);
     _read(firestoreRepositoryProvider)
         .createSingleCalendarDrawings(state!.calendar, singleDraw, id);
   }
@@ -115,8 +108,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
       for (var drawing in toBeRemoved) {
         _read(firestoreRepositoryProvider)
             .deleteSingleCalendarDrawings(state!.calendar, drawing);
-        state = state!
-          ..drawingList.remove(drawing);
+        state = state!..drawingList.remove(drawing);
       }
     }
   }
@@ -124,7 +116,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   bool _checkNearbyPoints(Offset offset, List<Offset> pointList) {
     for (Offset point in pointList) {
       var pointDistance =
-      sqrt(pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
+          sqrt(pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
       if (pointDistance < 2) {
         return true;
       }
@@ -133,8 +125,8 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   }
 
   @override
-  bool updateShouldNotify(CalendarWithDrawings? old,
-      CalendarWithDrawings? current) {
+  bool updateShouldNotify(
+      CalendarWithDrawings? old, CalendarWithDrawings? current) {
     return true;
   }
 

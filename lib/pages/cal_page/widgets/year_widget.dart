@@ -1,10 +1,9 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
-import 'package:pencalendar/main.dart';
-import 'package:pencalendar/models/events/reset_view_event.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pencalendar/controller/active_touch_controller.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class YearWidget extends ConsumerWidget {
@@ -13,6 +12,7 @@ class YearWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final year = ref.watch(activeCalendarYearProvider);
+    final touchDrawEnabled = ref.watch(activeTouchProvider);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -21,9 +21,16 @@ class YearWidget extends ConsumerWidget {
           FloatingActionButton(
               mini: true,
               onPressed: () {
-                MyApp.eventBus.fire(ResetViewEvent());
+                ref.read(activeTouchProvider.notifier).state = !touchDrawEnabled;
               },
-              child: const Icon(Icons.fullscreen, color: Colors.white)),
+              child: Builder(
+                builder: (context) {
+                  if(touchDrawEnabled){
+                    return const Icon(Icons.touch_app);
+                  }
+                  return const Icon(Icons.do_not_touch);
+                }
+              )),
           FloatingActionButton(
               mini: true,
               onPressed: () {
@@ -31,17 +38,17 @@ class YearWidget extends ConsumerWidget {
                     .read(activeCalendarControllerProvider.notifier)
                     .changeYear(year - 1);
               },
-              child: const Icon(Icons.arrow_back, color: Colors.white)),
+              child: const Icon(Icons.arrow_back)),
           Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: const BorderRadius.all(Radius.circular(8))),
               child: Text("$year",
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge
-                      ?.apply(color: Colors.white))),
+                      ?.apply(color: Theme.of(context).colorScheme.onPrimary))),
           FloatingActionButton(
               mini: true,
               onPressed: () {
@@ -49,7 +56,7 @@ class YearWidget extends ConsumerWidget {
                     .read(activeCalendarControllerProvider.notifier)
                     .changeYear(year + 1);
               },
-              child: const Icon(Icons.arrow_forward, color: Colors.white)),
+              child: const Icon(Icons.arrow_forward)),
           PopupMenuButton<int>(
             itemBuilder: (context) {
               return [

@@ -1,9 +1,7 @@
-import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_brush_controller.dart';
-import 'package:pencalendar/controller/active_width_controller.dart';
 import 'package:pencalendar/models/brush.dart';
 
 class BrushesWidget extends ConsumerWidget {
@@ -25,16 +23,21 @@ class BrushesWidget extends ConsumerWidget {
               backgroundColor: brush == Brush.pen
                   ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.secondary,
+              foregroundColor: brush == Brush.pen
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.onSecondary,
               child: const Icon(Icons.brush)),
           FloatingActionButton.small(
-            onPressed: () {
-              ref.read(activeBrushProvider.notifier).state = Brush.eraser;
-            },
-            backgroundColor: brush == Brush.eraser
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
-            child: const FaIcon(FontAwesomeIcons.eraser)
-          )
+              onPressed: () {
+                ref.read(activeBrushProvider.notifier).state = Brush.eraser;
+              },
+              backgroundColor: brush == Brush.eraser
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.secondary,
+              foregroundColor: brush == Brush.eraser
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.onSecondary,
+              child: const FaIcon(FontAwesomeIcons.eraser))
         ],
       ),
     );
