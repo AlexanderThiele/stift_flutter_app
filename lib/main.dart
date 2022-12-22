@@ -32,7 +32,9 @@ class MyApp extends HookConsumerWidget {
     print(user);
 
     ThemeData theme =
-        ThemeData(colorSchemeSeed: Colors.teal, brightness: Brightness.light);
+        ThemeData(colorSchemeSeed: const Color(0xFFCDF77E),
+            scaffoldBackgroundColor: const Color(0xFFFAFEF2),
+            brightness: Brightness.light);
 
     ThemeData themeDark =
         ThemeData(colorSchemeSeed: Colors.teal, brightness: Brightness.dark);
@@ -56,7 +58,7 @@ class MyApp extends HookConsumerWidget {
       routeInformationProvider: _router.routeInformationProvider,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
-      title: 'Pencal',
+      title: 'Stift',
     );
   }
 

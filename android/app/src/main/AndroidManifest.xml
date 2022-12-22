@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.tnx.pencalendar.pencalendar">
    <application
-        android:label="PenCal"
+        android:label="Stift"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
