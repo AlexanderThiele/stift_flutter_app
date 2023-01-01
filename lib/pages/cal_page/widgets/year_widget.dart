@@ -79,7 +79,7 @@ class YearWidget extends ConsumerWidget {
                   break;
                 case 1:
                   launchUrlString(
-                      "mailto:alex@tnx-apps.com?subject=App Feedback");
+                      "mailto:alex@tnx-apps.com?subject=App%20Feedback");
                   break;
               }
             },
