@@ -254,10 +254,11 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
         // lets just take the first position
         points = [points.first, points.last];
       }
-
-      widget.activeCalendarController
-          .saveSignatur(points, widget.activeColor, widget.activeWidth);
     }
+
+    // save
+    widget.activeCalendarController
+        .saveSignatur(points, widget.activeColor, widget.activeWidth);
 
     setState(() {
       currentDrawings = [];
