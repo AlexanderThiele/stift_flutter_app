@@ -69,7 +69,7 @@ class CalTable extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double cellHeight = calHeight / maxRows;
-        final double cellWidth = calWidth / 12;
+        const double cellWidth = calWidth / 12;
         // print(calHeight / maxRows);
         // print(calWidth / 12);
         List<TableRow> tableRows = [];

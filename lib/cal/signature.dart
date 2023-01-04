@@ -2,17 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gesture_x_detector/gesture_x_detector.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/cal/interactive_paint_view.dart';
-import 'package:pencalendar/controller/active_brush_controller.dart';
-import 'package:pencalendar/controller/active_calendar_controller.dart';
-import 'package:pencalendar/controller/active_color_controller.dart';
-import 'package:pencalendar/controller/active_width_controller.dart';
-import 'package:pencalendar/models/brush.dart';
-import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
-import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
 
 class Signature extends CustomPainter {
   List<TouchData> points;

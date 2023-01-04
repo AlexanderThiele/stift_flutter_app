@@ -7,6 +7,8 @@ import 'package:pencalendar/pages/cal_page/widgets/opened_tab_brush.dart';
 import 'package:pencalendar/pages/cal_page/widgets/opened_tab_color.dart';
 
 class OpenedTabWidget extends ConsumerWidget {
+  const OpenedTabWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final openedTab = ref.watch(openedTabProvider);

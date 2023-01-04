@@ -31,9 +31,7 @@ class CalWidgets extends StatelessWidget {
                 children: const [
                   SizedBox(height: 2),
                   ColorPickerWidget(),
-                  SizedBox(height: 4),
                   PencilWidget(),
-                  SizedBox(height: 4),
                   UndoLastWidget()
                 ],
               ),

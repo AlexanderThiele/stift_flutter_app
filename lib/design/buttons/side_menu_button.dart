@@ -9,17 +9,19 @@ class SideMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: onTap,
-        child: Container(
-          height: 42,
-          width: 46,
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              border:
-                  Border.all(color: Theme.of(context).colorScheme.secondary)),
-          child: Center(child: Icon(iconData, size: 20)),
-        ));
+    return ElevatedButton(
+        clipBehavior: Clip.hardEdge,
+        style: ElevatedButton.styleFrom(
+            minimumSize: const Size.square(42),
+            padding: EdgeInsets.zero,
+            side: BorderSide(
+                width: 1, color: Theme.of(context).colorScheme.secondary)),
+        onPressed: onTap,
+        child: Center(
+            child: Icon(iconData,
+                size: 20,
+                color: Theme.of(context)
+                    .floatingActionButtonTheme
+                    .foregroundColor)));
   }
 }
