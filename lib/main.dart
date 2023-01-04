@@ -45,9 +45,12 @@ class MyApp extends HookConsumerWidget {
             surface: Color(0xFFFAFEF2),
             onSurface: Colors.black),
         scaffoldBackgroundColor: const Color(0xFFFAFEF2),
+        backgroundColor: const Color(0xFFFAFEF2),
+        toggleableActiveColor: Color(0xFFF77E65),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
             backgroundColor: Color(0xFFCDF77E),
-            foregroundColor: Color(0xFFF77E65)),
+            foregroundColor: Colors.black,
+            focusColor: Colors.red),
         brightness: Brightness.light);
 
     ThemeData themeDark =

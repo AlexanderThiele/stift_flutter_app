@@ -47,8 +47,7 @@ class YearWidget extends ConsumerWidget {
               child: Text("$year",
                   style: Theme.of(context)
                       .textTheme
-                      .titleLarge
-                      ?.apply(color: Theme.of(context).colorScheme.onPrimary))),
+                      .titleLarge)),
           FloatingActionButton(
               mini: true,
               onPressed: () {

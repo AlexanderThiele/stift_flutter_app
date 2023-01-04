@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pencalendar/controller/active_brush_controller.dart';
-import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_color_controller.dart';
-import 'package:pencalendar/models/brush.dart';
+import 'package:pencalendar/controller/active_opened_tab_controller.dart';
+import 'package:pencalendar/design/buttons/side_menu_button.dart';
+import 'package:pencalendar/models/opened_tab.dart';
 
 class ColorPickerWidget extends ConsumerWidget {
   const ColorPickerWidget({Key? key}) : super(key: key);
@@ -12,49 +11,19 @@ class ColorPickerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final color = ref.watch(activeColorProvider);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                          title: const Text('Pick a color!'),
-                          content: SingleChildScrollView(
-                              child: BlockPicker(
-                            pickerColor: color,
-                            onColorChanged: (newColor) {
-                              ref.read(activeColorProvider.notifier).state =
-                                  newColor;
-                              ref.read(activeBrushProvider.notifier).state = Brush.pen;
-                              Navigator.of(context).pop();
-                            },
-                          )));
-                    });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: const BorderRadius.all(Radius.circular(8))),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8),
-                  child: Center(
-                      child: Text(
-                    "Color",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.apply(color: Colors.white),
-                  )),
-                ),
-              )),
-        ],
-      ),
+    return Row(
+      children: [
+        Container(
+            height: 34,
+            width: 16,
+            decoration: BoxDecoration(
+                color: color, borderRadius: BorderRadius.circular(32))),
+        SideMenuButton(
+            onTap: () {
+              ref.read(openedTabProvider.notifier).state = OpenedTab.color;
+            },
+            iconData: Icons.palette_outlined),
+      ],
     );
   }
 }

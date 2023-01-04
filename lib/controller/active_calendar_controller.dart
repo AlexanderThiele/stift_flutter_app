@@ -79,6 +79,18 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
         .createSingleCalendarDrawings(state!.calendar, singleDraw, id);
   }
 
+
+  void deleteLast() {
+    if(state == null || state!.drawingList.isEmpty){
+      AppLogger.d("nothing to delete, list is empty");
+      return;
+    }
+    final tobeDeleted = state!.drawingList.last;
+    _read(firestoreRepositoryProvider)
+        .deleteSingleCalendarDrawings(state!.calendar, tobeDeleted);
+    state = state!..drawingList.remove(tobeDeleted);
+  }
+
   void deleteAll() {
     final year = _read(activeCalendarYearProvider);
     _read(firestoreRepositoryProvider)
@@ -117,7 +129,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     for (Offset point in pointList) {
       var pointDistance =
           sqrt(pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
-      if (pointDistance < 2) {
+      if (pointDistance < 5) {
         return true;
       }
     }

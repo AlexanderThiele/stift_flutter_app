@@ -10,9 +10,10 @@ class WidthSliderWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final width = ref.watch(activeWidthProvider);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Flexible(child: SizedBox(
             height: 200,
