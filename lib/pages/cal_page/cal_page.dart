@@ -39,7 +39,7 @@ class CalPage extends ConsumerWidget {
       body: LayoutBuilder(builder: (context, constraints) {
         return Stack(
           children: [
-            InteractivePaintView(),
+            const InteractivePaintView(),
             SafeArea(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

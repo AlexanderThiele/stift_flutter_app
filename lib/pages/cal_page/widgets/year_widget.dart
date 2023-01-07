@@ -2,6 +2,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_touch_controller.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -21,16 +22,15 @@ class YearWidget extends ConsumerWidget {
           FloatingActionButton(
               mini: true,
               onPressed: () {
-                ref.read(activeTouchProvider.notifier).state = !touchDrawEnabled;
+                ref.read(activeTouchProvider.notifier).state =
+                    !touchDrawEnabled;
               },
-              child: Builder(
-                builder: (context) {
-                  if(touchDrawEnabled){
-                    return const Icon(Icons.touch_app);
-                  }
-                  return const Icon(Icons.do_not_touch);
+              child: Builder(builder: (context) {
+                if (touchDrawEnabled) {
+                  return const Icon(Icons.touch_app);
                 }
-              )),
+                return const Icon(Icons.do_not_touch);
+              })),
           FloatingActionButton(
               mini: true,
               onPressed: () {
@@ -44,10 +44,8 @@ class YearWidget extends ConsumerWidget {
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
                   borderRadius: const BorderRadius.all(Radius.circular(8))),
-              child: Text("$year",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge)),
+              child:
+                  Text("$year", style: Theme.of(context).textTheme.titleLarge)),
           FloatingActionButton(
               mini: true,
               onPressed: () {
@@ -64,7 +62,11 @@ class YearWidget extends ConsumerWidget {
                   child: Text("Clear Year"),
                 ),
                 const PopupMenuItem(
-                  value: 1,
+                  value: 10,
+                  child: Text("Rate App"),
+                ),
+                const PopupMenuItem(
+                  value: 20,
                   child: Text("Send Feedback"),
                 ),
               ];
@@ -76,7 +78,11 @@ class YearWidget extends ConsumerWidget {
                       .read(activeCalendarControllerProvider.notifier)
                       .deleteAll();
                   break;
-                case 1:
+                case 10:
+                  InAppReview.instance
+                      .openStoreListing(appStoreId: "1661094074");
+                  break;
+                case 20:
                   launchUrlString(
                       "mailto:alex@tnx-apps.com?subject=App%20Feedback");
                   break;

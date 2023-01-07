@@ -13,9 +13,11 @@ import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
-import 'package:vector_math/vector_math_64.dart' show Quad, Vector3, Matrix4;
+
 
 class InteractivePaintView extends ConsumerWidget {
+  const InteractivePaintView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Color activeColor = ref.watch(activeColorProvider);
@@ -237,7 +239,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
 
     if (enforceStylus == true) {
       // means that this is a stylus drawing
-      if (points.length > 30) {
+      if (points.length > 10) {
         points = simplifyDouglasPeucker(points, 0.01);
       } else {
         // i think the user wants to draw a point
