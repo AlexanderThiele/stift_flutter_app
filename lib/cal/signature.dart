@@ -24,6 +24,7 @@ class Signature extends CustomPainter {
     for (SingleDraw draw in drawingList) {
       Paint paint = Paint()
         ..color = draw.color
+        ..strokeJoin = StrokeJoin.round
         ..strokeCap = StrokeCap.round
         ..style = PaintingStyle.stroke
         ..strokeWidth = draw.size;

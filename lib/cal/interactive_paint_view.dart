@@ -246,7 +246,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     if (enforceStylus == true) {
       // means that this is a stylus drawing
       if (points.length > 10) {
-        points = simplifyDouglasPeucker(points, 0.01);
+        points = simplifyDouglasPeucker(points, 0.003);
       } else {
         // i think the user wants to draw a point
         // lets just take the first position
@@ -256,7 +256,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
       // only touch event, use every point we can use
       // there are a lot less points if we draw with fingers.
       if (points.length > 10) {
-        points = simplifyDouglasPeucker(points, 0.01);
+        points = simplifyDouglasPeucker(points, 0.003);
       } else {
         // i think the user wants to draw a point
         // lets just take the first position

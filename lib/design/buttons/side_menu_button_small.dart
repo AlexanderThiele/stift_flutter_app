@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class SideMenuButtonSmall extends StatelessWidget {
   final Function()? onTap;
-  final IconData iconData;
+  final IconData? iconData;
+  final Widget? widget;
 
-  const SideMenuButtonSmall({Key? key, required this.onTap, required this.iconData})
+  const SideMenuButtonSmall(
+      {Key? key, required this.onTap, this.iconData, this.widget})
       : super(key: key);
 
   @override
@@ -19,7 +21,8 @@ class SideMenuButtonSmall extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
               border: Border.all(color: Colors.grey.shade400, width: 0.3),
               color: Theme.of(context).colorScheme.primary),
-          child: Center(child: Icon(iconData, size: 14)),
+          child: Center(
+              child: iconData != null ? Icon(iconData, size: 14) : widget),
         ));
   }
 }
