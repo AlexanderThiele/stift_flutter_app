@@ -9,11 +9,13 @@ import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_color_controller.dart';
 import 'package:pencalendar/controller/active_touch_controller.dart';
 import 'package:pencalendar/controller/active_width_controller.dart';
+import 'package:pencalendar/controller/active_year_controller.dart';
+import 'package:pencalendar/controller/public_holiday_controller.dart';
 import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
+import 'package:pencalendar/models/public_holiday.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
-
 
 class InteractivePaintView extends ConsumerWidget {
   const InteractivePaintView({Key? key}) : super(key: key);
@@ -29,6 +31,7 @@ class InteractivePaintView extends ConsumerWidget {
     final activeCalendarController =
         ref.read(activeCalendarControllerProvider.notifier);
     final touchDrawEnabled = ref.watch(activeTouchProvider);
+    final publicHolidays = ref.watch(publicHolidayControllerProvider);
 
     return _InteractivePaintView(
         selectedYear,
@@ -37,7 +40,8 @@ class InteractivePaintView extends ConsumerWidget {
         activeBrush,
         activeCalendar,
         touchDrawEnabled,
-        activeCalendarController);
+        activeCalendarController,
+        publicHolidays ?? []);
   }
 }
 
@@ -49,6 +53,7 @@ class _InteractivePaintView extends StatefulWidget {
   final CalendarWithDrawings? activeCalendar;
   final bool touchDrawEnabled;
   final ActiveCalendarController activeCalendarController;
+  final List<PublicHoliday> publicHolidays;
 
   const _InteractivePaintView(
       this.selectedYear,
@@ -58,6 +63,7 @@ class _InteractivePaintView extends StatefulWidget {
       this.activeCalendar,
       this.touchDrawEnabled,
       this.activeCalendarController,
+      this.publicHolidays,
       {Key? key})
       : super(key: key);
 
@@ -127,7 +133,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 25),
             child: Stack(children: [
-              CalTable(widget.selectedYear),
+              CalTable(widget.selectedYear, widget.publicHolidays),
               StatefulBuilder(
                   // this is the actual drawing listener
                   builder: (BuildContext context, StateSetter setState) =>

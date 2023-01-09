@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
@@ -21,6 +20,10 @@ class CalendarController extends StateNotifier<List<Calendar>> {
         .allCalendar
         .snapshots()
         .listen(onNewCalendarReceived);
+  }
+
+  initCalendar() async {
+    // hmm nothing to init?
   }
 
   onNewCalendarReceived(QuerySnapshot<Calendar> snapshot) {

@@ -1,10 +1,9 @@
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_touch_controller.dart';
+import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class YearWidget extends ConsumerWidget {

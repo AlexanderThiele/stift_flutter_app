@@ -13,11 +13,16 @@ class ColorPickerWidget extends ConsumerWidget {
     final color = ref.watch(activeColorProvider);
     return Row(
       children: [
-        Container(
-            height: 34,
-            width: 16,
-            decoration: BoxDecoration(
-                color: color, borderRadius: BorderRadius.circular(32))),
+        GestureDetector(
+          onTap: (){
+            ref.read(openedTabProvider.notifier).state = OpenedTab.color;
+          },
+          child: Container(
+              height: 34,
+              width: 16,
+              decoration: BoxDecoration(
+                  color: color, borderRadius: BorderRadius.circular(32))),
+        ),
         SideMenuButton(
             onTap: () {
               ref.read(openedTabProvider.notifier).state = OpenedTab.color;

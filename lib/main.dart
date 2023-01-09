@@ -7,6 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/pages/cal_page/cal_page.dart';
+import 'package:pencalendar/repo/shared_pref_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +18,12 @@ void main() async {
   /*await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.playIntegrity,
   );*/
-  runApp(ProviderScope(child: MyApp()));
+
+  final sharedPreferences = await SharedPreferences.getInstance();
+
+  runApp(ProviderScope(overrides: [
+    sharedPrefInstanceProvider.overrideWithValue(sharedPreferences),
+  ], child: MyApp()));
 }
 
 class MyApp extends HookConsumerWidget {
@@ -51,7 +58,8 @@ class MyApp extends HookConsumerWidget {
             backgroundColor: Color(0xFFCDF77E),
             foregroundColor: Colors.black,
             focusColor: Colors.red),
-        brightness: Brightness.light);
+        brightness: Brightness.light,
+        textTheme: const TextTheme(bodySmall: TextStyle(color: Colors.black)));
 
     ThemeData themeDark =
         ThemeData(colorSchemeSeed: Colors.teal, brightness: Brightness.dark);
@@ -70,6 +78,13 @@ class MyApp extends HookConsumerWidget {
               ])));
     }
     return MaterialApp.router(
+      builder: (BuildContext context, Widget? child) {
+        final MediaQueryData data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(textScaleFactor: 1),
+          child: child ?? const SizedBox(),
+        );
+      },
       debugShowCheckedModeBanner: false,
       theme: theme,
       routeInformationProvider: _router.routeInformationProvider,

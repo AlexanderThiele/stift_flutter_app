@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/cal/interactive_paint_view.dart';
-import 'package:pencalendar/controller/active_calendar_controller.dart';
+import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/calendar_controller.dart';
+import 'package:pencalendar/controller/country_controller.dart';
 import 'package:pencalendar/pages/cal_page/widgets/cal_widgets.dart';
 import 'package:pencalendar/pages/cal_page/widgets/year_widget.dart';
 
@@ -33,7 +34,10 @@ class CalPage extends ConsumerWidget {
     final ZoomEnabledNotifier zoomEnabled = ref.watch(zoomEnabledProvider);
     final selectedYear = ref.watch(activeCalendarYearProvider);
     // do not remove this line otherwise no calendar will be loaded.
-    ref.watch(calendarControllerProvider);
+    ref.read(calendarControllerProvider.notifier).initCalendar();
+
+    // load current country
+    ref.read(countryControllerProvider.notifier);
 
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {

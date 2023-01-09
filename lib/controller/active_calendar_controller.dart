@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
@@ -13,8 +14,6 @@ import 'package:pencalendar/utils/app_logger.dart';
 final activeCalendarControllerProvider =
     StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
         (ref) => ActiveCalendarController(ref.read));
-
-final activeCalendarYearProvider = StateProvider((ref) => DateTime.now().year);
 
 class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   final Reader _read;
@@ -41,7 +40,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   }
 
   changeYear(int year) {
-    _read(activeCalendarYearProvider.notifier).state = year;
+    _read(activeCalendarYearProvider.notifier).changeYear(year);
     if (state != null) {
       selectCalendar(state!.calendar);
     } else {

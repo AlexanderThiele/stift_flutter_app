@@ -1,9 +1,12 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:pencalendar/cal/widgets/cal_cell.dart';
+import 'package:pencalendar/models/public_holiday.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 
 class CalTable extends StatelessWidget {
   final int year;
+  final List<PublicHoliday> publicHolidays;
   final DateTime firstDayOfYear;
   final int maxRows = 32;
 
@@ -23,7 +26,7 @@ class CalTable extends StatelessWidget {
     Colors.blue.shade300
   ];
 
-  CalTable(this.year, {Key? key})
+  CalTable(this.year, this.publicHolidays, {Key? key})
       : firstDayOfYear = DateTime(year),
         super(key: key);
 
@@ -53,10 +56,13 @@ class CalTable extends StatelessWidget {
           color = monthColors[i];
         }
         dayList.add(CalCellHolder(
-          color: color,
-          cellType: cellType,
-          dateTime: day,
-        ));
+            color: color,
+            cellType: cellType,
+            dateTime: day,
+            publicHoliday: publicHolidays.firstWhereOrNull((element) =>
+                element.date.year == day.year &&
+                element.date.month == day.month &&
+                element.date.day == day.day)));
       }
       list.add(dayList);
     }
@@ -83,7 +89,7 @@ class CalTable extends StatelessWidget {
         }
         return Table(
           border: TableBorder.all(),
-          defaultColumnWidth: FixedColumnWidth(cellWidth),
+          defaultColumnWidth: const FixedColumnWidth(cellWidth),
           children: tableRows,
         );
       },
