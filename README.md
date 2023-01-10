@@ -2,11 +2,13 @@
 
 Welcome to Stift. Use your tablet pen the way it should be used: Draw your appointments instead of typing them.
 
-<img src="https://raw.githubusercontent.com/AlexanderThiele/stift_flutter_app/master/github_res/tablet_screenshot.jpg" alt="tablet screenshot"/>
-
 ## Flutter App
 
-This App is completely developed in Dart / Flutter.
+This App is completely built with Dart / Flutter.
+
+## Preview
+
+<img src="github_res/tablet_screenshot.jpg" alt="tablet screenshot"/>
 
 ### Run Locally
 
