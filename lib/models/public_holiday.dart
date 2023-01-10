@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pencalendar/utils/app_logger.dart';
-
 class PublicHoliday {
   DateTime date; // "2023-01-02"
   String localName; // "New Year's Day"

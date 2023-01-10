@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 class AppLogger {
   static d(dynamic msg){
-    print(msg);
+    log(msg);
   }
   static e(dynamic msg, {Exception? e}){
-    print(msg);
+    log(msg);
   }
 }

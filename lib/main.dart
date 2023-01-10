@@ -1,13 +1,14 @@
+import 'package:design_system/theme/light_theme.dart';
 import 'package:event_bus/event_bus.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
-import 'package:pencalendar/pages/cal_page/cal_page.dart';
-import 'package:pencalendar/repo/shared_pref_repository.dart';
+import 'package:pencalendar/pages/calendar_page/cal_page.dart';
+import 'package:pencalendar/repository/shared_pref_repository.dart';
+import 'package:pencalendar/utils/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -35,38 +36,11 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var user = ref.watch(authControllerProvider);
 
-    print("user");
-    print(user);
-
-    ThemeData theme = ThemeData(
-        colorScheme: const ColorScheme(
-            brightness: Brightness.light,
-            primary: Color(0xFFCDF77E),
-            onPrimary: Color(0xFFF77E65),
-            secondary: Color(0xFF88966A),
-            onSecondary: Color(0xFFFFFFFF),
-            error: Colors.red,
-            onError: Colors.white,
-            background: Color(0xFFFAFEF2),
-            onBackground: Colors.black,
-            surface: Color(0xFFFAFEF2),
-            onSurface: Colors.black),
-        scaffoldBackgroundColor: const Color(0xFFFAFEF2),
-        backgroundColor: const Color(0xFFFAFEF2),
-        toggleableActiveColor: Color(0xFFF77E65),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            backgroundColor: Color(0xFFCDF77E),
-            foregroundColor: Colors.black,
-            focusColor: Colors.red),
-        brightness: Brightness.light,
-        textTheme: const TextTheme(bodySmall: TextStyle(color: Colors.black)));
-
-    ThemeData themeDark =
-        ThemeData(colorSchemeSeed: Colors.teal, brightness: Brightness.dark);
+    AppLogger.d("user: $user");
 
     if (user == null) {
       return MaterialApp(
-          theme: theme,
+          theme: lightTheme,
           home: Scaffold(
               body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +60,7 @@ class MyApp extends HookConsumerWidget {
         );
       },
       debugShowCheckedModeBanner: false,
-      theme: theme,
+      theme: lightTheme,
       routeInformationProvider: _router.routeInformationProvider,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,

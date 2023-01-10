@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, unnecessary_null_comparison
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 

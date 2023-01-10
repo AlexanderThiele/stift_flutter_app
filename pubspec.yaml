@@ -1,7 +1,7 @@
 name: pencalendar
-description: A new Flutter project.
+description: "Stift Flutter App: The Calendar for Tablets"
 publish_to: 'none'
-version: 1.0.3+8
+version: 1.0.4+9
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -27,6 +27,10 @@ dependencies:
   country_codes: ^2.2.0
   http: ^0.13.5
   shared_preferences: ^2.0.15
+  collection: ^1.16.0
+  # local plugins
+  design_system:
+    path: "packages/design_system/"
 
 dev_dependencies:
   flutter_test:

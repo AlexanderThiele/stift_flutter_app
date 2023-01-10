@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pencalendar/repo/auth_repository.dart';
+import 'package:pencalendar/repository/auth_repository.dart';
+import 'package:pencalendar/utils/app_logger.dart';
 
 final authControllerProvider = StateNotifierProvider<AuthController, User?>(
   (ref) => AuthController(ref.read)..appStarted(),
@@ -22,16 +23,16 @@ class AuthController extends StateNotifier<User?> {
 
   void appStarted() async {
     final user = _read(authRepositoryProvider).getCurrentUser();
-    print("app started");
+    AppLogger.d("app started");
     if (user == null) {
-      print("user null");
+      AppLogger.d("user null");
       await _read(authRepositoryProvider).signInAnonymously();
-      print("SIGN IN anony");
+      AppLogger.d("SIGN IN anony");
       state = _read(authRepositoryProvider).getCurrentUser();
     } else {
       state = user;
     }
-    print("user with id: ${state?.uid}");
+    AppLogger.d("user with id: ${state?.uid}");
   }
 
   void signOut() async {

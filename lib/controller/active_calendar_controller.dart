@@ -8,7 +8,7 @@ import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
-import 'package:pencalendar/repo/firestore_repository.dart';
+import 'package:pencalendar/repository/firestore_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 final activeCalendarControllerProvider =
@@ -49,8 +49,8 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   }
 
   onNewDrawingReceived(QuerySnapshot<SingleDraw> snapshot) {
-    print("new drawing");
-    print("size ${snapshot.size}");
+    AppLogger.d("new drawing");
+    AppLogger.d("size ${snapshot.size}");
     for (var singleDraw in snapshot.docChanges) {
       switch (singleDraw.type) {
         case DocumentChangeType.added:
@@ -58,10 +58,14 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
           break;
         case DocumentChangeType.removed:
           {
-            print("delete");
+            AppLogger.d("delete");
             state?.drawingList
                 .removeWhere((element) => element.id == singleDraw.doc.id);
           }
+          break;
+        case DocumentChangeType.modified:
+          // TODO: Handle this case.
+          break;
       }
     }
     state = state;
@@ -69,7 +73,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   }
 
   void saveSignatur(List<Offset> pointList, Color color, double size) {
-    print("save");
+    AppLogger.d("save");
     final year = _read(activeCalendarYearProvider);
     final id = DateTime.now().millisecondsSinceEpoch.toString();
     final singleDraw = SingleDraw(id, pointList, color, size, year);
@@ -111,8 +115,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
         }
         if (path.contains(offset) ||
             _checkNearbyPoints(offset, drawing.pointList)) {
-          print("GEFUNDEN ${drawing}");
-          print("GEFUNDEN ${drawing.id}");
+          AppLogger.d("found intersection: ${drawing.id}");
           toBeRemoved.add(drawing);
         }
       }

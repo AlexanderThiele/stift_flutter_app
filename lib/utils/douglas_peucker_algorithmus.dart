@@ -1,6 +1,9 @@
 // square distance between 2 points
 
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
+import 'package:pencalendar/utils/app_logger.dart';
 
 class Point {
   double x;
@@ -86,14 +89,14 @@ void simplifyDPStep(points, first, last, sqTolerance, simplified) {
 // simplification using Ramer-Douglas-Peucker algorithm
 List<Offset> simplifyDouglasPeucker(
     List<Offset> pointsOffset, double sqTolerance) {
-  print("DouglasPeucker: Initial points before: ${pointsOffset.length}");
+  AppLogger.d("DouglasPeucker: Initial points before: ${pointsOffset.length}");
   List<Point> points = pointsOffset.map((e) => e.toPoint).toList();
   var last = points.length - 1;
 
   var simplified = [points[0]];
   simplifyDPStep(points, 0, last, sqTolerance, simplified);
   simplified.add(points[last]);
-  print("DouglasPeucker: Initial points after: ${simplified.length}");
+  AppLogger.d("DouglasPeucker: Initial points after: ${simplified.length}");
   return simplified.map((e) => e.offset).toList();
 }
 
