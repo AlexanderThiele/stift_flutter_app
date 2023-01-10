@@ -1,10 +1,10 @@
+import 'package:design_system/buttons/side_menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_brush_controller.dart';
 import 'package:pencalendar/controller/active_opened_tab_controller.dart';
 import 'package:pencalendar/controller/active_width_controller.dart';
-import 'package:pencalendar/design/buttons/side_menu_button.dart';
 import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/opened_tab.dart';
 

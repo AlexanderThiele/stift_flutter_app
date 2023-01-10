@@ -1,9 +1,9 @@
+import 'package:design_system/buttons/side_menu_button_small.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/active_brush_controller.dart';
 import 'package:pencalendar/controller/active_width_controller.dart';
-import 'package:pencalendar/design/buttons/side_menu_button_small.dart';
 import 'package:pencalendar/models/brush.dart';
 
 class OpenedTabBrush extends ConsumerWidget {
