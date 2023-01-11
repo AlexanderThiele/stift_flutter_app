@@ -24,7 +24,7 @@ This app detects whether you are using a stylus or your finger to draw on the ca
 * I ended up using the InteractiveViewer widget to pinch-zoom with two fingers which works pretty well but it still limits the desired behaviour. 
   * Example: If you turn off drawing with your fingers and draw only with the pen, you should be able to scroll through the calendar with one finger. This does not work with the InteractiveViewer since the Listener catches the one-finger touch event instead of the InteractiveViewer
 
-### Found the limits of Riverpod
+### The Limits of Riverpod
 Whenever you draw on the calendar, the Listener-Widget detects the exact position to draw a colorful point. This Listener-Event triggers a few hundred times per second and i saved the exact position inside a Riverpod StateNotifier. Another widget is listening on that state and paints the colorful point. first: it worked but the update mechanism was just too slow. The drawing was painted on the screen too late and it looked super laggy.
 
 I solved this issue with a classic Flutter StatefulWidget and the `setState(...)` method. Please try it out, it works pretty well.
