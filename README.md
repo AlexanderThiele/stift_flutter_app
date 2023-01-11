@@ -32,9 +32,9 @@ I solved this issue with a classic Flutter StatefulWidget and the `setState(...)
 ## Run Locally
 
 * Since this app relies on firebase, you need to create a firebase project and replace the google-services.json.
-  ** Also enable the Firestore Database.
+  * Also enable the Firestore Database.
 * You also need to create a keystore file and insert the key.properties file or remove the signing configs inside the build.gradle
-  ** it's probably easier to just disable the signing in `/android/app/build.gradle`
+  * it's probably easier to just disable the signing in `/android/app/build.gradle`
 
 ### Google services files:
 
