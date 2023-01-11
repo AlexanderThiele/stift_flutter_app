@@ -41,9 +41,18 @@ I solved this issue with a classic Flutter StatefulWidget and the `setState(...)
 * `/lib/firebase_options.dart`
 * `/ios/GoogleService-Info.plist`
 * `/android/app/google-services.json`
-  
 
-# Download from the App Stores
 
-* [Download on Google Play Store](https://play.google.com/store/apps/details?id=app.tnx.tabletcalendar)
-* [Download on Apple App Store](https://apps.apple.com/us/app/stift-calendar-for-tablet-pen/id1661094074)
+### FVM: Flutter version management
+Check out `/.fvm/fvm_config.json` to see the used Flutter version.
+
+If you're already using FVM, then just install the used version with `$ fvm install`. This will automatically install the project's flutter version.
+
+# Download and try the App
+
+* [Google Play Store](https://play.google.com/store/apps/details?id=app.tnx.tabletcalendar)
+* [Apple App Store](https://apps.apple.com/us/app/stift-calendar-for-tablet-pen/id1661094074)
+
+## Rate the App
+
+I would also be very happy if you could leave a rating in the App Store. This would really help to make the app a bit more popular. Thanks a lot! 🤝
