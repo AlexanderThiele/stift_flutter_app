@@ -38,7 +38,7 @@ I solved this issue with a classic Flutter StatefulWidget and the `setState(...)
 
 ### Google services files:
 
-* `/lib/firebae_options.dart`
+* `/lib/firebase_options.dart`
 * `/ios/GoogleService-Info.plist`
 * `/android/app/google-services.json`
   
