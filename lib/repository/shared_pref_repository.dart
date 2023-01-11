@@ -2,14 +2,11 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/models/public_holiday.dart';
+import 'package:pencalendar/provider/shared_preference_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-// will be overwritten by main
-final sharedPrefInstanceProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError();
-});
 
 final sharedPrefUtilityProvider = Provider<SharedPrefRepository>(
     (ref) => SharedPrefRepository(ref.watch(sharedPrefInstanceProvider)));

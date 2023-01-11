@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/pages/calendar_page/cal_page.dart';
-import 'package:pencalendar/repository/shared_pref_repository.dart';
+import 'package:pencalendar/provider/shared_preference_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
