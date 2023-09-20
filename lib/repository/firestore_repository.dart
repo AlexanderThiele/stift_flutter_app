@@ -8,22 +8,22 @@ import 'package:pencalendar/provider/firebase_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 final firestoreRepositoryProvider =
-    Provider<FirestoreRepository>((ref) => FirestoreRepository(ref.read));
+    Provider<FirestoreRepository>((ref) => FirestoreRepository(ref));
 
 class FirestoreRepository {
-  final Reader _read;
+  final ProviderRef _ref;
 
-  FirestoreRepository(this._read);
+  FirestoreRepository(this._ref);
 
   Query<Calendar> get allCalendar {
-    User? currentUser = _read(authControllerProvider);
+    User? currentUser = _ref.read(authControllerProvider);
 
     if (currentUser == null) {
       AppLogger.e("NO USER EXCEPTION");
       throw Exception("No user");
     }
 
-    return _read(firebaseFirestoreProvider)
+    return _ref.read(firebaseFirestoreProvider)
         .collection("calendar")
         .where("user_id", isEqualTo: currentUser.uid)
         .withConverter<Calendar>(
@@ -32,7 +32,7 @@ class FirestoreRepository {
   }
 
   Future createCalendar(String name) {
-    User? currentUser = _read(authControllerProvider);
+    User? currentUser = _ref.read(authControllerProvider);
 
     if (currentUser == null) {
       AppLogger.e("NO USER EXCEPTION");
@@ -41,13 +41,13 @@ class FirestoreRepository {
 
     AppLogger.d("Create Calendar");
 
-    return _read(firebaseFirestoreProvider)
+    return _ref.read(firebaseFirestoreProvider)
         .collection("calendar")
         .add(Calendar.create(user_id: currentUser.uid, name: name).toFirestore);
   }
 
   Query<SingleDraw> getSingleCalendarDrawings(Calendar calendar, int year) {
-    return _read(firebaseFirestoreProvider)
+    return _ref.read(firebaseFirestoreProvider)
         .collection("calendar")
         .doc(calendar.id)
         .collection("drawings")
@@ -59,7 +59,7 @@ class FirestoreRepository {
 
   Future createSingleCalendarDrawings(
       Calendar calendar, SingleDraw singleDraw, String id) {
-    return _read(firebaseFirestoreProvider)
+    return _ref.read(firebaseFirestoreProvider)
         .collection("calendar")
         .doc(calendar.id)
         .collection("drawings")
@@ -69,7 +69,7 @@ class FirestoreRepository {
 
   Future deleteSingleCalendarDrawings(
       Calendar calendar, SingleDraw singleDraw) {
-    return _read(firebaseFirestoreProvider)
+    return _ref.read(firebaseFirestoreProvider)
         .collection("calendar")
         .doc(calendar.id)
         .collection("drawings")
@@ -78,7 +78,7 @@ class FirestoreRepository {
   }
 
   Future deleteAllCalendarDrawings(Calendar calendar, year) async {
-    final snapshots = await _read(firebaseFirestoreProvider)
+    final snapshots = await _ref.read(firebaseFirestoreProvider)
         .collection("calendar")
         .doc(calendar.id)
         .collection("drawings")

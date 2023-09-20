@@ -13,31 +13,31 @@ abstract class BaseAuthRepository {
 }
 
 final authRepositoryProvider =
-    Provider<AuthRepository>((ref) => AuthRepository(ref.read));
+    Provider<AuthRepository>((ref) => AuthRepository(ref));
 
 class AuthRepository extends BaseAuthRepository {
-  final Reader _read;
+  final ProviderRef _ref;
 
-  AuthRepository(this._read);
+  AuthRepository(this._ref);
 
   @override
   Stream<User?> get authStateChanges =>
-      _read(firebaseAuthProvider).authStateChanges();
+      _ref.read(firebaseAuthProvider).authStateChanges();
 
   @override
   Future<void> signInAnonymously() async {
-    await _read(firebaseAuthProvider).signInAnonymously();
+    await _ref.read(firebaseAuthProvider).signInAnonymously();
   }
 
   @override
   User? getCurrentUser() {
-    return _read(firebaseAuthProvider).currentUser;
+    return _ref.read(firebaseAuthProvider).currentUser;
   }
 
 
   @override
   Future<void> signOut() async {
-    await _read(firebaseAuthProvider).signOut();
+    await _ref.read(firebaseAuthProvider).signOut();
     await signInAnonymously();
   }
 }

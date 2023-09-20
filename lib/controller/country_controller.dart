@@ -5,19 +5,19 @@ import 'package:pencalendar/controller/public_holiday_controller.dart';
 
 final countryControllerProvider =
     StateNotifierProvider<CountryController, Locale?>(
-        (ref) => CountryController(ref.read));
+        (ref) => CountryController(ref));
 
 class CountryController extends StateNotifier<Locale?> {
-  final Reader _read;
+  final StateNotifierProviderRef _ref;
 
-  CountryController(this._read) : super(null) {
+  CountryController(this._ref) : super(null) {
     _loadCountry();
   }
 
   _loadCountry() async {
     await CountryCodes.init();
     state = CountryCodes.getDeviceLocale();
-    _read(publicHolidayControllerProvider.notifier).onNewYearOrNewCountry();
+    _ref.read(publicHolidayControllerProvider.notifier).onNewYearOrNewCountry();
   }
 
   @override

@@ -3,16 +3,16 @@ import 'package:pencalendar/controller/public_holiday_controller.dart';
 
 final activeCalendarYearProvider =
     StateNotifierProvider<ActiveCalendarYearController, int>(
-        (ref) => ActiveCalendarYearController(ref.read));
+        (ref) => ActiveCalendarYearController(ref));
 
 class ActiveCalendarYearController extends StateNotifier<int> {
-  final Reader _read;
+  final StateNotifierProviderRef _ref;
 
-  ActiveCalendarYearController(this._read) : super(DateTime.now().year);
+  ActiveCalendarYearController(this._ref) : super(DateTime.now().year);
 
   changeYear(int year) {
     state = year;
     // notify public holiday
-    _read(publicHolidayControllerProvider.notifier).onNewYearOrNewCountry();
+    _ref.read(publicHolidayControllerProvider.notifier).onNewYearOrNewCountry();
   }
 }

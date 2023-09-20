@@ -8,21 +8,21 @@ import 'package:pencalendar/utils/app_logger.dart';
 
 final publicHolidayControllerProvider =
     StateNotifierProvider<PublicHolidayController, List<PublicHoliday>?>(
-        (ref) => PublicHolidayController(ref.read));
+        (ref) => PublicHolidayController(ref));
 
 class PublicHolidayController extends StateNotifier<List<PublicHoliday>?> {
-  final Reader _read;
+  final StateNotifierProviderRef _ref;
 
-  PublicHolidayController(this._read) : super(null);
+  PublicHolidayController(this._ref) : super(null);
 
   onNewYearOrNewCountry() async {
-    Locale? locale = _read(countryControllerProvider);
+    Locale? locale = _ref.read(countryControllerProvider);
     if (locale == null) {
       AppLogger.d("Locale null");
       return;
     }
-    final sharedPref = _read(sharedPrefUtilityProvider);
-    final year = _read(activeCalendarYearProvider);
+    final sharedPref = _ref.read(sharedPrefUtilityProvider);
+    final year = _ref.read(activeCalendarYearProvider);
     final countryCode = locale.countryCode;
     if (countryCode != null) {
       state = await sharedPref.loadPublicHoliday(year, countryCode);

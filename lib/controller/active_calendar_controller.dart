@@ -13,14 +13,14 @@ import 'package:pencalendar/utils/app_logger.dart';
 
 final activeCalendarControllerProvider =
     StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
-        (ref) => ActiveCalendarController(ref.read));
+        (ref) => ActiveCalendarController(ref));
 
 class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
-  final Reader _read;
+  final StateNotifierProviderRef _ref;
 
   StreamSubscription? _streamSubscription;
 
-  ActiveCalendarController(this._read) : super(null);
+  ActiveCalendarController(this._ref) : super(null);
 
   onNewCalendarReceived(List<Calendar> updatedList) {
     if (state == null && updatedList.isNotEmpty) {
@@ -30,17 +30,17 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   }
 
   selectCalendar(Calendar calendar) async {
-    var year = _read(activeCalendarYearProvider);
+    var year = _ref.read(activeCalendarYearProvider);
     await _streamSubscription?.cancel();
     state = CalendarWithDrawings(calendar, drawingList: []);
-    _streamSubscription = _read(firestoreRepositoryProvider)
+    _streamSubscription = _ref.read(firestoreRepositoryProvider)
         .getSingleCalendarDrawings(calendar, year)
         .snapshots()
         .listen(onNewDrawingReceived);
   }
 
   changeYear(int year) {
-    _read(activeCalendarYearProvider.notifier).changeYear(year);
+    _ref.read(activeCalendarYearProvider.notifier).changeYear(year);
     if (state != null) {
       selectCalendar(state!.calendar);
     } else {
@@ -74,11 +74,11 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
 
   void saveSignatur(List<Offset> pointList, Color color, double size) {
     AppLogger.d("save");
-    final year = _read(activeCalendarYearProvider);
+    final year = _ref.read(activeCalendarYearProvider);
     final id = DateTime.now().millisecondsSinceEpoch.toString();
     final singleDraw = SingleDraw(id, pointList, color, size, year);
     state = state!..drawingList.add(singleDraw);
-    _read(firestoreRepositoryProvider)
+    _ref.read(firestoreRepositoryProvider)
         .createSingleCalendarDrawings(state!.calendar, singleDraw, id);
   }
 
@@ -89,14 +89,14 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
       return;
     }
     final tobeDeleted = state!.drawingList.last;
-    _read(firestoreRepositoryProvider)
+    _ref.read(firestoreRepositoryProvider)
         .deleteSingleCalendarDrawings(state!.calendar, tobeDeleted);
     state = state!..drawingList.remove(tobeDeleted);
   }
 
   void deleteAll() {
-    final year = _read(activeCalendarYearProvider);
-    _read(firestoreRepositoryProvider)
+    final year = _ref.read(activeCalendarYearProvider);
+    _ref.read(firestoreRepositoryProvider)
         .deleteAllCalendarDrawings(state!.calendar, year);
   }
 
@@ -120,7 +120,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
         }
       }
       for (var drawing in toBeRemoved) {
-        _read(firestoreRepositoryProvider)
+        _ref.read(firestoreRepositoryProvider)
             .deleteSingleCalendarDrawings(state!.calendar, drawing);
         state = state!..drawingList.remove(drawing);
       }

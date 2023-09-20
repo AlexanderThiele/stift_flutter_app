@@ -6,29 +6,29 @@ import 'package:pencalendar/repository/auth_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 final authControllerProvider = StateNotifierProvider<AuthController, User?>(
-  (ref) => AuthController(ref.read)..appStarted(),
+  (ref) => AuthController(ref)..appStarted(),
 );
 
 class AuthController extends StateNotifier<User?> {
-  final Reader _read;
+  final StateNotifierProviderRef _ref;
 
   StreamSubscription<User?>? _authStateChangeSubscription;
 
-  AuthController(this._read) : super(null) {
+  AuthController(this._ref) : super(null) {
     _authStateChangeSubscription?.cancel();
-    _authStateChangeSubscription = _read(authRepositoryProvider)
+    _authStateChangeSubscription = _ref.read(authRepositoryProvider)
         .authStateChanges
         .listen((user) => state = user);
   }
 
   void appStarted() async {
-    final user = _read(authRepositoryProvider).getCurrentUser();
+    final user = _ref.read(authRepositoryProvider).getCurrentUser();
     AppLogger.d("app started");
     if (user == null) {
       AppLogger.d("user null");
-      await _read(authRepositoryProvider).signInAnonymously();
+      await _ref.read(authRepositoryProvider).signInAnonymously();
       AppLogger.d("SIGN IN anony");
-      state = _read(authRepositoryProvider).getCurrentUser();
+      state = _ref.read(authRepositoryProvider).getCurrentUser();
     } else {
       state = user;
     }
@@ -36,7 +36,7 @@ class AuthController extends StateNotifier<User?> {
   }
 
   void signOut() async {
-    await _read(authRepositoryProvider).signOut();
+    await _ref.read(authRepositoryProvider).signOut();
   }
 
   @override
