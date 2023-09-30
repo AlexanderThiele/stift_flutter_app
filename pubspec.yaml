@@ -30,12 +30,16 @@ dependencies:
   # local plugins
   design_system:
     path: "packages/design_system/"
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
   flutter_launcher_icons: ^0.11.0
+  hive_generator: any
+  build_runner: any
 
 flutter:
   uses-material-design: true

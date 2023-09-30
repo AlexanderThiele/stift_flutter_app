@@ -3,11 +3,13 @@ import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/pages/calendar_page/cal_page.dart';
 import 'package:pencalendar/provider/shared_preference_provider.dart';
+import 'package:pencalendar/repository/drawings_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,9 +18,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  /*await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity,
-  );*/
+
+  await Hive.initFlutter();
+  await Hive.deleteFromDisk();
+  await openDrawingsBox();
 
   final sharedPreferences = await SharedPreferences.getInstance();
 
@@ -41,15 +44,11 @@ class MyApp extends HookConsumerWidget {
     if (user == null) {
       return MaterialApp(
           theme: lightTheme,
-          home: Scaffold(
+          home: const Scaffold(
               body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: const [
-                Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator())
-              ])));
+                  children: [Align(alignment: Alignment.center, child: CircularProgressIndicator())])));
     }
     return MaterialApp.router(
       builder: (BuildContext context, Widget? child) {

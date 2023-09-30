@@ -38,17 +38,14 @@ class CalPage extends ConsumerWidget {
 
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
-        return Stack(
+        return const Stack(
           children: [
-            const InteractivePaintView(),
+            InteractivePaintView(),
             SafeArea(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
-                  YearWidget(),
-                  CalWidgets()
-                ]))
+                    children: [YearWidget(), CalWidgets()]))
           ],
         );
       }),

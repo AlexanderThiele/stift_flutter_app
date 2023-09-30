@@ -8,12 +8,12 @@ import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
+import 'package:pencalendar/repository/drawings_repository.dart';
 import 'package:pencalendar/repository/firestore_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 final activeCalendarControllerProvider =
-    StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
-        (ref) => ActiveCalendarController(ref));
+    StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>((ref) => ActiveCalendarController(ref));
 
 class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   final StateNotifierProviderRef _ref;
@@ -29,11 +29,12 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     }
   }
 
-  selectCalendar(Calendar calendar) async {
+  void selectCalendar(Calendar calendar) async {
     var year = _ref.read(activeCalendarYearProvider);
     await _streamSubscription?.cancel();
-    state = CalendarWithDrawings(calendar, drawingList: []);
-    _streamSubscription = _ref.read(firestoreRepositoryProvider)
+    state = CalendarWithDrawings(calendar, drawingList: _ref.read(drawingsRepositoryProvider).loadDrawings(year));
+    _streamSubscription = _ref
+        .read(firestoreRepositoryProvider)
         .getSingleCalendarDrawings(calendar, year)
         .snapshots()
         .listen(onNewDrawingReceived);
@@ -54,13 +55,19 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     for (var singleDraw in snapshot.docChanges) {
       switch (singleDraw.type) {
         case DocumentChangeType.added:
-          state?.drawingList.add(singleDraw.doc.data()!);
+          final singleDrawObj = singleDraw.doc.data()!;
+          state?.drawingList.add(singleDrawObj);
+          // we're switching from online storage to offline storage
+          _ref
+              .read(drawingsRepositoryProvider)
+              .createSingleCalendarDrawings(state!.calendar, singleDrawObj, singleDrawObj.id);
+          _ref.read(firestoreRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, singleDrawObj);
           break;
         case DocumentChangeType.removed:
           {
             AppLogger.d("delete");
-            state?.drawingList
-                .removeWhere((element) => element.id == singleDraw.doc.id);
+            // turn off for now
+            // state?.drawingList.removeWhere((element) => element.id == singleDraw.doc.id);
           }
           break;
         case DocumentChangeType.modified:
@@ -76,28 +83,27 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     AppLogger.d("save");
     final year = _ref.read(activeCalendarYearProvider);
     final id = DateTime.now().millisecondsSinceEpoch.toString();
-    final singleDraw = SingleDraw(id, pointList, color, size, year);
+    final singleDraw = SingleDraw(id, -1, pointList, color, size, year);
     state = state!..drawingList.add(singleDraw);
-    _ref.read(firestoreRepositoryProvider)
-        .createSingleCalendarDrawings(state!.calendar, singleDraw, id);
+
+    _ref.read(drawingsRepositoryProvider).createSingleCalendarDrawings(state!.calendar, singleDraw, id);
   }
 
-
   void deleteLast() {
-    if(state == null || state!.drawingList.isEmpty){
+    if (state == null || state!.drawingList.isEmpty) {
       AppLogger.d("nothing to delete, list is empty");
       return;
     }
     final tobeDeleted = state!.drawingList.last;
-    _ref.read(firestoreRepositoryProvider)
-        .deleteSingleCalendarDrawings(state!.calendar, tobeDeleted);
+    _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, tobeDeleted);
     state = state!..drawingList.remove(tobeDeleted);
   }
 
   void deleteAll() {
-    final year = _ref.read(activeCalendarYearProvider);
-    _ref.read(firestoreRepositoryProvider)
-        .deleteAllCalendarDrawings(state!.calendar, year);
+    for (final drawing in state!.drawingList) {
+      _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, drawing);
+    }
+    state = state!..drawingList.clear();
   }
 
   onDeleteCalculation(Offset offset) {
@@ -113,15 +119,13 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
             path.lineTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
           }
         }
-        if (path.contains(offset) ||
-            _checkNearbyPoints(offset, drawing.pointList)) {
+        if (path.contains(offset) || _checkNearbyPoints(offset, drawing.pointList)) {
           AppLogger.d("found intersection: ${drawing.id}");
           toBeRemoved.add(drawing);
         }
       }
       for (var drawing in toBeRemoved) {
-        _ref.read(firestoreRepositoryProvider)
-            .deleteSingleCalendarDrawings(state!.calendar, drawing);
+        _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, drawing);
         state = state!..drawingList.remove(drawing);
       }
     }
@@ -129,8 +133,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
 
   bool _checkNearbyPoints(Offset offset, List<Offset> pointList) {
     for (Offset point in pointList) {
-      var pointDistance =
-          sqrt(pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
+      var pointDistance = sqrt(pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
       if (pointDistance < 5) {
         return true;
       }
@@ -139,8 +142,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   }
 
   @override
-  bool updateShouldNotify(
-      CalendarWithDrawings? old, CalendarWithDrawings? current) {
+  bool updateShouldNotify(CalendarWithDrawings? old, CalendarWithDrawings? current) {
     return true;
   }
 
