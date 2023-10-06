@@ -2,6 +2,7 @@ import 'package:design_system/theme/light_theme.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,6 +29,7 @@ void main() async {
   runApp(ProviderScope(overrides: [
     sharedPrefInstanceProvider.overrideWithValue(sharedPreferences),
   ], child: MyApp()));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 }
 
 class MyApp extends HookConsumerWidget {
