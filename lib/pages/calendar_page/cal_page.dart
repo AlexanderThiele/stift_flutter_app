@@ -21,8 +21,7 @@ class ZoomEnabledNotifier extends ChangeNotifier {
 }
 
 class CalPage extends ConsumerWidget {
-  final zoomEnabledProvider =
-      ChangeNotifierProvider((_) => ZoomEnabledNotifier());
+  final zoomEnabledProvider = ChangeNotifierProvider((_) => ZoomEnabledNotifier());
 
   final resetViewProvider = StateProvider((ref) => 0);
 
@@ -45,7 +44,7 @@ class CalPage extends ConsumerWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [YearWidget(), CalWidgets()]))
+                    children: [TopRightCornerWidget(), CalWidgets()])),
           ],
         );
       }),

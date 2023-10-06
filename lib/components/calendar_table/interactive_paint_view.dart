@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/signature.dart';
-import 'package:pencalendar/controller/active_brush_controller.dart';
+import 'package:pencalendar/components/shader/splash_small_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
-import 'package:pencalendar/controller/active_color_controller.dart';
-import 'package:pencalendar/controller/active_touch_controller.dart';
-import 'package:pencalendar/controller/active_width_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
 import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/public_holiday.dart';
+import 'package:pencalendar/models/shader_type.dart';
+import 'package:pencalendar/provider/active_menu_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
@@ -27,22 +26,14 @@ class InteractivePaintView extends ConsumerWidget {
     final double activeWidth = ref.watch(activeWidthProvider);
     final Brush activeBrush = ref.watch(activeBrushProvider);
     final int selectedYear = ref.watch(activeCalendarYearProvider);
-    final CalendarWithDrawings? activeCalendar =
-        ref.watch(activeCalendarControllerProvider);
-    final activeCalendarController =
-        ref.read(activeCalendarControllerProvider.notifier);
+    final CalendarWithDrawings? activeCalendar = ref.watch(activeCalendarControllerProvider);
+    final activeCalendarController = ref.read(activeCalendarControllerProvider.notifier);
     final touchDrawEnabled = ref.watch(activeTouchProvider);
     final publicHolidays = ref.watch(publicHolidayControllerProvider);
+    final activeShaderType = ref.watch(activeShaderProvider);
 
-    return _InteractivePaintView(
-        selectedYear,
-        activeColor,
-        activeWidth,
-        activeBrush,
-        activeCalendar,
-        touchDrawEnabled,
-        activeCalendarController,
-        publicHolidays ?? []);
+    return _InteractivePaintView(selectedYear, activeColor, activeWidth, activeBrush, activeCalendar, touchDrawEnabled,
+        activeCalendarController, publicHolidays ?? [], activeShaderType);
   }
 }
 
@@ -55,6 +46,7 @@ class _InteractivePaintView extends StatefulWidget {
   final bool touchDrawEnabled;
   final ActiveCalendarController activeCalendarController;
   final List<PublicHoliday> publicHolidays;
+  final ShaderType activeShaderType;
 
   const _InteractivePaintView(
       this.selectedYear,
@@ -65,6 +57,7 @@ class _InteractivePaintView extends StatefulWidget {
       this.touchDrawEnabled,
       this.activeCalendarController,
       this.publicHolidays,
+      this.activeShaderType,
       {Key? key})
       : super(key: key);
 
@@ -77,12 +70,13 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
   double zoomLevel = 1;
 
   List<TouchData> currentDrawings = [];
+  Offset? lastTouchOffset;
 
   // if this is set to true, then we filter all non stylus events and do
   // not allow any events that are not stylus
   bool enforceStylus = false;
 
-  Offset offsetInFrame(Offset offset) {
+  Offset calculateOffsetInFrame(Offset offset) {
     double dx = offset.dx;
     double dy = offset.dy;
     if (dx < 0) {
@@ -137,28 +131,34 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
               CalTable(widget.selectedYear, widget.publicHolidays),
               StatefulBuilder(
                   // this is the actual drawing listener
-                  builder: (BuildContext context, StateSetter setState) =>
-                      Listener(
-                        onPointerMove: (event) {
-                          onPointerMove(event, setState);
-                        },
-                        onPointerUp: (event) {
-                          onPointerUp(event, setState);
-                        },
-                        child: Builder(builder: (context) {
-                          if (widget.activeCalendar == null) {
-                            return const SizedBox();
-                          }
-                          return CustomPaint(
-                              painter: Signature(
-                                  points: currentDrawings,
-                                  drawingList:
-                                      widget.activeCalendar!.drawingList,
-                                  color: widget.activeColor,
-                                  strokeWidth: widget.activeWidth),
-                              size: const Size(calWidth, calHeight));
-                        }),
-                      ))
+                  builder: (BuildContext context, StateSetter setState) => Stack(
+                        children: [
+                          SplashSmallShader(
+                            mousePosition: lastTouchOffset,
+                            activeShaderType: widget.activeShaderType,
+                          ),
+                          Listener(
+                            onPointerMove: (event) {
+                              onPointerMove(event, setState);
+                            },
+                            onPointerUp: (event) {
+                              onPointerUp(event, setState);
+                            },
+                            child: Builder(builder: (context) {
+                              if (widget.activeCalendar == null) {
+                                return const SizedBox();
+                              }
+                              return CustomPaint(
+                                  painter: Signature(
+                                      points: currentDrawings,
+                                      drawingList: widget.activeCalendar!.drawingList,
+                                      color: widget.activeColor,
+                                      strokeWidth: widget.activeWidth),
+                                  size: const Size(calWidth, calHeight));
+                            }),
+                          )
+                        ],
+                      )),
             ]),
           ));
     });
@@ -187,8 +187,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     }
 
     // if stylus is enforced, don't accept any events that are not stylus
-    if (enforceStylus == true &&
-        originalEvent.kind != PointerDeviceKind.stylus) {
+    if (enforceStylus == true && originalEvent.kind != PointerDeviceKind.stylus) {
       return;
     }
 
@@ -204,20 +203,18 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     // check if we handled the case where the user starts with a non stylus event
     // and then starts drawing with a stylus.
     // we then delete all events that were not a stylus event
-    if (enforceStylus == false &&
-        originalEvent.kind == PointerDeviceKind.stylus) {
+    if (enforceStylus == false && originalEvent.kind == PointerDeviceKind.stylus) {
       // we filter all events that are not stylus
-      currentDrawings
-          .removeWhere((element) => element.kind != PointerDeviceKind.stylus);
+      currentDrawings.removeWhere((element) => element.kind != PointerDeviceKind.stylus);
       enforceStylus = true;
       AppLogger.d("enforce Stylus");
     }
-
     // print(originalEvent.kind);
 
     setState(() {
-      currentDrawings.add(TouchData(offsetInFrame(event.localPosition),
-          originalEvent.kind, originalEvent.pointer));
+      final offsetInFrame = calculateOffsetInFrame(event.localPosition);
+      lastTouchOffset = offsetInFrame;
+      currentDrawings.add(TouchData(offsetInFrame, originalEvent.kind, originalEvent.pointer));
     });
   }
 
@@ -234,10 +231,8 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     if (currentDrawings.length == 1) {
       // if less then 2 points, generate a point 1px next to it
       final touchData = currentDrawings.first;
-      currentDrawings.add(TouchData(
-          Offset(touchData.offset.dx + 1, touchData.offset.dy),
-          touchData.kind,
-          touchData.pointerId));
+      currentDrawings
+          .add(TouchData(Offset(touchData.offset.dx + 1, touchData.offset.dy), touchData.kind, touchData.pointerId));
     }
     // and only do the algo when there are more than 20 points
     // otherwise when you draw a point, then the point looks ugly
@@ -266,11 +261,11 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     }
 
     // save
-    widget.activeCalendarController
-        .saveSignatur(points, widget.activeColor, widget.activeWidth);
+    widget.activeCalendarController.saveSignatur(points, widget.activeColor, widget.activeWidth);
 
     setState(() {
       currentDrawings = [];
+      lastTouchOffset = null;
       enforceStylus = false;
     });
   }

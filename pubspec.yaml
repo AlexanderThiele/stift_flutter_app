@@ -29,9 +29,11 @@ dependencies:
   collection: ^1.16.0
   # local plugins
   design_system:
-    path: "packages/design_system/"
+    path: packages/design_system/
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  flutter_animate: ^4.2.0+1
+  flutter_shaders: ^0.1.2
 
 dev_dependencies:
   flutter_test:
@@ -43,6 +45,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  shaders:
+    - assets/shader/splash-small.frag
 
 flutter_icons:
   image_path_android: "assets/logo/appicon.png"

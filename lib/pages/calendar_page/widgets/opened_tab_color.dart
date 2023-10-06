@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pencalendar/controller/active_brush_controller.dart';
-import 'package:pencalendar/controller/active_color_controller.dart';
 import 'package:pencalendar/models/brush.dart';
+import 'package:pencalendar/provider/active_menu_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 // ignore: must_be_immutable

@@ -1,7 +1,7 @@
 import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pencalendar/controller/active_width_controller.dart';
+import 'package:pencalendar/provider/active_menu_provider.dart';
 
 class WidthSliderWidget extends ConsumerWidget {
   const WidthSliderWidget({Key? key}) : super(key: key);
