@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
+import 'package:pencalendar/controller/active_calendar_controller.dart';
+import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
+import 'package:pencalendar/provider/active_menu_provider.dart';
+import 'package:pencalendar/utils/const/cal_size.dart';
+
+class SignaturePainerWrapper extends ConsumerWidget {
+  final List<TouchData> currentDrawings;
+
+  const SignaturePainerWrapper(this.currentDrawings, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final CalendarWithDrawings? activeCalendar = ref.watch(activeCalendarControllerProvider);
+    final Color activeColor = ref.watch(activeColorProvider);
+    final double activeWidth = ref.watch(activeWidthProvider);
+    if (activeCalendar == null) {
+      return const SizedBox();
+    }
+    return CustomPaint(
+        painter: SignaturePainter(
+            points: currentDrawings,
+            drawingList: activeCalendar.drawingList,
+            color: activeColor,
+            strokeWidth: activeWidth),
+        size: const Size(calWidth, calHeight));
+  }
+}
 
 class SignaturePainter extends CustomPainter {
   List<TouchData> points;

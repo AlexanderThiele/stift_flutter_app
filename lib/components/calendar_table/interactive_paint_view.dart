@@ -9,7 +9,6 @@ import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
 import 'package:pencalendar/models/brush.dart';
-import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/public_holiday.dart';
 import 'package:pencalendar/models/shader_type.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
@@ -22,21 +21,15 @@ class InteractivePaintView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Color activeColor = ref.watch(activeColorProvider);
-    final double activeWidth = ref.watch(activeWidthProvider);
     final Brush activeBrush = ref.watch(activeBrushProvider);
     final int selectedYear = ref.watch(activeCalendarYearProvider);
-    final CalendarWithDrawings? activeCalendar = ref.watch(activeCalendarControllerProvider);
     final activeCalendarController = ref.read(activeCalendarControllerProvider.notifier);
     final touchDrawEnabled = ref.watch(activeTouchProvider);
     final publicHolidays = ref.watch(publicHolidayControllerProvider);
     final activeShaderType = ref.watch(activeShaderProvider);
     return _InteractivePaintView(
       selectedYear,
-      activeColor,
-      activeWidth,
       activeBrush,
-      activeCalendar,
       touchDrawEnabled,
       activeCalendarController,
       publicHolidays ?? [],
@@ -47,26 +40,14 @@ class InteractivePaintView extends ConsumerWidget {
 
 class _InteractivePaintView extends StatefulWidget {
   final int selectedYear;
-  final Color activeColor;
-  final double activeWidth;
   final Brush activeBrush;
-  final CalendarWithDrawings? activeCalendar;
   final bool touchDrawEnabled;
   final ActiveCalendarController activeCalendarController;
   final List<PublicHoliday> publicHolidays;
   final ShaderType activeShaderType;
 
-  const _InteractivePaintView(
-      this.selectedYear,
-      this.activeColor,
-      this.activeWidth,
-      this.activeBrush,
-      this.activeCalendar,
-      this.touchDrawEnabled,
-      this.activeCalendarController,
-      this.publicHolidays,
-      this.activeShaderType,
-      {super.key});
+  const _InteractivePaintView(this.selectedYear, this.activeBrush, this.touchDrawEnabled, this.activeCalendarController,
+      this.publicHolidays, this.activeShaderType);
 
   @override
   State<_InteractivePaintView> createState() => _InteractivePaintViewState();
@@ -109,7 +90,6 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
 
   @override
   void didUpdateWidget(covariant _InteractivePaintView oldWidget) {
-    print("did update ${oldWidget.activeWidth}");
     super.didUpdateWidget(oldWidget);
   }
 
@@ -164,18 +144,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
                             onPointerUp: (event) {
                               onPointerUp(event, setState);
                             },
-                            child: Builder(builder: (context) {
-                              if (widget.activeCalendar == null) {
-                                return const SizedBox();
-                              }
-                              return CustomPaint(
-                                  painter: SignaturePainter(
-                                      points: currentDrawings,
-                                      drawingList: widget.activeCalendar!.drawingList,
-                                      color: widget.activeColor,
-                                      strokeWidth: widget.activeWidth),
-                                  size: const Size(calWidth, calHeight));
-                            }),
+                            child: SignaturePainerWrapper(currentDrawings),
                           )
                         ],
                       )),
@@ -281,7 +250,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     }
 
     // save
-    widget.activeCalendarController.saveSignatur(points, widget.activeColor, widget.activeWidth);
+    widget.activeCalendarController.saveSignatur(points);
 
     setState(() {
       currentDrawings = [];

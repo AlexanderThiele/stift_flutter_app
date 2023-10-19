@@ -8,6 +8,7 @@ import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
+import 'package:pencalendar/provider/active_menu_provider.dart';
 import 'package:pencalendar/repository/drawings_repository.dart';
 import 'package:pencalendar/repository/firestore_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
@@ -71,7 +72,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
           }
           break;
         case DocumentChangeType.modified:
-          // TODO: Handle this case.
+        // TODO: Handle this case.
           break;
       }
     }
@@ -79,12 +80,18 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     // state = state!..drawingList = snapshot.docs.map((e) => e.data()).toList();
   }
 
-  void saveSignatur(List<Offset> pointList, Color color, double size) {
+  void saveSignatur(List<Offset> pointList) {
+    final color = _ref.read(activeColorProvider);
+    final size = _ref.read(activeWidthProvider);
     AppLogger.d("save");
     final year = _ref.read(activeCalendarYearProvider);
-    final id = DateTime.now().millisecondsSinceEpoch.toString();
+    final id = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
     final singleDraw = SingleDraw(id, -1, pointList, color, size, year);
-    state = state!..drawingList.add(singleDraw);
+    state = state!
+      ..drawingList.add(singleDraw);
 
     _ref.read(drawingsRepositoryProvider).createSingleCalendarDrawings(state!.calendar, singleDraw, id);
   }
