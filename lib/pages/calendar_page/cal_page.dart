@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
 import 'package:pencalendar/components/menu/color_palette_menu.dart';
 import 'package:pencalendar/components/menu/fancy_selection_menu.dart';

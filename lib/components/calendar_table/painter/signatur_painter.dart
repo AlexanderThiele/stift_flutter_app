@@ -3,17 +3,13 @@ import 'package:flutter/rendering.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
 import 'package:pencalendar/models/single_draw.dart';
 
-class Signature extends CustomPainter {
+class SignaturePainter extends CustomPainter {
   List<TouchData> points;
   Color color;
   double strokeWidth;
   List<SingleDraw> drawingList;
 
-  Signature(
-      {required this.points,
-      required this.color,
-      required this.strokeWidth,
-      required this.drawingList});
+  SignaturePainter({required this.points, required this.color, required this.strokeWidth, required this.drawingList});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -41,7 +37,7 @@ class Signature extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(Signature oldDelegate) {
+  bool shouldRepaint(SignaturePainter oldDelegate) {
     // if we don't return true here, the signatures will somehow disappear
     return true;
     /*print("should repaint");

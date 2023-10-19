@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/opened_tab.dart';
 import 'package:pencalendar/models/shader_type.dart';

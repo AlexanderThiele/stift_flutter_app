@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
-import 'package:pencalendar/components/calendar_table/signature.dart';
+import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/components/shader/splash_small_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
@@ -31,9 +31,17 @@ class InteractivePaintView extends ConsumerWidget {
     final touchDrawEnabled = ref.watch(activeTouchProvider);
     final publicHolidays = ref.watch(publicHolidayControllerProvider);
     final activeShaderType = ref.watch(activeShaderProvider);
-
-    return _InteractivePaintView(selectedYear, activeColor, activeWidth, activeBrush, activeCalendar, touchDrawEnabled,
-        activeCalendarController, publicHolidays ?? [], activeShaderType);
+    return _InteractivePaintView(
+      selectedYear,
+      activeColor,
+      activeWidth,
+      activeBrush,
+      activeCalendar,
+      touchDrawEnabled,
+      activeCalendarController,
+      publicHolidays ?? [],
+      activeShaderType,
+    );
   }
 }
 
@@ -58,8 +66,7 @@ class _InteractivePaintView extends StatefulWidget {
       this.activeCalendarController,
       this.publicHolidays,
       this.activeShaderType,
-      {Key? key})
-      : super(key: key);
+      {super.key});
 
   @override
   State<_InteractivePaintView> createState() => _InteractivePaintViewState();
@@ -95,7 +102,20 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
   }
 
   @override
+  void initState() {
+    print("init state");
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant _InteractivePaintView oldWidget) {
+    print("did update ${oldWidget.activeWidth}");
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("yo build");
     return LayoutBuilder(builder: (context, constraints) {
       return InteractiveViewer(
           constrained: false,
@@ -128,7 +148,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 25),
             child: Stack(children: [
-              CalTable(widget.selectedYear, widget.publicHolidays),
+              CalTable(year: widget.selectedYear, publicHolidays: widget.publicHolidays),
               StatefulBuilder(
                   // this is the actual drawing listener
                   builder: (BuildContext context, StateSetter setState) => Stack(
@@ -149,7 +169,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
                                 return const SizedBox();
                               }
                               return CustomPaint(
-                                  painter: Signature(
+                                  painter: SignaturePainter(
                                       points: currentDrawings,
                                       drawingList: widget.activeCalendar!.drawingList,
                                       color: widget.activeColor,

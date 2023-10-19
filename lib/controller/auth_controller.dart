@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/repository/auth_repository.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
@@ -16,9 +16,7 @@ class AuthController extends StateNotifier<User?> {
 
   AuthController(this._ref) : super(null) {
     _authStateChangeSubscription?.cancel();
-    _authStateChangeSubscription = _ref.read(authRepositoryProvider)
-        .authStateChanges
-        .listen((user) => state = user);
+    _authStateChangeSubscription = _ref.read(authRepositoryProvider).authStateChanges.listen((user) => state = user);
   }
 
   void appStarted() async {

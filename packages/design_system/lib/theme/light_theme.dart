@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 final ThemeData lightTheme = ThemeData(
     colorScheme: const ColorScheme(
         brightness: Brightness.light,
-        primary: Color(0xFF264653),
+        primary: Color(0xFF2C304D),
         onPrimary: Color(0xFFFFFFFF),
-        secondary: Color(0xFF2A9D8F),
+        secondary: Color(0xFF3AADB4),
         onSecondary: Color(0xFFFFFFFF),
         error: Color(0xFFE76F51),
         onError: Colors.white,
-        background: Color(0xFFE9ECED),
-        onBackground: Color(0xFF264653),
-        surface: Color(0xFFE9F5F3),
-        onSurface: Color(0xFF264653)),
+        background: Color(0xFFE6DACC),
+        onBackground: Color(0xFF2C304D),
+        surface: Color(0xFFE6DACC),
+        onSurface: Color(0xFF2C304D)),
     scaffoldBackgroundColor: const Color(0xFFFAFEF2),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFFCDF77E), foregroundColor: Colors.black, focusColor: Colors.red),

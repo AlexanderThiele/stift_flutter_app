@@ -1,11 +1,10 @@
 import 'package:design_system/theme/light_theme.dart';
-import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/pages/calendar_page/cal_page.dart';
@@ -32,10 +31,8 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 }
 
-class MyApp extends HookConsumerWidget {
+class MyApp extends ConsumerWidget {
   MyApp({Key? key}) : super(key: key);
-
-  static final EventBus eventBus = EventBus();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

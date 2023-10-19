@@ -5,10 +5,20 @@ import 'package:pencalendar/models/public_holiday.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 
-class CalTable extends StatelessWidget {
+class CalTable extends StatefulWidget {
   final int year;
   final List<PublicHoliday> publicHolidays;
   final DateTime firstDayOfYear;
+
+  CalTable({required this.year, required this.publicHolidays, super.key}) : firstDayOfYear = DateTime(year) {
+    print("new");
+  }
+
+  @override
+  State<CalTable> createState() => _CalTableState();
+}
+
+class _CalTableState extends State<CalTable> {
   final int maxRows = 32;
 
   final List<Color> monthColors = [
@@ -27,10 +37,6 @@ class CalTable extends StatelessWidget {
     Colors.blue.shade300
   ];
 
-  CalTable(this.year, this.publicHolidays, {Key? key})
-      : firstDayOfYear = DateTime(year),
-        super(key: key);
-
   List<List<CalCellHolder>> get allCells {
     List<List<CalCellHolder>> list = [];
 
@@ -38,15 +44,13 @@ class CalTable extends StatelessWidget {
     for (int i = 0; i < 12; i++) {
       List<CalCellHolder> dayList = [];
       dayList.add(CalCellHolder(
-          color: monthColors[i],
-          cellType: CellType.month,
-          dateTime: DateTime(firstDayOfYear.year, i + 1)));
+          color: monthColors[i], cellType: CellType.month, dateTime: DateTime(widget.firstDayOfYear.year, i + 1)));
 
       // days in a month
       for (int j = 0; j < 31; j++) {
         int month = i + 1;
         Color color = Colors.white;
-        DateTime day = DateTime(firstDayOfYear.year, month, j + 1);
+        DateTime day = DateTime(widget.firstDayOfYear.year, month, j + 1);
         CellType cellType = CellType.day;
 
         if (day.month != month) {
@@ -60,10 +64,8 @@ class CalTable extends StatelessWidget {
             color: color,
             cellType: cellType,
             dateTime: day,
-            publicHoliday: publicHolidays.firstWhereOrNull((element) =>
-                element.date.year == day.year &&
-                element.date.month == day.month &&
-                element.date.day == day.day)));
+            publicHoliday: widget.publicHolidays.firstWhereOrNull((element) =>
+                element.date.year == day.year && element.date.month == day.month && element.date.day == day.day)));
       }
       list.add(dayList);
     }

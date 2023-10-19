@@ -11,8 +11,7 @@ dependencies:
     sdk: flutter
   go_router: ^5.2.4
   intl: ^0.17.0
-  flutter_hooks: ^0.18.5+1
-  hooks_riverpod: ^2.0.0-dev.9
+  flutter_riverpod: ^2.0.0-dev.9
   firebase_core: ^2.16.0
   firebase_analytics: ^10.5.0
   cloud_firestore: ^4.9.2
@@ -20,7 +19,6 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   another_xlider: ^1.1.2
   font_awesome_flutter: ^10.3.0
-  event_bus: ^2.0.0
   url_launcher: ^6.1.7
   in_app_review: ^2.0.6
   country_codes: ^2.2.0
@@ -39,7 +37,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
   hive_generator: any
   build_runner: any
 
@@ -50,11 +48,12 @@ flutter:
     - assets/shader/kishimisu.frag
     - assets/shader/ui-glitch.frag
 
-flutter_icons:
+flutter_launcher_icons:
   image_path_android: "assets/logo/appicon.png"
   image_path_ios: "assets/logo/appicon_ios.png"
   android: true
   ios: true
-  adaptive_icon_background: "#FAFEF2"
+  adaptive_icon_background: "#2C304D"
   adaptive_icon_foreground: "assets/logo/appicon_fg.png"
   min_sdk_android: 23
+  remove_alpha_ios: true

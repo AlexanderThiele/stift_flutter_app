@@ -1,6 +1,6 @@
 import 'package:country_codes/country_codes.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
 
 final countryControllerProvider =
