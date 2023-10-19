@@ -54,6 +54,14 @@ class FancySelectionMenu extends ConsumerWidget {
                     Icons.animation,
                     color: Colors.amber,
                   ),
+                ShaderType.jwibullori => const Icon(
+                    Icons.animation,
+                    color: Colors.green,
+                  ),
+                ShaderType.fractalcineshader => const Icon(
+                    Icons.animation,
+                    color: Colors.cyan,
+                  ),
               };
             }),
           ),

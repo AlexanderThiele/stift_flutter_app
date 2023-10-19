@@ -1,1 +1,1 @@
-enum ShaderType { none, focus, focusFast, kishimisu }
+enum ShaderType { none, focus, focusFast, kishimisu, jwibullori, fractalcineshader }

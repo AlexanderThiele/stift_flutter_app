@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
-import 'package:pencalendar/components/shader/splash_small_shader.dart';
+import 'package:pencalendar/components/shader/splash_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
@@ -90,6 +90,8 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
 
   @override
   void didUpdateWidget(covariant _InteractivePaintView oldWidget) {
+    print(
+        "${widget.selectedYear} ${widget.activeBrush} ${widget.touchDrawEnabled} ${widget.activeCalendarController} ");
     super.didUpdateWidget(oldWidget);
   }
 

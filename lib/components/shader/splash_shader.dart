@@ -12,6 +12,8 @@ class SplashSmallShader extends StatefulWidget {
 
   final String splash = "assets/shader/splash-small.frag";
   final String kishimisu = "assets/shader/kishimisu.frag";
+  final String jwibullori = "assets/shader/jwibullori.frag";
+  final String fractalcineshader = "assets/shader/fractalcineshader.frag";
 
   SplashSmallShader({
     super.key,
@@ -27,6 +29,12 @@ class SplashSmallShader extends StatefulWidget {
         break;
       case ShaderType.kishimisu:
         ShaderBuilder.precacheShader(kishimisu);
+        break;
+      case ShaderType.jwibullori:
+        ShaderBuilder.precacheShader(kishimisu);
+        break;
+      case ShaderType.fractalcineshader:
+        ShaderBuilder.precacheShader(fractalcineshader);
         break;
       case _:
         break;
@@ -79,6 +87,27 @@ class _SplashSmallShaderState extends State<SplashSmallShader> {
             assetKey: widget.kishimisu,
           );
         }
+        if (widget.activeShaderType == ShaderType.jwibullori) {
+          return ShaderBuilder(
+            (BuildContext context, FragmentShader shader, Widget? child) {
+              return CustomPaint(
+                  painter: _ShaderJwibulloriCustomPainter(
+                time: time,
+                shader: shader,
+                mouseOffset: widget.mousePosition,
+              ));
+            },
+            assetKey: widget.jwibullori,
+          );
+        }
+        if (widget.activeShaderType == ShaderType.fractalcineshader) {
+          return ShaderBuilder(
+            (BuildContext context, FragmentShader shader, Widget? child) {
+              return CustomPaint(painter: _ShaderFractalcineshaderCustomPainter(time: time, shader: shader));
+            },
+            assetKey: widget.fractalcineshader,
+          );
+        }
 
         return const SizedBox();
       }),
@@ -126,6 +155,63 @@ class _ShaderKishimisuCustomPainter extends CustomPainter {
   final FragmentShader shader;
 
   _ShaderKishimisuCustomPainter({
+    required this.time,
+    required this.shader,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    shader
+      ..setFloat(0, size.width)
+      ..setFloat(1, size.height)
+      ..setFloat(2, time);
+    Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    canvas.drawRect(rect, Paint()..shader = shader);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class _ShaderJwibulloriCustomPainter extends CustomPainter {
+  final double time;
+  final Offset? mouseOffset;
+  final FragmentShader shader;
+
+  _ShaderJwibulloriCustomPainter({
+    required this.time,
+    required this.mouseOffset,
+    required this.shader,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (mouseOffset == null) {
+      return;
+    }
+    shader
+      ..setFloat(0, size.width)
+      ..setFloat(1, size.height)
+      ..setFloat(2, time)
+      ..setFloat(3, mouseOffset!.dx)
+      ..setFloat(4, mouseOffset!.dy);
+    Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    canvas.drawRect(rect, Paint()..shader = shader);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class _ShaderFractalcineshaderCustomPainter extends CustomPainter {
+  final double time;
+  final FragmentShader shader;
+
+  _ShaderFractalcineshaderCustomPainter({
     required this.time,
     required this.shader,
   });

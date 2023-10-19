@@ -48,6 +48,8 @@ flutter:
     - assets/shader/splash-small.frag
     - assets/shader/kishimisu.frag
     - assets/shader/ui-glitch.frag
+    - assets/shader/jwibullori.frag
+    - assets/shader/fractalcineshader.frag
 
 flutter_launcher_icons:
   image_path_android: "assets/logo/appicon.png"
