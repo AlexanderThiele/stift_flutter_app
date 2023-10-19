@@ -82,8 +82,8 @@ class MyApp extends ConsumerWidget {
           return RateMyAppBuilder(
               rateMyApp: RateMyApp(
                 preferencesPrefix: 'rateMyApp_',
-                minDays: 7,
-                minLaunches: 10,
+                minDays: 3,
+                minLaunches: 5,
                 remindDays: 7,
                 remindLaunches: 10,
                 googlePlayIdentifier: 'app.tnx.tabletcalendar',
