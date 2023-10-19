@@ -8,22 +8,7 @@ import 'package:pencalendar/components/menu/top_right_corner_menu.dart';
 import 'package:pencalendar/controller/calendar_controller.dart';
 import 'package:pencalendar/controller/country_controller.dart';
 
-class ZoomEnabledNotifier extends ChangeNotifier {
-  bool enabled = true;
-
-  void enable() {
-    enabled = true;
-    notifyListeners();
-  }
-
-  void disable() {
-    enabled = false;
-    notifyListeners();
-  }
-}
-
 class CalPage extends ConsumerWidget {
-  final zoomEnabledProvider = ChangeNotifierProvider((_) => ZoomEnabledNotifier());
 
   final resetViewProvider = StateProvider((ref) => 0);
 

@@ -10,25 +10,34 @@ class SplashSmallShader extends StatefulWidget {
   final Offset? mousePosition;
   final ShaderType activeShaderType;
 
-  const SplashSmallShader({
+  final String splash = "assets/shader/splash-small.frag";
+  final String kishimisu = "assets/shader/kishimisu.frag";
+
+  SplashSmallShader({
     super.key,
     required this.mousePosition,
     required this.activeShaderType,
-  });
+  }) {
+    switch (activeShaderType) {
+      case ShaderType.focus:
+        ShaderBuilder.precacheShader(splash);
+        break;
+      case ShaderType.focusFast:
+        ShaderBuilder.precacheShader(splash);
+        break;
+      case ShaderType.kishimisu:
+        ShaderBuilder.precacheShader(kishimisu);
+        break;
+      case _:
+        break;
+    }
+  }
 
   @override
   State<SplashSmallShader> createState() => _SplashSmallShaderState();
 }
 
 class _SplashSmallShaderState extends State<SplashSmallShader> {
-  final String assetKey = "assets/shader/splash-small.frag";
-
-  @override
-  void initState() {
-    ShaderBuilder.precacheShader(assetKey);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.activeShaderType == ShaderType.none) {
@@ -41,33 +50,49 @@ class _SplashSmallShaderState extends State<SplashSmallShader> {
       width: calWidth,
       height: calHeight,
       child: TickingBuilder(builder: (context, time) {
-        return ShaderBuilder(
-          (BuildContext context, FragmentShader shader, Widget? child) {
-            return CustomPaint(
-              painter: _SplashSmallShaderCustomPainter(
-                  time: time,
-                  mouseOffset: widget.mousePosition,
-                  shader: shader,
-                  speed: switch (widget.activeShaderType) {
-                    ShaderType.focusFast => 16,
-                    _ => 2,
-                  }),
-            );
-          },
-          assetKey: assetKey,
-        );
+        if (widget.activeShaderType == ShaderType.focus || widget.activeShaderType == ShaderType.focusFast) {
+          return ShaderBuilder(
+            (BuildContext context, FragmentShader shader, Widget? child) {
+              return CustomPaint(
+                painter: _SplashShaderCustomPainter(
+                    time: time,
+                    mouseOffset: widget.mousePosition,
+                    shader: shader,
+                    speed: switch (widget.activeShaderType) {
+                      ShaderType.focusFast => 16,
+                      _ => 2,
+                    }),
+              );
+            },
+            assetKey: widget.splash,
+          );
+        }
+        if (widget.activeShaderType == ShaderType.kishimisu) {
+          return ShaderBuilder(
+            (BuildContext context, FragmentShader shader, Widget? child) {
+              return CustomPaint(
+                  painter: _ShaderKishimisuCustomPainter(
+                time: time,
+                shader: shader,
+              ));
+            },
+            assetKey: widget.kishimisu,
+          );
+        }
+
+        return const SizedBox();
       }),
     ).animate(effects: [const FadeEffect()]);
   }
 }
 
-class _SplashSmallShaderCustomPainter extends CustomPainter {
+class _SplashShaderCustomPainter extends CustomPainter {
   final double time;
   final Offset? mouseOffset;
   final double speed;
   final FragmentShader shader;
 
-  _SplashSmallShaderCustomPainter({
+  _SplashShaderCustomPainter({
     required this.time,
     required this.mouseOffset,
     required this.shader,
@@ -86,6 +111,31 @@ class _SplashSmallShaderCustomPainter extends CustomPainter {
       ..setFloat(3, mouseOffset!.dx)
       ..setFloat(4, mouseOffset!.dy)
       ..setFloat(5, speed);
+    Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    canvas.drawRect(rect, Paint()..shader = shader);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class _ShaderKishimisuCustomPainter extends CustomPainter {
+  final double time;
+  final FragmentShader shader;
+
+  _ShaderKishimisuCustomPainter({
+    required this.time,
+    required this.shader,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    shader
+      ..setFloat(0, size.width)
+      ..setFloat(1, size.height)
+      ..setFloat(2, time);
     Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.drawRect(rect, Paint()..shader = shader);
   }

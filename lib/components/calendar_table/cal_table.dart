@@ -11,7 +11,7 @@ class CalTable extends StatefulWidget {
   final DateTime firstDayOfYear;
 
   CalTable({required this.year, required this.publicHolidays, super.key}) : firstDayOfYear = DateTime(year) {
-    print("new");
+    print("new CalTable");
   }
 
   @override

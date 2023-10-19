@@ -23,13 +23,13 @@ class PenWidthMenu extends ConsumerWidget {
                     flex: 5,
                     child: Slider(
                       onChanged: (newWidth) {
-                        ref.read(activeWidthProvider.notifier).state = newWidth.roundToDouble();
+                        ref.read(activeWidthProvider.notifier).state = (newWidth * 2).roundToDouble() / 2.0;
                       },
                       value: activeWidth,
-                      min: 1,
+                      min: 0.5,
                       max: 10,
                     )),
-                Expanded(flex: 1, child: Text(activeWidth.toStringAsFixed(0))),
+                Expanded(flex: 1, child: Text(activeWidth.toStringAsFixed(1))),
               ],
             ))).animate(effects: [
       FadeEffect(duration: 200.ms, curve: Curves.easeOut),

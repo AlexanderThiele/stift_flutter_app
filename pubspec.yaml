@@ -32,6 +32,7 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_animate: ^4.2.0+1
   flutter_shaders: ^0.1.2
+  rate_my_app: ^2.0.0
 
 dev_dependencies:
   flutter_test:

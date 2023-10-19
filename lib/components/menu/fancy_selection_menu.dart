@@ -50,6 +50,10 @@ class FancySelectionMenu extends ConsumerWidget {
                     Icons.animation,
                     color: Colors.red,
                   ),
+                ShaderType.kishimisu => const Icon(
+                    Icons.animation,
+                    color: Colors.amber,
+                  ),
               };
             }),
           ),
