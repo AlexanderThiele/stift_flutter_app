@@ -5,8 +5,8 @@ import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-class TopRightCornerWidget extends ConsumerWidget {
-  const TopRightCornerWidget({Key? key}) : super(key: key);
+class TopRightCornerMenu extends ConsumerWidget {
+  const TopRightCornerMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

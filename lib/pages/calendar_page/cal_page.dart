@@ -4,9 +4,9 @@ import 'package:pencalendar/components/calendar_table/interactive_paint_view.dar
 import 'package:pencalendar/components/menu/color_palette_menu.dart';
 import 'package:pencalendar/components/menu/fancy_selection_menu.dart';
 import 'package:pencalendar/components/menu/pen_width_menu.dart';
+import 'package:pencalendar/components/menu/top_right_corner_menu.dart';
 import 'package:pencalendar/controller/calendar_controller.dart';
 import 'package:pencalendar/controller/country_controller.dart';
-import 'package:pencalendar/pages/calendar_page/widgets/year_widget.dart';
 
 class ZoomEnabledNotifier extends ChangeNotifier {
   bool enabled = true;
@@ -42,8 +42,7 @@ class CalPage extends ConsumerWidget {
         return Stack(
           children: [
             const InteractivePaintView(),
-            const SafeArea(
-                child: TopRightCornerWidget()),
+            const SafeArea(child: TopRightCornerMenu()),
             SafeArea(child: ColorPaletteMenu()),
             const SafeArea(child: PenWidthMenu()),
             const SafeArea(child: FancySelectionMenu()),
