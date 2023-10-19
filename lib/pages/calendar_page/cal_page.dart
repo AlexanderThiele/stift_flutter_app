@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
+import 'package:pencalendar/components/menu/color_palette_menu.dart';
+import 'package:pencalendar/components/menu/fancy_selection_menu.dart';
+import 'package:pencalendar/components/menu/pen_width_menu.dart';
 import 'package:pencalendar/controller/calendar_controller.dart';
 import 'package:pencalendar/controller/country_controller.dart';
-import 'package:pencalendar/pages/calendar_page/widgets/cal_widgets.dart';
 import 'package:pencalendar/pages/calendar_page/widgets/year_widget.dart';
 
 class ZoomEnabledNotifier extends ChangeNotifier {
@@ -37,14 +39,14 @@ class CalPage extends ConsumerWidget {
 
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
-        return const Stack(
+        return Stack(
           children: [
-            InteractivePaintView(),
-            SafeArea(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [TopRightCornerWidget(), CalWidgets()])),
+            const InteractivePaintView(),
+            const SafeArea(
+                child: TopRightCornerWidget()),
+            SafeArea(child: ColorPaletteMenu()),
+            const SafeArea(child: PenWidthMenu()),
+            const SafeArea(child: FancySelectionMenu()),
           ],
         );
       }),

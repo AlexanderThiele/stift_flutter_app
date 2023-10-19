@@ -13,11 +13,11 @@ final activeWidthProvider = StateProvider<double>((ref) => 1);
 /// current active Color
 final activeColorProvider = StateProvider<Color>((ref) => Colors.black);
 
-/// selected Tab
-final openedTabProvider = StateProvider<OpenedTab>((ref) => OpenedTab.pen);
-
 /// if touch draw is enabled
 final activeTouchProvider = StateProvider((ref) => false);
 
 /// current active shader
 final activeShaderProvider = StateProvider<ShaderType>((ref) => ShaderType.none);
+
+/// if color palette is open
+final activeSubMenuProvider = StateProvider<OpenedTab>((ref) => OpenedTab.none);
