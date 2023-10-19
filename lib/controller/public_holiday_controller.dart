@@ -34,9 +34,4 @@ class PublicHolidayController extends StateNotifier<List<PublicHoliday>?> {
       List<PublicHoliday>? old, List<PublicHoliday>? current) {
     return true;
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

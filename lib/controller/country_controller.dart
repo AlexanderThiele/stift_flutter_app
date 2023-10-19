@@ -24,9 +24,4 @@ class CountryController extends StateNotifier<Locale?> {
   bool updateShouldNotify(Locale? old, Locale? current) {
     return true;
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

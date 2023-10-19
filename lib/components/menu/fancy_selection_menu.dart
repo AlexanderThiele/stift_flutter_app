@@ -23,7 +23,7 @@ class FancySelectionMenu extends ConsumerWidget {
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: GridView.count(
         crossAxisCount: 3,
         children: [
