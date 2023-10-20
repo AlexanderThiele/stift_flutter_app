@@ -17,14 +17,13 @@ dependencies:
   cloud_firestore: ^4.9.2
   firebase_auth: ^4.10.0
   flutter_colorpicker: ^1.0.3
-  font_awesome_flutter: ^10.3.0
-  url_launcher: ^6.1.7
-  in_app_review: ^2.0.6
+  font_awesome_flutter: ^10.6.0
+  url_launcher: ^6.1.14
+  in_app_review: ^2.0.8
   country_codes: ^2.2.0
   http: ^0.13.5
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.2.2
   collection: ^1.16.0
-  # local plugins
   design_system:
     path: packages/design_system/
   hive: ^2.2.3
