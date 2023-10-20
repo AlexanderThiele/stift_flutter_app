@@ -1,7 +1,7 @@
 name: pencalendar
 description: "Stift Flutter App: The Calendar for Tablets"
 publish_to: 'none'
-version: 1.0.4+9
+version: 1.1.0+10
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
