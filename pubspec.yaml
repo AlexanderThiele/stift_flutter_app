@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   go_router: ^5.2.4
   intl: ^0.17.0
-  flutter_riverpod: ^2.0.0-dev.9
+  flutter_riverpod: ^2.4.4
   firebase_core: ^2.16.0
   firebase_analytics: ^10.5.0
   cloud_firestore: ^4.9.2
