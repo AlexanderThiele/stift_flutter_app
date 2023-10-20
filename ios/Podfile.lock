@@ -1,5 +1,5 @@
 PODS:
-  - cloud_firestore (4.9.2):
+  - cloud_firestore (4.11.0):
     - Firebase/Firestore (= 10.15.0)
     - firebase_core
     - Flutter
@@ -19,15 +19,15 @@ PODS:
   - Firebase/Firestore (10.15.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 10.15.0)
-  - firebase_analytics (10.5.0):
+  - firebase_analytics (10.6.1):
     - Firebase/Analytics (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_auth (4.10.0):
+  - firebase_auth (4.11.1):
     - Firebase/Auth (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.16.0):
+  - firebase_core (2.19.0):
     - Firebase/CoreOnly (= 10.15.0)
     - Flutter
   - FirebaseAnalytics (10.15.0):
@@ -147,7 +147,7 @@ DEPENDENCIES:
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - rate_my_app (from `.symlinks/plugins/rate_my_app/ios`)
-  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -189,7 +189,7 @@ EXTERNAL SOURCES:
   rate_my_app:
     :path: ".symlinks/plugins/rate_my_app/ios"
   shared_preferences_foundation:
-    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -199,12 +199,12 @@ CHECKOUT OPTIONS:
     :tag: 10.15.0
 
 SPEC CHECKSUMS:
-  cloud_firestore: ac000d8c5a79d57dc69238ea06bb422880fb825e
+  cloud_firestore: 0b05c34e8b36cde7026bed89616962c4e03aa307
   country_codes: b0900f46ad686281d5dab438e354e44ad10f5941
   Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
-  firebase_analytics: 84fbf469b4964adb5410e25f3f45433dac480ccf
-  firebase_auth: ca31bca59224dc727ea0df7f066f30158a8acc3b
-  firebase_core: 77172d0a9d8d19d07606e24406e4c2fc14d3265b
+  firebase_analytics: 8b63b894ac3be5ced6a9a4614174754b03377c2f
+  firebase_auth: a2eb49575626e0c8ee369d5983e67d793e272515
+  firebase_core: fd674fcc642742ef7289acea60bd21a1a021bd98
   FirebaseAnalytics: 47cef43728f81a839cf1306576bdd77ffa2eac7e
   FirebaseAppCheckInterop: a8c555b1c2db1d9445e6c3a08a848167ddb7eb51
   FirebaseAuth: a55ec5f7f8a5b1c2dd750235c1bb419bfb642445
@@ -222,7 +222,7 @@ SPEC CHECKSUMS:
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   rate_my_app: 80fba94c4885cd31738231b7b1f51c1ad726f5c7
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
 
 PODFILE CHECKSUM: bedce790b154f970002f5c86acdf4019639ee3e9
