@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  go_router: ^5.2.4
+  go_router: ^12.0.0
   intl: ^0.17.0
   flutter_riverpod: ^2.4.4
   firebase_core: ^2.16.0
