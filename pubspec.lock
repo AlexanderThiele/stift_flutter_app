@@ -25,14 +25,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.0"
-  another_xlider:
-    dependency: "direct main"
-    description:
-      name: another_xlider
-      sha256: "1446d10af1aefd8fe527e62054214967684773c0c2bb3dd2a8d506983a1d2279"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.2"
   archive:
     dependency: transitive
     description:

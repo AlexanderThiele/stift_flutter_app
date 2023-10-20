@@ -17,7 +17,6 @@ dependencies:
   cloud_firestore: ^4.9.2
   firebase_auth: ^4.10.0
   flutter_colorpicker: ^1.0.3
-  another_xlider: ^1.1.2
   font_awesome_flutter: ^10.3.0
   url_launcher: ^6.1.7
   in_app_review: ^2.0.6
