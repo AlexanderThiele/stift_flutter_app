@@ -1,3 +1,5 @@
+// https://www.shadertoy.com/view/mtyGWy
+
 #version 460 core
 #include <flutter/runtime_effect.glsl>
 
@@ -16,7 +18,6 @@ vec3 palette(float t) {
     return a + b*cos(6.28318*(c*t+d));
 }
 
-// https://www.shadertoy.com/view/mtyGWy
 void main() {
 
     vec2 currentCoords = FlutterFragCoord();

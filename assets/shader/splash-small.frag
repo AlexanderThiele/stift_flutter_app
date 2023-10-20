@@ -1,3 +1,6 @@
+// Copyright 2023 Alexander Thiele. All rights reserved.
+// Use of this source code is governed by a BSD-style license
+
 #version 460 core
 #include <flutter/runtime_effect.glsl>
 
