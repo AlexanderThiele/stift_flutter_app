@@ -1,0 +1,22 @@
+{
+  "helpButton": "How it works",
+  "@helpButton": {
+    "description": ""
+  },
+  "helpWebsite": "https://sites.google.com/view/stift-app-hilfe",
+  "@helpWebsite": {
+    "description": ""
+  },
+  "clearYearButton": "Clear Year",
+  "@clearYearButton": {
+    "description": ""
+  },
+  "rateAppButton": "Rate App",
+  "@rateAppButton": {
+    "description": ""
+  },
+  "sendFeedbackButton": "Send Feedback",
+  "@sendFeedbackButton": {
+    "description": ""
+  }
+}

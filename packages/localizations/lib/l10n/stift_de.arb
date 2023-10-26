@@ -1,0 +1,22 @@
+{
+  "helpButton": "So funktioniert's",
+  "@helpButton": {
+    "description": ""
+  },
+  "helpWebsite": "https://sites.google.com/view/stift-app-hilfe/de",
+  "@helpWebsite": {
+    "description": ""
+  },
+  "clearYearButton": "Jahr löschen",
+  "@clearYearButton": {
+    "description": ""
+  },
+  "rateAppButton": "App Bewerten",
+  "@rateAppButton": {
+    "description": ""
+  },
+  "sendFeedbackButton": "Feedback senden",
+  "@sendFeedbackButton": {
+    "description": ""
+  }
+}

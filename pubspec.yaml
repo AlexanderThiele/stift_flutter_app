@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   go_router: ^12.0.0
-  intl: ^0.17.0
+  intl: ^0.18.1
   flutter_riverpod: ^2.4.4
   firebase_core: ^2.19.0
   firebase_analytics: ^10.6.1
@@ -25,13 +25,15 @@ dependencies:
   http: ^1.1.0
   shared_preferences: ^2.2.2
   collection: ^1.17.1
-  design_system:
-    path: packages/design_system/
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   flutter_animate: ^4.2.0+1
   flutter_shaders: ^0.1.2
   rate_my_app: ^2.0.0
+  design_system:
+    path: packages/design_system/
+  localizations:
+    path: packages/localizations
 
 dev_dependencies:
   flutter_test:

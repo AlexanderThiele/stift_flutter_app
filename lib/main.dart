@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:localizations/localizations.dart';
 import 'package:pencalendar/controller/auth_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/pages/calendar_page/cal_page.dart';
@@ -58,6 +59,8 @@ class MyApp extends ConsumerWidget {
                   children: [Align(alignment: Alignment.center, child: CircularProgressIndicator())])));
     }
     return MaterialApp.router(
+      localizationsDelegates: myLocalizationsDelegates,
+      supportedLocales: myLocales,
       builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(

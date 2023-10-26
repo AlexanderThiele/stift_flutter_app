@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:localizations/localizations.dart';
 import 'package:pencalendar/components/shader/sampler_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
@@ -8,7 +9,7 @@ import 'package:pencalendar/provider/active_menu_provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class TopRightCornerMenu extends ConsumerWidget {
-  const TopRightCornerMenu({Key? key}) : super(key: key);
+  const TopRightCornerMenu({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,17 +48,21 @@ class TopRightCornerMenu extends ConsumerWidget {
             PopupMenuButton<int>(
               itemBuilder: (context) {
                 return [
-                  const PopupMenuItem(
+                  PopupMenuItem(
+                    value: 1,
+                    child: Text(context.l10n.helpButton),
+                  ),
+                  PopupMenuItem(
                     value: 0,
-                    child: Text("Clear Year"),
+                    child: Text(context.l10n.clearYearButton),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 10,
-                    child: Text("Rate App"),
+                    child: Text(context.l10n.rateAppButton),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 20,
-                    child: Text("Send Feedback"),
+                    child: Text(context.l10n.sendFeedbackButton),
                   ),
                 ];
               },
@@ -65,6 +70,9 @@ class TopRightCornerMenu extends ConsumerWidget {
                 switch (value) {
                   case 0:
                     ref.read(activeCalendarControllerProvider.notifier).deleteAll();
+                    break;
+                  case 1:
+                    launchUrlString(context.l10n.helpWebsite);
                     break;
                   case 10:
                     InAppReview.instance.openStoreListing(appStoreId: "1661094074");
