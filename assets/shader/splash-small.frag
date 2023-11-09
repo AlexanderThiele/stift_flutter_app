@@ -28,19 +28,24 @@ void main(){
     float time = time;
 
     // Normalized pixel coordinates (from 0 to 1)
+    // and sets the center of the screen to 0,0.
+    // top left is 1,1 and bottom right -1,-1
     vec2 uv = (currentCoords / screenResolution.xy - 0.5)*2.0;
     vec2 m  = (mouseCoords / screenResolution - 0.5)*2.0;
 
-    // set the center to mouse cords
+    // set the center to mouse position
     uv.xy -= m.xy;
 
     // this will respect the screen sizes
-    uv.x *= screenResolution.x/screenResolution.y;
+    uv.x *= screenResolution.x / screenResolution.y;
 
+    // this is the distance to uv. If we substract a value, we create a circle to the center
     float d = length(uv) - 0.13;
 
+    // current color set
     vec3 color = palette(d+time);
     float alpha = 1.0;
+    // we want to make it transpaerent if it's closer to the center
     if (d > 0.0){
         alpha = d-0.1;
         d = sin(d*12.0 + time * speed)/12.0;
@@ -49,6 +54,7 @@ void main(){
     }
 
     d = abs(d);
+    // this makes it brighter
     d=0.04/d;
 
     color *= d;

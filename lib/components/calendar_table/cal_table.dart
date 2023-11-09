@@ -75,8 +75,8 @@ class _CalTableState extends State<CalTable> {
   @override
   Widget build(BuildContext context) {
     AppLogger.d("build cal table");
-    return LayoutBuilder(
-      builder: (context, constraints) {
+    return Builder(
+      builder: (context) {
         final double cellHeight = calHeight / maxRows;
         const double cellWidth = calWidth / 12;
         // print(calHeight / maxRows);
