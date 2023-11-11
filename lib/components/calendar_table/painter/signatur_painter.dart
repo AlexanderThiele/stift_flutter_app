@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
@@ -52,15 +54,18 @@ class SignaturePainter extends CustomPainter {
       canvas.drawPath(draw.path, paint);
     }
 
+    if (points.isEmpty) {
+      return;
+    }
+
     // CURRENT DRAWING
     Paint paint = Paint()
+      ..style = PaintingStyle.stroke
       ..color = color
       ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
       ..strokeWidth = strokeWidth;
-
-    for (int i = 0; i < points.length - 1; i++) {
-      canvas.drawLine(points[i].offset, points[i + 1].offset, paint);
-    }
+    canvas.drawPoints(PointMode.polygon, [for (int i = 0; i < points.length; i++) points[i].offset].toList(), paint);
   }
 
   @override

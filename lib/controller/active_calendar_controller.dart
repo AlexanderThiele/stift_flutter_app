@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
@@ -80,18 +81,20 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     // state = state!..drawingList = snapshot.docs.map((e) => e.data()).toList();
   }
 
-  void saveSignatur(List<Offset> pointList) {
+  void saveSignatur(List<TouchData> pointList) {
     final color = _ref.read(activeColorProvider);
     final size = _ref.read(activeWidthProvider);
     AppLogger.d("save");
     final year = _ref.read(activeCalendarYearProvider);
-    final id = DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString();
-    final singleDraw = SingleDraw(id, -1, pointList, color, size, year);
-    state = state!
-      ..drawingList.add(singleDraw);
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
+
+    final List<SinglePoint> convertedPoints = [];
+    for (final point in pointList) {
+      convertedPoints.add(SinglePoint(point.offset.dx, point.offset.dy, point.pressure));
+    }
+
+    final singleDraw = SingleDraw(id, -1, convertedPoints, color, size, year);
+    state = state!..drawingList.add(singleDraw);
 
     _ref.read(drawingsRepositoryProvider).createSingleCalendarDrawings(state!.calendar, singleDraw, id);
   }
@@ -138,8 +141,8 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     }
   }
 
-  bool _checkNearbyPoints(Offset offset, List<Offset> pointList) {
-    for (Offset point in pointList) {
+  bool _checkNearbyPoints(Offset offset, List<SinglePoint> pointList) {
+    for (SinglePoint point in pointList) {
       var pointDistance = sqrt(pow(point.dx - offset.dx, 2) + pow(point.dy - offset.dy, 2));
       if (pointDistance < 5) {
         return true;

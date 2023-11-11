@@ -2,19 +2,19 @@
 
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:flutter/material.dart';
+import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 class Point {
-  double x;
-  double y;
-  Offset offset;
+  final double x;
+  final double y;
+  final TouchData touchData;
 
-  Point(this.x, this.y, this.offset);
+  const Point(this.x, this.y, this.touchData);
 }
 
-extension ToPoint on Offset {
-  Point get toPoint => Point(dx, dy, this);
+extension ToPoint on TouchData {
+  Point get toPoint => Point(offset.dx, offset.dy, this);
 }
 
 double getSqDist(p1, p2) {
@@ -87,8 +87,7 @@ void simplifyDPStep(points, first, last, sqTolerance, simplified) {
 }
 
 // simplification using Ramer-Douglas-Peucker algorithm
-List<Offset> simplifyDouglasPeucker(
-    List<Offset> pointsOffset, double sqTolerance) {
+List<TouchData> simplifyDouglasPeucker(List<TouchData> pointsOffset, double sqTolerance) {
   AppLogger.d("DouglasPeucker: Initial points before: ${pointsOffset.length}");
   List<Point> points = pointsOffset.map((e) => e.toPoint).toList();
   var last = points.length - 1;
@@ -97,7 +96,7 @@ List<Offset> simplifyDouglasPeucker(
   simplifyDPStep(points, 0, last, sqTolerance, simplified);
   simplified.add(points[last]);
   AppLogger.d("DouglasPeucker: Initial points after: ${simplified.length}");
-  return simplified.map((e) => e.offset).toList();
+  return simplified.map((e) => e.touchData).toList();
 }
 
 // both algorithms combined for awesome performance

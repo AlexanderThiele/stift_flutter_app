@@ -8,7 +8,7 @@ import 'package:pencalendar/utils/extensions/hex_color.dart';
 class SingleDraw {
   String id;
   int localKey;
-  List<Offset> pointList;
+  List<SinglePoint> pointList;
   Color color;
   double size;
   int year;
@@ -18,11 +18,14 @@ class SingleDraw {
     parsePointList();
   }
 
-  SingleDraw.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
+  SingleDraw.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
-  )   : id = snapshot.id,
+  )
+      : id = snapshot.id,
         localKey = -1,
-        pointList = (snapshot.data()?["point_list"] as List<dynamic>).map((e) => Offset(e["dx"]!, e["dy"]!)).toList(),
+        pointList =
+            (snapshot.data()?["point_list"] as List<dynamic>).map((e) => SinglePoint(e["dx"]!, e["dy"]!, 0.5)).toList(),
         color = HexColor.fromHex(snapshot.data()?["color"]),
         size = snapshot.data()?["size"],
         year = snapshot.data()?["year"] {
@@ -32,7 +35,9 @@ class SingleDraw {
   SingleDraw.fromHive(int key, Map<String, dynamic> data)
       : id = data["id"],
         localKey = key,
-        pointList = (data["point_list"] as List<dynamic>).map((e) => Offset(e["dx"], e["dy"])).toList(),
+        pointList = (data["point_list"] as List<dynamic>)
+            .map((e) => SinglePoint(e["dx"], e["dy"], e["pressure"] ?? 0.5))
+            .toList(),
         color = HexColor.fromHex(data["color"]),
         size = data["size"],
         year = data["year"];
@@ -84,4 +89,12 @@ class SingleDraw {
       "year": year
     });
   }
+}
+
+class SinglePoint {
+  final double dx;
+  final double dy;
+  final double pressure;
+
+  const SinglePoint(this.dx, this.dy, this.pressure);
 }

@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/gestures/events.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/components/shader/splash_shader.dart';
@@ -17,7 +19,7 @@ import 'package:pencalendar/utils/const/cal_size.dart';
 import 'package:pencalendar/utils/douglas_peucker_algorithmus.dart';
 
 class InteractivePaintView extends ConsumerWidget {
-  const InteractivePaintView({Key? key}) : super(key: key);
+  const InteractivePaintView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -59,6 +61,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
 
   List<TouchData> currentDrawings = [];
   Offset? lastTouchOffset;
+  PointerMoveEvent? lastInfoEvent;
 
   // if this is set to true, then we filter all non stylus events and do
   // not allow any events that are not stylus
@@ -100,58 +103,89 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     print("yo build");
     return LayoutBuilder(builder: (context, constraints) {
       return InteractiveViewer(
-          constrained: false,
-          clipBehavior: Clip.none,
-          maxScale: 20,
-          minScale: 0.5,
-          boundaryMargin: EdgeInsets.all(constraints.maxWidth),
-          onInteractionStart: (event) {
-            AppLogger.d("onInteractionStart fingers: ${event.pointerCount}");
-            if (event.pointerCount == 1) {
-              setState(() {
-                zoomEnabled = false;
-              });
-            } else {
-              // this happens sometimes when you start with 1 finger
-              // and then the second finger starts a few ms later
-              if (currentDrawings.isNotEmpty) {
-                currentDrawings = [];
-              }
-            }
-          },
-          onInteractionEnd: (event) {
-            AppLogger.d("onInteractionEnd");
+        constrained: false,
+        clipBehavior: Clip.none,
+        maxScale: 20,
+        minScale: 0.5,
+        boundaryMargin: EdgeInsets.all(constraints.maxWidth),
+        onInteractionStart: (ScaleStartDetails event) {
+          AppLogger.d("onInteractionStart fingers: ${event.pointerCount}");
+          if (event.pointerCount == 1) {
             setState(() {
-              zoomEnabled = true;
+              zoomEnabled = false;
             });
-          },
-          scaleEnabled: zoomEnabled,
-          panEnabled: false,
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 25),
-            child: Stack(children: [
-              CalTable(year: widget.selectedYear, publicHolidays: widget.publicHolidays),
-              StatefulBuilder(
-                  // this is the actual drawing listener
-                  builder: (BuildContext context, StateSetter setState) => Stack(
-                        children: [
+          } else {
+            // this happens sometimes when you start with 1 finger
+            // and then the second finger starts a few ms later
+            if (currentDrawings.isNotEmpty) {
+              currentDrawings = [];
+            }
+          }
+        },
+        onInteractionEnd: (event) {
+          AppLogger.d("onInteractionEnd");
+          setState(() {
+            zoomEnabled = true;
+          });
+        },
+        scaleEnabled: zoomEnabled,
+        panEnabled: false,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 25),
+          child: Stack(children: [
+            CalTable(year: widget.selectedYear, publicHolidays: widget.publicHolidays),
+            StatefulBuilder(
+                // this is the actual drawing listener
+                builder: (BuildContext context, StateSetter setState) => Stack(
+                      children: [
+                        if (widget.activeShaderType != ShaderType.none)
                           SplashSmallShader(
                             mousePosition: lastTouchOffset,
                             activeShaderType: widget.activeShaderType,
                           ),
-                          Listener(
-                            onPointerMove: (event) {
-                              onPointerMove(event, setState);
-                            },
-                            onPointerUp: (event) {
-                              onPointerUp(event, setState);
-                            },
-                            child: SignaturePainerWrapper(currentDrawings),
-                          )
-                        ],
-                      )),
-            ]),
-          ));
+                        Listener(
+                          /*onPointerDown: (event) {
+                            print(event.buttons);
+                            print(event.pressureMin);
+                            print(event.pressureMax);
+                            print(event);
+                          },*/
+                          onPointerMove: (event) {
+                            onPointerMove(event, setState);
+                          },
+                          onPointerUp: (event) {
+                            onPointerUp(event, setState);
+                          },
+                          onPointerSignal: (event) {
+                            print(event);
+                          },
+                          child: Stack(children: [
+                            SignaturePainerWrapper(currentDrawings),
+                            Builder(
+                              builder: (context) {
+                                if (lastInfoEvent == null) {
+                                  return const SizedBox();
+                                }
+                                if (widget.activeBrush != Brush.eraser) {
+                                  return const SizedBox();
+                                }
+                                return Positioned(
+                                    left: lastInfoEvent!.localPosition.dx - 9,
+                                    top: lastInfoEvent!.localPosition.dy - 9,
+                                    child: Icon(
+                                      FontAwesomeIcons.eraser,
+                                      color: Colors.black.withOpacity(0.5),
+                                      size: 18,
+                                    ));
+                              },
+                            ),
+                          ]),
+                        )
+                      ],
+                    )),
+          ]),
+        ),
+      );
     });
   }
 
@@ -169,6 +203,10 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
       return;
     }
 
+    setState(() {
+      lastInfoEvent = event;
+    });
+
     // if touch draw is not enabled, do nothing with anything
     // that is not a stylus
     if (widget.touchDrawEnabled == false) {
@@ -178,6 +216,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     }
 
     // if stylus is enforced, don't accept any events that are not stylus
+    // enforceStylus is true whenever we start to draw with a stylus.
     if (enforceStylus == true && originalEvent.kind != PointerDeviceKind.stylus) {
       return;
     }
@@ -202,10 +241,11 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     }
     // print(originalEvent.kind);
 
+    final pressure = originalEvent.pressure == 0 ? 0.5 : originalEvent.pressure;
     setState(() {
       final offsetInFrame = calculateOffsetInFrame(event.localPosition);
       lastTouchOffset = offsetInFrame;
-      currentDrawings.add(TouchData(offsetInFrame, originalEvent.kind, originalEvent.pointer));
+      currentDrawings.add(TouchData(offsetInFrame, originalEvent.kind, pressure));
     });
   }
 
@@ -217,46 +257,51 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
 
     if (currentDrawings.isEmpty) {
       // do nothing if empty
+
+      resetState();
       return;
     }
     if (currentDrawings.length == 1) {
       // if less then 2 points, generate a point 1px next to it
       final touchData = currentDrawings.first;
       currentDrawings
-          .add(TouchData(Offset(touchData.offset.dx + 1, touchData.offset.dy), touchData.kind, touchData.pointerId));
+          .add(TouchData(Offset(touchData.offset.dx + 1, touchData.offset.dy), touchData.kind, touchData.pressure));
     }
     // and only do the algo when there are more than 20 points
     // otherwise when you draw a point, then the point looks ugly
-    var points = currentDrawings.map((touchData) => touchData.offset).toList();
     // FILTER Points
 
     if (enforceStylus == true) {
       // means that this is a stylus drawing
-      if (points.length > 10) {
-        points = simplifyDouglasPeucker(points, 0.003);
+      if (currentDrawings.length > 10) {
+        currentDrawings = simplifyDouglasPeucker(currentDrawings, 0.003);
       } else {
         // i think the user wants to draw a point
         // lets just take the first position
-        points = [points.first, points.last];
+        currentDrawings = [currentDrawings.first, currentDrawings.last];
       }
     } else {
       // only touch event, use every point we can use
       // there are a lot less points if we draw with fingers.
-      if (points.length > 10) {
-        points = simplifyDouglasPeucker(points, 0.003);
+      if (currentDrawings.length > 10) {
+        currentDrawings = simplifyDouglasPeucker(currentDrawings, 0.003);
       } else {
         // i think the user wants to draw a point
         // lets just take the first position
-        points = [points.first, points.last];
+        currentDrawings = [currentDrawings.first, currentDrawings.last];
       }
     }
 
     // save
-    widget.activeCalendarController.saveSignatur(points);
+    widget.activeCalendarController.saveSignatur(currentDrawings);
+    resetState();
+  }
 
+  void resetState() {
     setState(() {
       currentDrawings = [];
       lastTouchOffset = null;
+      lastInfoEvent = null;
       enforceStylus = false;
     });
   }
@@ -268,8 +313,7 @@ class TouchData {
   /// either stylus or sth else
   final PointerDeviceKind kind;
 
-  /// every pointer has an ID which is unique
-  final int pointerId;
+  final double pressure;
 
-  TouchData(this.offset, this.kind, this.pointerId);
+  const TouchData(this.offset, this.kind, this.pressure);
 }
