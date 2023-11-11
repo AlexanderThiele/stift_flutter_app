@@ -2,17 +2,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:pencalendar/components/calendar_table/widgets/cal_cell.dart';
 import 'package:pencalendar/models/public_holiday.dart';
-import 'package:pencalendar/utils/app_logger.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 
 class CalTable extends StatefulWidget {
   final int year;
   final List<PublicHoliday> publicHolidays;
-  final DateTime firstDayOfYear;
+  late final DateTime firstDayOfYear = DateTime(year);
 
-  CalTable({required this.year, required this.publicHolidays, super.key}) : firstDayOfYear = DateTime(year) {
-    print("new CalTable");
-  }
+  CalTable({required this.year, required this.publicHolidays, super.key});
 
   @override
   State<CalTable> createState() => _CalTableState();
@@ -20,6 +17,8 @@ class CalTable extends StatefulWidget {
 
 class _CalTableState extends State<CalTable> {
   final int maxRows = 32;
+  late final double cellHeight = calHeight / maxRows;
+  final double cellWidth = calWidth / 12;
 
   final List<Color> monthColors = [
     Colors.blue.shade300,
@@ -36,6 +35,9 @@ class _CalTableState extends State<CalTable> {
     Colors.purple.shade300,
     Colors.blue.shade300
   ];
+
+  /// This will cache the cells for the next build
+  late List<List<CalCellHolder>> cachedAllCells = allCells;
 
   List<List<CalCellHolder>> get allCells {
     List<List<CalCellHolder>> list = [];
@@ -72,30 +74,42 @@ class _CalTableState extends State<CalTable> {
     return list;
   }
 
+  /// This will cache the tableRows for the next build
+  late List<TableRow> cachedTableRows = tableRows;
+
+  List<TableRow> get tableRows {
+    List<TableRow> tableRows = [];
+
+    for (int i = 0; i < maxRows; i++) {
+      List<TableCell> tableCells = [];
+      for (var monthCells in cachedAllCells) {
+        tableCells.add(monthCells[i].build(context, cellHeight));
+      }
+      tableRows.add(TableRow(children: tableCells));
+    }
+
+    return tableRows;
+  }
+
+  @override
+  void didUpdateWidget(CalTable oldWidget) {
+    final bool isSameWidgetData =
+        widget.publicHolidays.equals(oldWidget.publicHolidays) && widget.year == oldWidget.year;
+    if (!isSameWidgetData) {
+      // widget data has changed. refresh the table cache
+      print("refresh");
+      cachedAllCells = allCells;
+      cachedTableRows = tableRows;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
-    AppLogger.d("build cal table");
-    return Builder(
-      builder: (context) {
-        final double cellHeight = calHeight / maxRows;
-        const double cellWidth = calWidth / 12;
-        // print(calHeight / maxRows);
-        // print(calWidth / 12);
-        List<TableRow> tableRows = [];
-
-        for (int i = 0; i < maxRows; i++) {
-          List<TableCell> tableCells = [];
-          for (var monthCells in allCells) {
-            tableCells.add(monthCells[i].build(context, cellHeight));
-          }
-          tableRows.add(TableRow(children: tableCells));
-        }
-        return Table(
-          border: TableBorder.all(),
-          defaultColumnWidth: const FixedColumnWidth(cellWidth),
-          children: tableRows,
-        );
-      },
+    return Table(
+      border: TableBorder.all(),
+      defaultColumnWidth: FixedColumnWidth(cellWidth),
+      children: cachedTableRows,
     );
   }
 }
