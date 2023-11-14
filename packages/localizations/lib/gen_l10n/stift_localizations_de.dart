@@ -18,4 +18,26 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sendFeedbackButton => 'Feedback senden';
+
+  @override
+  String get shareCalendar => 'Kalender teilen';
+
+  @override
+  String get shareNow => 'Jetzt teilen';
+
+  @override
+  String get rateAppTitle => 'App Bewerten';
+
+  @override
+  String get rateAppText =>
+      'Wenn dir diese App gefällt, nehm dir bitte ein paar Sekunden, um sie zu bewerten!\nEs hilft uns wirklich und es sollte wirklich schnell gehen.';
+
+  @override
+  String get rateAppRateButton => 'Bewerten';
+
+  @override
+  String get rateAppRateNoButton => 'Nein Danke';
+
+  @override
+  String get rateAppRateLaterButton => 'Später vielleicht';
 }

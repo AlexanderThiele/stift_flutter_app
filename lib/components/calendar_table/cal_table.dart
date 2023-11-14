@@ -97,7 +97,6 @@ class _CalTableState extends State<CalTable> {
         widget.publicHolidays.equals(oldWidget.publicHolidays) && widget.year == oldWidget.year;
     if (!isSameWidgetData) {
       // widget data has changed. refresh the table cache
-      print("refresh");
       cachedAllCells = allCells;
       cachedTableRows = tableRows;
     }

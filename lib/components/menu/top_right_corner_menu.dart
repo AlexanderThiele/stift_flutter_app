@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:localizations/localizations.dart';
 import 'package:pencalendar/components/shader/sampler_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
+import 'package:pencalendar/routes.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class TopRightCornerMenu extends ConsumerWidget {
@@ -45,43 +47,55 @@ class TopRightCornerMenu extends ConsumerWidget {
                 elevation: 0,
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 child: const Icon(Icons.arrow_forward)),
-            PopupMenuButton<int>(
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Text(context.l10n.helpButton),
-                  ),
-                  PopupMenuItem(
-                    value: 0,
-                    child: Text(context.l10n.clearYearButton),
-                  ),
-                  PopupMenuItem(
-                    value: 10,
-                    child: Text(context.l10n.rateAppButton),
-                  ),
-                  PopupMenuItem(
-                    value: 20,
-                    child: Text(context.l10n.sendFeedbackButton),
-                  ),
-                ];
-              },
-              onSelected: (value) {
-                switch (value) {
-                  case 0:
-                    ref.read(activeCalendarControllerProvider.notifier).deleteAll();
-                    break;
-                  case 1:
-                    launchUrlString(context.l10n.helpWebsite);
-                    break;
-                  case 10:
-                    InAppReview.instance.openStoreListing(appStoreId: "1661094074");
-                    break;
-                  case 20:
-                    launchUrlString("mailto:alex@tnx-apps.com?subject=App%20Feedback");
-                    break;
-                }
-              },
+            FloatingActionButton(
+              mini: true,
+              onPressed: null,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              child: PopupMenuButton<int>(
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text(context.l10n.helpButton),
+                    ),
+                    PopupMenuItem(
+                      value: 30,
+                      child: Text(context.l10n.shareCalendar),
+                    ),
+                    PopupMenuItem(
+                      value: 0,
+                      child: Text(context.l10n.clearYearButton),
+                    ),
+                    PopupMenuItem(
+                      value: 10,
+                      child: Text(context.l10n.rateAppButton),
+                    ),
+                    PopupMenuItem(
+                      value: 20,
+                      child: Text(context.l10n.sendFeedbackButton),
+                    ),
+                  ];
+                },
+                onSelected: (value) {
+                  switch (value) {
+                    case 0:
+                      ref.read(activeCalendarControllerProvider.notifier).deleteAll();
+                      break;
+                    case 1:
+                      launchUrlString(context.l10n.helpWebsite);
+                      break;
+                    case 10:
+                      InAppReview.instance.openStoreListing(appStoreId: "1661094074");
+                      break;
+                    case 20:
+                      launchUrlString("mailto:alex@tnx-apps.com?subject=App%20Feedback");
+                      break;
+                    case 30:
+                      GoRouter.of(context).push(AppRoute.shareCalendar.path);
+                      break;
+                  }
+                },
+              ),
             )
           ],
         ),

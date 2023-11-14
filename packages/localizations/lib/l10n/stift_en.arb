@@ -18,5 +18,18 @@
   "sendFeedbackButton": "Send Feedback",
   "@sendFeedbackButton": {
     "description": ""
-  }
+  },
+  "shareCalendar": "Share Calendar",
+  "@shareCalendar": {
+    "description": ""
+  },
+  "shareNow": "Share now",
+  "@shareNow": {
+    "description": ""
+  },
+  "rateAppTitle": "Rate this app",
+  "rateAppText": "If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn't take you more than one minute.",
+  "rateAppRateButton": "RATE",
+  "rateAppRateNoButton": "NO THANKS",
+  "rateAppRateLaterButton": "MAYBE LATER"
 }

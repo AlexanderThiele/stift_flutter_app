@@ -135,54 +135,52 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
           child: Stack(children: [
             CalTable(year: widget.selectedYear, publicHolidays: widget.publicHolidays),
             StatefulBuilder(
-                // this is the actual drawing listener
-                builder: (BuildContext context, StateSetter setState) => Stack(
-                      children: [
-                        if (widget.activeShaderType != ShaderType.none)
-                          SplashSmallShader(
-                            mousePosition: lastTouchOffset,
-                            activeShaderType: widget.activeShaderType,
-                          ),
-                        Listener(
-                          /*onPointerDown: (event) {
+              // this is the actual drawing listener
+              builder: (BuildContext context, StateSetter setState) => Stack(
+                children: [
+                  if (widget.activeShaderType != ShaderType.none)
+                    SplashSmallShader(
+                      mousePosition: lastTouchOffset,
+                      activeShaderType: widget.activeShaderType,
+                    ),
+                  Listener(
+                    /*onPointerDown: (event) {
                             print(event.buttons);
                             print(event.pressureMin);
                             print(event.pressureMax);
                             print(event);
                           },*/
-                          onPointerMove: (event) {
-                            onPointerMove(event, setState);
-                          },
-                          onPointerUp: (event) {
-                            onPointerUp(event, setState);
-                          },
-                          onPointerSignal: (event) {
-                            print(event);
-                          },
-                          child: Stack(children: [
-                            SignaturePainerWrapper(currentDrawings),
-                            Builder(
-                              builder: (context) {
-                                if (lastInfoEvent == null) {
-                                  return const SizedBox();
-                                }
-                                if (widget.activeBrush != Brush.eraser) {
-                                  return const SizedBox();
-                                }
-                                return Positioned(
-                                    left: lastInfoEvent!.localPosition.dx - 9,
-                                    top: lastInfoEvent!.localPosition.dy - 9,
-                                    child: Icon(
-                                      FontAwesomeIcons.eraser,
-                                      color: Colors.black.withOpacity(0.5),
-                                      size: 18,
-                                    ));
-                              },
-                            ),
-                          ]),
-                        )
-                      ],
-                    )),
+                    onPointerMove: (event) {
+                      onPointerMove(event, setState);
+                    },
+                    onPointerUp: (event) {
+                      onPointerUp(event, setState);
+                    },
+                    child: Stack(children: [
+                      SignaturePainerWrapper(currentDrawings),
+                      Builder(
+                        builder: (context) {
+                          if (lastInfoEvent == null) {
+                            return const SizedBox();
+                          }
+                          if (widget.activeBrush != Brush.eraser) {
+                            return const SizedBox();
+                          }
+                          return Positioned(
+                              left: lastInfoEvent!.localPosition.dx - 9,
+                              top: lastInfoEvent!.localPosition.dy - 9,
+                              child: Icon(
+                                FontAwesomeIcons.eraser,
+                                color: Colors.black.withOpacity(0.5),
+                                size: 18,
+                              ));
+                        },
+                      ),
+                    ]),
+                  )
+                ],
+              ),
+            ),
           ]),
         ),
       );

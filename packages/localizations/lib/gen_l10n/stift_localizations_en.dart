@@ -18,4 +18,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sendFeedbackButton => 'Send Feedback';
+
+  @override
+  String get shareCalendar => 'Share Calendar';
+
+  @override
+  String get shareNow => 'Share now';
+
+  @override
+  String get rateAppTitle => 'Rate this app';
+
+  @override
+  String get rateAppText =>
+      'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.';
+
+  @override
+  String get rateAppRateButton => 'RATE';
+
+  @override
+  String get rateAppRateNoButton => 'NO THANKS';
+
+  @override
+  String get rateAppRateLaterButton => 'MAYBE LATER';
 }

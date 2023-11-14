@@ -119,6 +119,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send Feedback'**
   String get sendFeedbackButton;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Share Calendar'**
+  String get shareCalendar;
+
+  ///
+  ///
+  /// In en, this message translates to:
+  /// **'Share now'**
+  String get shareNow;
+
+  /// No description provided for @rateAppTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate this app'**
+  String get rateAppTitle;
+
+  /// No description provided for @rateAppText.
+  ///
+  /// In en, this message translates to:
+  /// **'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.'**
+  String get rateAppText;
+
+  /// No description provided for @rateAppRateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'RATE'**
+  String get rateAppRateButton;
+
+  /// No description provided for @rateAppRateNoButton.
+  ///
+  /// In en, this message translates to:
+  /// **'NO THANKS'**
+  String get rateAppRateNoButton;
+
+  /// No description provided for @rateAppRateLaterButton.
+  ///
+  /// In en, this message translates to:
+  /// **'MAYBE LATER'**
+  String get rateAppRateLaterButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
