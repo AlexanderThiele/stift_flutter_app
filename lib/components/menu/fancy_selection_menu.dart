@@ -128,7 +128,17 @@ class FancySelectionMenu extends ConsumerWidget {
                   brush == Brush.pen ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
               iconSize: 18,
             ),
-            Container(),
+
+            IconButton(
+              onPressed: () {
+                final activeSubMenu = ref.read(activeSubMenuProvider);
+                ref.read(activeSubMenuProvider.notifier).state =
+                    activeSubMenu == OpenedTab.layers ? OpenedTab.none : OpenedTab.layers;
+              },
+              icon: const Icon(FontAwesomeIcons.layerGroup),
+              iconSize: 18,
+              color: Theme.of(context).colorScheme.primary,
+            ),
             IconButton(
               onPressed: () {
                 final activeSubMenu = ref.read(activeSubMenuProvider);

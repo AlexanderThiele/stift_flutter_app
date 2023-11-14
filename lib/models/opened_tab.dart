@@ -1,3 +1,1 @@
-enum OpenedTab{
-  none, color, pen
-}
+enum OpenedTab { none, color, pen, layers }
