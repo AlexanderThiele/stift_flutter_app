@@ -43,7 +43,6 @@ class SignaturePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // EXISTING DRAWINGS
-    //print("paaaaint");
     for (SingleDraw draw in drawingList) {
       Paint paint = Paint()
         ..color = draw.color
@@ -71,14 +70,12 @@ class SignaturePainter extends CustomPainter {
   @override
   bool shouldRepaint(SignaturePainter oldDelegate) {
     // if we don't return true here, the signatures will somehow disappear
-    return true;
-    /*print("should repaint");
-    if (points != oldDelegate.points) {
-      return true;
-    }
     if (drawingList.length != oldDelegate.drawingList.length) {
       return true;
     }
-    return false;*/
+    if (points.length != oldDelegate.points.length) {
+      return true;
+    }
+    return false;
   }
 }
