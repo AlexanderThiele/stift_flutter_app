@@ -9,7 +9,10 @@ import 'package:pencalendar/repository/drawings/hive_drawings_repository.dart';
 import 'package:pencalendar/repository/shared_pref_repository.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) => FirebaseAuthRepository(ref));
+
 final analyticsRepositoryProvider = Provider<AnalyticsRepository>((ref) => FirebaseAnalyticsRepository());
+
 final drawingsRepositoryProvider = Provider<DrawingsRepository>((ref) => HiveDrawingsRepository(ref));
+
 final sharedPrefUtilityProvider =
     Provider<SharedPrefRepository>((ref) => SharedPrefRepository(ref.watch(sharedPrefInstanceProvider)));

@@ -11,7 +11,13 @@ class FirebaseAnalyticsRepository extends AnalyticsRepository {
         parameters[key] = parameters[key] is num ? parameters[key]! : parameters[key].toString();
       }
     }
-    AppLogger.d("Track $event ${parameters ?? ''}");
+    AppLogger.d("TrackEvent $event ${parameters ?? ''}");
     return FirebaseAnalytics.instance.logEvent(name: event.name, parameters: parameters);
+  }
+
+  @override
+  Future<void> trackScreenView(AnalyticsScreenView screenView) {
+    AppLogger.d("TrackScreen $screenView");
+    return FirebaseAnalytics.instance.logScreenView(screenName: screenView.name);
   }
 }

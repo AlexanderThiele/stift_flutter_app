@@ -4,29 +4,18 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:localizations/localizations.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
-import 'package:pencalendar/routes.dart';
 import 'package:responsive_spacing/responsive_spacing.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ShareImagePage extends GoRoute {
-  ShareImagePage(AppRoute appRoute)
-      : super(
-            path: appRoute.path,
-            builder: (context, state) {
-              return ShareImageWidget();
-            });
-}
-
-class ShareImageWidget extends ConsumerWidget {
+class ShareImagePage extends ConsumerWidget {
   final GlobalKey globalKey = GlobalKey();
 
-  ShareImageWidget({super.key});
+  ShareImagePage({super.key});
 
   _shareCalendar() async {
     final picture = await _captureWidget();

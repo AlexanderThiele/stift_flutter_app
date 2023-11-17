@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:localizations/localizations.dart';
 import 'package:pencalendar/firebase_options.dart';
+import 'package:pencalendar/provider/router_provider.dart';
 import 'package:pencalendar/provider/shared_preference_provider.dart';
 import 'package:pencalendar/repository/drawings/hive_drawings_repository.dart';
-import 'package:pencalendar/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -34,11 +34,12 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.read(routerProvider);
     return MaterialApp.router(
       localizationsDelegates: myLocalizationsDelegates,
       supportedLocales: myLocales,
@@ -51,9 +52,9 @@ class MyApp extends StatelessWidget {
       },
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      routeInformationProvider: appRoutes.routeInformationProvider,
-      routeInformationParser: appRoutes.routeInformationParser,
-      routerDelegate: appRoutes.routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
       title: 'Stift',
     );
   }

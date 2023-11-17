@@ -7,7 +7,9 @@ import 'package:pencalendar/components/shader/sampler_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
-import 'package:pencalendar/routes.dart';
+import 'package:pencalendar/provider/router_provider.dart';
+import 'package:pencalendar/repository/analytics/analytics_repository.dart';
+import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class TopRightCornerMenu extends ConsumerWidget {
@@ -83,9 +85,11 @@ class TopRightCornerMenu extends ConsumerWidget {
                       break;
                     case 1:
                       launchUrlString(context.l10n.helpWebsite);
+                      ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.howItWorks);
                       break;
                     case 10:
                       InAppReview.instance.openStoreListing(appStoreId: "1661094074");
+                      ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.rateApp);
                       break;
                     case 20:
                       launchUrlString("mailto:alex@tnx-apps.com?subject=App%20Feedback");
