@@ -55,7 +55,6 @@ class ShareImageWidget extends ConsumerWidget {
         title: Text(context.l10n.shareCalendar),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
-        print(context.spacingConfig.layoutColumns.columns);
         return SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: context.spacing.l, vertical: context.spacing.m),

@@ -38,6 +38,9 @@ class SignaturePainter extends CustomPainter {
   double strokeWidth;
   List<SingleDraw> drawingList;
 
+  /// this is to optimize the paint method
+  int drawingListLastLength = 0;
+
   SignaturePainter({required this.points, required this.color, required this.strokeWidth, required this.drawingList});
 
   @override
@@ -69,13 +72,16 @@ class SignaturePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(SignaturePainter oldDelegate) {
-    if (drawingList.length != oldDelegate.drawingList.length) {
+    if (drawingList.length != oldDelegate.drawingListLastLength) {
+      // we have to set the drawingNumber of the oldDelegate somehow. idk why tbh.
+      oldDelegate.drawingListLastLength = drawingList.length;
       return true;
     }
+    drawingListLastLength = drawingList.length;
 
-    // Here is somehow an issue. this.points is the same size and has the same objects as oldDelegate.points.
-    // thats why i'm just checking if it's not empty
     if (points.isNotEmpty) {
+      // always repaint when points are not empty
+      // points == current drawings
       return true;
     }
     return false;

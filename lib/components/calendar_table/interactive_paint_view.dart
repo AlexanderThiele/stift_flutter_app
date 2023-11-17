@@ -85,21 +85,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
   }
 
   @override
-  void initState() {
-    print("init state");
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant _InteractivePaintView oldWidget) {
-    print(
-        "${widget.selectedYear} ${widget.activeBrush} ${widget.touchDrawEnabled} ${widget.activeCalendarController} ");
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print("yo build");
     return LayoutBuilder(builder: (context, constraints) {
       return InteractiveViewer(
         constrained: false,
@@ -143,12 +129,6 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
                       activeShaderType: widget.activeShaderType,
                     ),
                   Listener(
-                    /*onPointerDown: (event) {
-                            print(event.buttons);
-                            print(event.pressureMin);
-                            print(event.pressureMax);
-                            print(event);
-                          },*/
                     onPointerMove: (event) {
                       onPointerMove(event, setState);
                     },
@@ -290,7 +270,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     }
 
     // save
-    widget.activeCalendarController.saveSignatur(currentDrawings);
+    widget.activeCalendarController.saveSignatur(currentDrawings, isStylusDrawing: enforceStylus);
     resetState();
   }
 

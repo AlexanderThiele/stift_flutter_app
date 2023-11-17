@@ -8,6 +8,7 @@ import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
+import 'package:pencalendar/repository/analytics/analytics_repository.dart';
 import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
@@ -28,9 +29,10 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     assert(state != null);
     _ref.read(activeCalendarYearProvider.notifier).changeYear(year);
     selectCalendar(state!.calendar);
+    _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.changeYear, parameters: {"year": year});
   }
 
-  void saveSignatur(List<TouchData> pointList) {
+  void saveSignatur(List<TouchData> pointList, {required bool isStylusDrawing}) {
     final color = _ref.read(activeColorProvider);
     final size = _ref.read(activeWidthProvider);
     AppLogger.d("save");
@@ -46,6 +48,9 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     state = state!..drawingList.add(singleDraw);
 
     _ref.read(drawingsRepositoryProvider).createSingleCalendarDrawings(state!.calendar, singleDraw, id);
+    _ref
+        .read(analyticsRepositoryProvider)
+        .trackEvent(AnalyticEvent.addDrawing, parameters: {"stylus": isStylusDrawing, "year": year});
   }
 
   void deleteLast() {
@@ -56,6 +61,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     final tobeDeleted = state!.drawingList.last;
     _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, tobeDeleted);
     state = state!..drawingList.remove(tobeDeleted);
+    _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.revertDrawing);
   }
 
   void deleteAll() {
@@ -63,6 +69,8 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
       _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, drawing);
     }
     state = state!..drawingList.clear();
+    final year = _ref.read(activeCalendarYearProvider);
+    _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.clearYearDrawing, parameters: {"year": year});
   }
 
   void onDeleteCalculation(Offset offset) {
@@ -86,6 +94,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
       for (var drawing in toBeRemoved) {
         _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, drawing);
         state = state!..drawingList.remove(drawing);
+        _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.eraseDrawing);
       }
     }
   }
@@ -104,5 +113,4 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   bool updateShouldNotify(CalendarWithDrawings? old, CalendarWithDrawings? current) {
     return true;
   }
-
 }
