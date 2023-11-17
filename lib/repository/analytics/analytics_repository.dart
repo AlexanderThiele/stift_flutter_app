@@ -11,7 +11,8 @@ enum AnalyticEvent {
   clearYearDrawing("clear_year_drawing"),
   changeYear("change_year"),
   howItWorks("how_it_works"),
-  rateApp("rate_app");
+  rateApp("rate_app"),
+  shareCalendar("share_calendar");
 
   const AnalyticEvent(this.name);
 
@@ -19,7 +20,8 @@ enum AnalyticEvent {
 }
 
 enum AnalyticsScreenView {
-  defaultCalendar("default_calendar");
+  defaultCalendar("default_calendar"),
+  share("share");
 
   const AnalyticsScreenView(this.name);
 

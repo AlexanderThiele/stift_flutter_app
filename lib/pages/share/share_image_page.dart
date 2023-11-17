@@ -9,6 +9,8 @@ import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
+import 'package:pencalendar/repository/analytics/analytics_repository.dart';
+import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:responsive_spacing/responsive_spacing.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -17,11 +19,13 @@ class ShareImagePage extends ConsumerWidget {
 
   ShareImagePage({super.key});
 
-  _shareCalendar() async {
+  _shareCalendar(Rect position) async {
     final picture = await _captureWidget();
 
     await Share.shareXFiles(
-        [XFile.fromData(picture, mimeType: 'image/png', name: "Stift Calendar App", lastModified: DateTime.now())]);
+      [XFile.fromData(picture, mimeType: 'image/png', name: "Stift Calendar App", lastModified: DateTime.now())],
+      sharePositionOrigin: position,
+    );
   }
 
   Future<Uint8List> _captureWidget() async {
@@ -69,12 +73,16 @@ class ShareImagePage extends ConsumerWidget {
                         )),
                   ));
 
-              final shareCard = ElevatedButton(
-                child: Text(context.l10n.shareNow),
-                onPressed: () {
-                  _shareCalendar();
-                },
-              );
+              final shareCard = Builder(builder: (context) {
+                return ElevatedButton(
+                  child: Text(context.l10n.shareNow),
+                  onPressed: () {
+                    ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.shareCalendar);
+                    final box = context.findRenderObject() as RenderBox?;
+                    _shareCalendar(box!.localToGlobal(Offset.zero) & box.size);
+                  },
+                );
+              });
 
               if (context.spacingConfig.layoutColumns.columns == 12) {
                 return Row(
