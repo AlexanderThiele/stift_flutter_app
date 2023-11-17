@@ -1,45 +1,30 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pencalendar/repository/auth_repository.dart';
+import 'package:pencalendar/models/app_user.dart';
+import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
-final authControllerProvider = StateNotifierProvider<AuthController, User?>(
-  (ref) => AuthController(ref)..appStarted(),
+final authControllerProvider = StateNotifierProvider<AuthController, AppUser?>(
+  (ref) => AuthController(ref),
 );
 
-class AuthController extends StateNotifier<User?> {
+class AuthController extends StateNotifier<AppUser?> {
   final StateNotifierProviderRef _ref;
 
-  StreamSubscription<User?>? _authStateChangeSubscription;
+  AuthController(this._ref) : super(null);
 
-  AuthController(this._ref) : super(null) {
-    _authStateChangeSubscription?.cancel();
-    _authStateChangeSubscription = _ref.read(authRepositoryProvider).authStateChanges.listen((user) => state = user);
-  }
-
-  void appStarted() async {
+  Future<void> appStarted() async {
     final user = _ref.read(authRepositoryProvider).getCurrentUser();
     AppLogger.d("app started");
-    if (user == null) {
-      AppLogger.d("user null");
-      await _ref.read(authRepositoryProvider).signInAnonymously();
-      AppLogger.d("SIGN IN anony");
-      state = _ref.read(authRepositoryProvider).getCurrentUser();
-    } else {
+    if (user != null) {
       state = user;
     }
-    AppLogger.d("user with id: ${state?.uid}");
+    AppLogger.d("user with id: ${state?.id}");
   }
 
   void signOut() async {
     await _ref.read(authRepositoryProvider).signOut();
   }
 
-  @override
-  void dispose() {
-    _authStateChangeSubscription?.cancel();
-    super.dispose();
-  }
 }

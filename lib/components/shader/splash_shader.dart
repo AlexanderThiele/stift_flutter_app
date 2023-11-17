@@ -31,7 +31,7 @@ class SplashSmallShader extends StatefulWidget {
         ShaderBuilder.precacheShader(kishimisu);
         break;
       case ShaderType.jwibullori:
-        ShaderBuilder.precacheShader(kishimisu);
+        ShaderBuilder.precacheShader(jwibullori);
         break;
       case ShaderType.fractalcineshader:
         ShaderBuilder.precacheShader(fractalcineshader);

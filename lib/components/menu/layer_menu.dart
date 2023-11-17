@@ -55,6 +55,5 @@ class LayerMenu extends ConsumerWidget {
       FadeEffect(duration: 200.ms, curve: Curves.easeOut),
       const ScaleEffect(begin: Offset(0, 0), curve: Curves.easeOut, alignment: Alignment(-0.8, -1)),
     ], target: activeSubMenu == OpenedTab.layers ? 1 : 0);
-    ;
   }
 }

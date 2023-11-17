@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/country_controller.dart';
 import 'package:pencalendar/models/public_holiday.dart';
-import 'package:pencalendar/repository/shared_pref_repository.dart';
+import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
 final publicHolidayControllerProvider =

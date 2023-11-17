@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
@@ -10,75 +8,26 @@ import 'package:pencalendar/models/Calendar.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
-import 'package:pencalendar/repository/drawings_repository.dart';
-import 'package:pencalendar/repository/firestore_repository.dart';
+import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
 
-final activeCalendarControllerProvider =
-    StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>((ref) => ActiveCalendarController(ref));
+final activeCalendarControllerProvider = StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
+    (ref) => ActiveCalendarController(ref)..selectCalendar(null));
 
 class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   final StateNotifierProviderRef _ref;
 
-  StreamSubscription? _streamSubscription;
-
   ActiveCalendarController(this._ref) : super(null);
 
-  onNewCalendarReceived(List<Calendar> updatedList) {
-    if (state == null && updatedList.isNotEmpty) {
-      // select the first calendar as the current active
-      selectCalendar(updatedList.first);
-    }
-  }
-
-  void selectCalendar(Calendar calendar) async {
+  void selectCalendar(Calendar? calendar) async {
     var year = _ref.read(activeCalendarYearProvider);
-    await _streamSubscription?.cancel();
     state = CalendarWithDrawings(calendar, drawingList: _ref.read(drawingsRepositoryProvider).loadDrawings(year));
-    _streamSubscription = _ref
-        .read(firestoreRepositoryProvider)
-        .getSingleCalendarDrawings(calendar, year)
-        .snapshots()
-        .listen(onNewDrawingReceived);
   }
 
-  changeYear(int year) {
+  void changeYear(int year) {
+    assert(state != null);
     _ref.read(activeCalendarYearProvider.notifier).changeYear(year);
-    if (state != null) {
-      selectCalendar(state!.calendar);
-    } else {
-      AppLogger.e("Change year but the calendar is null");
-    }
-  }
-
-  onNewDrawingReceived(QuerySnapshot<SingleDraw> snapshot) {
-    AppLogger.d("new drawing");
-    AppLogger.d("size ${snapshot.size}");
-    for (var singleDraw in snapshot.docChanges) {
-      switch (singleDraw.type) {
-        case DocumentChangeType.added:
-          final singleDrawObj = singleDraw.doc.data()!;
-          state?.drawingList.add(singleDrawObj);
-          // we're switching from online storage to offline storage
-          _ref
-              .read(drawingsRepositoryProvider)
-              .createSingleCalendarDrawings(state!.calendar, singleDrawObj, singleDrawObj.id);
-          _ref.read(firestoreRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, singleDrawObj);
-          break;
-        case DocumentChangeType.removed:
-          {
-            AppLogger.d("delete");
-            // turn off for now
-            // state?.drawingList.removeWhere((element) => element.id == singleDraw.doc.id);
-          }
-          break;
-        case DocumentChangeType.modified:
-        // TODO: Handle this case.
-          break;
-      }
-    }
-    state = state;
-    // state = state!..drawingList = snapshot.docs.map((e) => e.data()).toList();
+    selectCalendar(state!.calendar);
   }
 
   void saveSignatur(List<TouchData> pointList) {
@@ -116,7 +65,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     state = state!..drawingList.clear();
   }
 
-  onDeleteCalculation(Offset offset) {
+  void onDeleteCalculation(Offset offset) {
     if (state != null) {
       final List<SingleDraw> toBeRemoved = [];
       for (var drawing in state!.drawingList) {
@@ -156,9 +105,4 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     return true;
   }
 
-  @override
-  void dispose() {
-    _streamSubscription?.cancel();
-    super.dispose();
-  }
 }

@@ -33,7 +33,7 @@ class SignaturePainerWrapper extends ConsumerWidget {
 }
 
 class SignaturePainter extends CustomPainter {
-  List<TouchData> points;
+  final List<TouchData> points;
   Color color;
   double strokeWidth;
   List<SingleDraw> drawingList;
@@ -69,11 +69,13 @@ class SignaturePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(SignaturePainter oldDelegate) {
-    // if we don't return true here, the signatures will somehow disappear
     if (drawingList.length != oldDelegate.drawingList.length) {
       return true;
     }
-    if (points.length != oldDelegate.points.length) {
+
+    // Here is somehow an issue. this.points is the same size and has the same objects as oldDelegate.points.
+    // thats why i'm just checking if it's not empty
+    if (points.isNotEmpty) {
       return true;
     }
     return false;

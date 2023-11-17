@@ -10,7 +10,6 @@ import 'package:pencalendar/components/menu/fancy_selection_menu.dart';
 import 'package:pencalendar/components/menu/layer_menu.dart';
 import 'package:pencalendar/components/menu/pen_width_menu.dart';
 import 'package:pencalendar/components/menu/top_right_corner_menu.dart';
-import 'package:pencalendar/controller/calendar_controller.dart';
 import 'package:pencalendar/controller/country_controller.dart';
 import 'package:pencalendar/routes.dart';
 import 'package:rate_my_app/rate_my_app.dart';
@@ -47,7 +46,9 @@ class CalendarPage extends GoRoute {
                     );
                   }
                 },
-                builder: (context) => const CalendarWidget());
+                builder: (context) {
+                  return const CalendarWidget();
+                });
           },
         );
 }
@@ -57,9 +58,6 @@ class CalendarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // do not remove this line otherwise no calendar will be loaded.
-    ref.read(calendarControllerProvider.notifier).initCalendar();
-
     // load current country
     ref.read(countryControllerProvider.notifier);
 
