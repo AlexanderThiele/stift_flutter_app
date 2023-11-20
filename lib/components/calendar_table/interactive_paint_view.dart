@@ -89,12 +89,11 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     return LayoutBuilder(builder: (context, constraints) {
       return InteractiveViewer(
         constrained: false,
-        clipBehavior: Clip.none,
+        clipBehavior: Clip.hardEdge,
         maxScale: 20,
         minScale: 0.5,
         boundaryMargin: EdgeInsets.all(constraints.maxWidth),
         onInteractionStart: (ScaleStartDetails event) {
-          AppLogger.d("onInteractionStart fingers: ${event.pointerCount}");
           if (event.pointerCount == 1) {
             setState(() {
               zoomEnabled = false;
@@ -108,7 +107,6 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
           }
         },
         onInteractionEnd: (event) {
-          AppLogger.d("onInteractionEnd");
           setState(() {
             zoomEnabled = true;
           });
