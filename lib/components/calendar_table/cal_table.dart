@@ -19,6 +19,7 @@ class _CalTableState extends State<CalTable> {
   final int maxRows = 32;
   late final double cellHeight = calHeight / maxRows;
   final double cellWidth = calWidth / 12;
+  final DateTime now = DateTime.now();
 
   final List<Color> monthColors = [
     Colors.blue.shade300,
@@ -46,7 +47,11 @@ class _CalTableState extends State<CalTable> {
     for (int i = 0; i < 12; i++) {
       List<CalCellHolder> dayList = [];
       dayList.add(CalCellHolder(
-          color: monthColors[i], cellType: CellType.month, dateTime: DateTime(widget.firstDayOfYear.year, i + 1)));
+        color: monthColors[i],
+        cellType: CellType.month,
+        dateTime: DateTime(widget.firstDayOfYear.year, i + 1),
+        now: now,
+      ));
 
       // days in a month
       for (int j = 0; j < 31; j++) {
@@ -66,6 +71,7 @@ class _CalTableState extends State<CalTable> {
             color: color,
             cellType: cellType,
             dateTime: day,
+            now: now,
             publicHoliday: widget.publicHolidays.firstWhereOrNull((element) =>
                 element.date.year == day.year && element.date.month == day.month && element.date.day == day.day)));
       }

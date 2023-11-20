@@ -20,7 +20,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoute.shareCalendar.path,
         builder: (_, __) {
           ref.read(analyticsRepositoryProvider).trackScreenView(AnalyticsScreenView.share);
-          return ShareImagePage();
+          return const ShareImagePage();
         },
       )
     ],
