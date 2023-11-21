@@ -4,6 +4,8 @@ import 'package:pencalendar/repository/analytics/analytics_repository.dart';
 import 'package:pencalendar/repository/analytics/firebase_analytics_repository.dart';
 import 'package:pencalendar/repository/auth/auth_repository.dart';
 import 'package:pencalendar/repository/auth/firebase_auth_repository.dart';
+import 'package:pencalendar/repository/billing/active_billing_repository.dart';
+import 'package:pencalendar/repository/billing/billing_repository.dart';
 import 'package:pencalendar/repository/drawings/drawings_repository.dart';
 import 'package:pencalendar/repository/drawings/hive_drawings_repository.dart';
 import 'package:pencalendar/repository/shared_pref_repository.dart';
@@ -16,3 +18,5 @@ final drawingsRepositoryProvider = Provider<DrawingsRepository>((ref) => HiveDra
 
 final sharedPrefUtilityProvider =
     Provider<SharedPrefRepository>((ref) => SharedPrefRepository(ref.watch(sharedPrefInstanceProvider)));
+
+final billingRepositoryProvider = Provider<BillingRepository>((ref) => ActiveBillingRepository());
