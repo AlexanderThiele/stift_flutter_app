@@ -6,23 +6,35 @@ import 'package:pencalendar/utils/app_logger.dart';
 import 'package:pencalendar/utils/extensions/hex_color.dart';
 
 class SingleDraw {
-  String id;
-  int localKey;
-  List<SinglePoint> pointList;
-  Color color;
-  double size;
-  int year;
-  Path path = Path();
+  final String id;
+  final List<SinglePoint> pointList;
+  final Color color;
+  final double size;
+  final int year;
+  final Path path = Path();
 
-  SingleDraw(this.id, this.localKey, this.pointList, this.color, this.size, this.year) {
+  /// will be set by hive
+  int localKey;
+
+  /// You can switch the active calendar but still see the drawing. if drawing is visible only, then this field is false.
+  bool isDeletable = true;
+
+  SingleDraw({
+    required this.id,
+    required this.localKey,
+    required this.pointList,
+    required this.color,
+    required this.size,
+    required this.year,
+    this.isDeletable = true,
+  }) {
     parsePointList();
   }
 
   SingleDraw.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
-  )
-      : id = snapshot.id,
+  )   : id = snapshot.id,
         localKey = -1,
         pointList =
             (snapshot.data()?["point_list"] as List<dynamic>).map((e) => SinglePoint(e["dx"]!, e["dy"]!, 0.5)).toList(),

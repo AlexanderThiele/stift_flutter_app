@@ -8,10 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:localizations/localizations.dart';
+import 'package:pencalendar/controller/billing_controller.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/provider/router_provider.dart';
 import 'package:pencalendar/provider/shared_preference_provider.dart';
-import 'package:pencalendar/repository/drawings/hive_drawings_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -30,7 +30,6 @@ void main() async {
   };
 
   await Hive.initFlutter();
-  await openDrawingsBox();
 
   final sharedPreferences = await SharedPreferences.getInstance();
 
@@ -45,11 +44,22 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    ref.read(billingControllerProvider.notifier).initBilling();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final router = ref.read(routerProvider);
     return MaterialApp.router(
       localizationsDelegates: myLocalizationsDelegates,

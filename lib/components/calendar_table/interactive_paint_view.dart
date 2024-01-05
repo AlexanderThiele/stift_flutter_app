@@ -167,6 +167,11 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
   void onPointerMove(PointerMoveEvent event, StateSetter setState) {
     // if zoom is enabled, then don't draw. user is
     // probably pinching
+    // print("##########################");
+    // print(event.pressure); normal scheint 1 zu sein
+    // print(event.pressureMin); 0
+    // print(event.pressureMax); 4,1666 apple pencil gen 2
+    // print(event.size);
     if (zoomEnabled) {
       return;
     }

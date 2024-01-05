@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pencalendar/controller/active_calendar_controller.dart';
+import 'package:pencalendar/models/calendar_layer.dart';
 import 'package:pencalendar/models/opened_tab.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
 import 'package:responsive_spacing/responsive_spacing.dart';
@@ -11,6 +13,7 @@ class LayerMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activeSubMenu = ref.watch(activeSubMenuProvider);
+    final activeCalendar = ref.watch(activeCalendarControllerProvider);
     return Container(
       margin: const EdgeInsets.only(left: 8, top: 8 + 108 + 8),
       child: Card(
@@ -21,33 +24,99 @@ class LayerMenu extends ConsumerWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(left: context.spacing.m, top: context.spacing.m),
-              child: Text(
-                "Layers",
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: context.spacing.m),
-              child: Text(
-                "Coming soon..",
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Padding(
-                    padding: EdgeInsets.all(context.spacing.m),
-                    child: Icon(Icons.visibility, size: context.spacing.l),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Layers",
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
-                ),
-                Text("📆", style: Theme.of(context).textTheme.titleLarge),
-                Radio(value: true, groupValue: true, onChanged: (_) {}, visualDensity: VisualDensity.compact),
-              ],
+                  const SizedBox(width: 4),
+                  InkWell(
+                      onTap: () {
+                        final controller = TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text("New Layer"),
+                              content: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    controller: controller,
+                                    maxLines: 1,
+                                    decoration:
+                                        InputDecoration(label: Text("Assign a name to the layer"), hintText: "🏝️"),
+                                  )
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Cancel")),
+                                TextButton(
+                                    onPressed: () async {
+                                      final navigator = Navigator.of(context);
+                                      await ref
+                                          .read(activeCalendarControllerProvider.notifier)
+                                          .createLayer(controller.text);
+                                      navigator.pop();
+                                    },
+                                    child: Text("Ok"))
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(Icons.add, size: 16),
+                      )),
+                ],
+              ),
             ),
+            for (final layer in activeCalendar?.layerList ?? <CalendarLayer>[])
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      ref.read(activeCalendarControllerProvider.notifier).switchVisibility(!layer.isVisible, layer);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: context.spacing.m,
+                          top: context.spacing.m,
+                          bottom: context.spacing.m,
+                          right: context.spacing.m / 2),
+                      child: Icon(layer.isVisible ? Icons.visibility : Icons.visibility_off, size: context.spacing.l),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      ref.read(activeCalendarControllerProvider.notifier).switchWritableLayer(layer);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: context.spacing.m / 2,
+                          top: context.spacing.m,
+                          bottom: context.spacing.m,
+                          right: context.spacing.m),
+                      child: Icon(layer.isWriteActive ? Icons.edit : Icons.edit_off, size: context.spacing.l),
+                    ),
+                  ),
+                  switch (layer.name) {
+                    "" => Text("📆", style: Theme.of(context).textTheme.titleLarge),
+                    _ => Text(layer.name, style: Theme.of(context).textTheme.titleSmall)
+                  },
+                  SizedBox(width: context.spacingConfig.padding.size),
+                ],
+              ),
           ],
         ),
       ),

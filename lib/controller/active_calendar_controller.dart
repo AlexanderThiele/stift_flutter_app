@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/models/Calendar.dart';
+import 'package:pencalendar/models/calendar_layer.dart';
 import 'package:pencalendar/models/calendar_with_drawings.dart';
 import 'package:pencalendar/models/single_draw.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
 import 'package:pencalendar/repository/analytics/analytics_repository.dart';
 import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:pencalendar/utils/app_logger.dart';
+import 'package:pencalendar/utils/emoji.dart';
 
 final activeCalendarControllerProvider = StateNotifierProvider<ActiveCalendarController, CalendarWithDrawings?>(
     (ref) => ActiveCalendarController(ref)..selectCalendar(null));
@@ -22,7 +24,8 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
 
   void selectCalendar(Calendar? calendar) async {
     var year = _ref.read(activeCalendarYearProvider);
-    state = CalendarWithDrawings(calendar, drawingList: _ref.read(drawingsRepositoryProvider).loadDrawings(year));
+    state = CalendarWithDrawings(calendar,
+        layerList: await _ref.read(drawingsRepositoryProvider).loadAllCalendarLayer(year));
   }
 
   void changeYear(int year) {
@@ -33,70 +36,115 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   }
 
   void saveSignatur(List<TouchData> pointList, {required bool isStylusDrawing}) {
+    assert(state != null);
     final color = _ref.read(activeColorProvider);
     final size = _ref.read(activeWidthProvider);
-    AppLogger.d("save");
     final year = _ref.read(activeCalendarYearProvider);
     final id = DateTime.now().millisecondsSinceEpoch.toString();
 
-    final List<SinglePoint> convertedPoints = [];
-    for (final point in pointList) {
-      convertedPoints.add(SinglePoint(point.offset.dx, point.offset.dy, point.pressure));
-    }
+    final singleDraw = SingleDraw(
+      id: id,
+      localKey: -1,
+      pointList: pointList.map((point) => SinglePoint(point.offset.dx, point.offset.dy, point.pressure)).toList(),
+      color: color,
+      size: size,
+      year: year,
+      isDeletable: true,
+    );
+    // update all listeners
+    state = state!..addDrawingToWritable(singleDraw);
 
-    final singleDraw = SingleDraw(id, -1, convertedPoints, color, size, year);
-    state = state!..drawingList.add(singleDraw);
-
-    _ref.read(drawingsRepositoryProvider).createSingleCalendarDrawings(state!.calendar, singleDraw, id);
+    _ref
+        .read(drawingsRepositoryProvider)
+        .createSingleCalendarDrawings(state!.calendar, state!.currentWritableCalendarLayer, singleDraw);
     _ref
         .read(analyticsRepositoryProvider)
         .trackEvent(AnalyticEvent.addDrawing, parameters: {"stylus": isStylusDrawing, "year": year});
   }
 
   void deleteLast() {
-    if (state == null || state!.drawingList.isEmpty) {
+    assert(state != null);
+    final (calendarLayer, deletedSingleDraw) = state!.deleteLast();
+    if (calendarLayer == null || deletedSingleDraw == null) {
       AppLogger.d("nothing to delete, list is empty");
       return;
     }
-    final tobeDeleted = state!.drawingList.last;
-    _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, tobeDeleted);
-    state = state!..drawingList.remove(tobeDeleted);
+    state = state;
+    _ref
+        .read(drawingsRepositoryProvider)
+        .deleteSingleCalendarDrawings(state!.calendar, calendarLayer, deletedSingleDraw);
     _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.revertDrawing);
   }
 
-  void deleteAll() {
-    for (final drawing in state!.drawingList) {
-      _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, drawing);
+  /// This really deletes all Drawings for the current year
+  void deleteAll() async {
+    for (final calendarLayer in state!.layerList) {
+      await _ref.read(drawingsRepositoryProvider).clearCalendarLayer(calendarLayer);
     }
-    state = state!..drawingList.clear();
+
+    state = state!..clearAllLayer();
     final year = _ref.read(activeCalendarYearProvider);
     _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.clearYearDrawing, parameters: {"year": year});
   }
 
   void onDeleteCalculation(Offset offset) {
-    if (state != null) {
-      final List<SingleDraw> toBeRemoved = [];
-      for (var drawing in state!.drawingList) {
-        final path = Path();
+    assert(state != null);
 
-        for (int i = 0; i < drawing.pointList.length; i++) {
-          if (i == 0) {
-            path.moveTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
-          } else {
-            path.lineTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
-          }
-        }
-        if (path.contains(offset) || _checkNearbyPoints(offset, drawing.pointList)) {
-          AppLogger.d("found intersection: ${drawing.id}");
-          toBeRemoved.add(drawing);
+    final List<SingleDraw> toBeRemoved = [];
+    for (var drawing in state!.currentWritableCalendarLayer.drawingList) {
+      final path = Path();
+
+      for (int i = 0; i < drawing.pointList.length; i++) {
+        if (i == 0) {
+          path.moveTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
+        } else {
+          path.lineTo(drawing.pointList[i].dx, drawing.pointList[i].dy);
         }
       }
-      for (var drawing in toBeRemoved) {
-        _ref.read(drawingsRepositoryProvider).deleteSingleCalendarDrawings(state!.calendar, drawing);
-        state = state!..drawingList.remove(drawing);
+      if (path.contains(offset) || _checkNearbyPoints(offset, drawing.pointList)) {
+        AppLogger.d("found intersection: ${drawing.id}");
+        toBeRemoved.add(drawing);
         _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.eraseDrawing);
       }
     }
+    state = state!..deleteSingleDrawingsFromWritable(toBeRemoved);
+    _ref
+        .read(drawingsRepositoryProvider)
+        .deleteCalendarDrawings(state!.calendar, state!.currentWritableCalendarLayer, toBeRemoved);
+  }
+
+  Future<void> createLayer(String name) async {
+    assert(state != null);
+    String clearedName = switch (name) {
+      "" => randomEmoji,
+      _ => name,
+    };
+    final calendarLayer = CalendarLayer.fromUserCreation(-1, clearedName);
+    await _ref.read(drawingsRepositoryProvider).createNewCalendarLayer(calendarLayer);
+    state!.addLayer(calendarLayer);
+    state = state;
+  }
+
+  Future<void> switchVisibility(bool isVisible, CalendarLayer calendarLayer) async {
+    assert(state != null);
+    if (calendarLayer.isWriteActive) {
+      return;
+    }
+    calendarLayer.isVisible = isVisible;
+    _ref.read(drawingsRepositoryProvider).saveAllCalendarLayer(state!.layerList);
+    state = state;
+  }
+
+  Future<void> switchWritableLayer(CalendarLayer calendarLayer) async {
+    assert(state != null);
+    for (final layer in state!.layerList) {
+      layer.isWriteActive = false;
+    }
+    calendarLayer.isWriteActive = true;
+    calendarLayer.isVisible = true;
+    state!.currentWritableCalendarLayer = calendarLayer;
+    _ref.read(drawingsRepositoryProvider).saveAllCalendarLayer(state!.layerList);
+    state = state;
   }
 
   bool _checkNearbyPoints(Offset offset, List<SinglePoint> pointList) {

@@ -1,1 +1,3 @@
-abstract class BillingRepository {}
+abstract class BillingRepository {
+  void init();
+}

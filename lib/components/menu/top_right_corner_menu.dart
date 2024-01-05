@@ -28,6 +28,7 @@ class TopRightCornerMenu extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
+                heroTag: "year.back",
                 mini: true,
                 onPressed: () {
                   ref.read(activeCalendarControllerProvider.notifier).changeYear(year - 1);
@@ -42,6 +43,7 @@ class TopRightCornerMenu extends ConsumerWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(8))),
                 child: Text("$year", style: Theme.of(context).textTheme.titleLarge)),
             FloatingActionButton(
+                heroTag: "year.forward",
                 mini: true,
                 onPressed: () {
                   ref.read(activeCalendarControllerProvider.notifier).changeYear(year + 1);
@@ -50,6 +52,7 @@ class TopRightCornerMenu extends ConsumerWidget {
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 child: const Icon(Icons.arrow_forward)),
             FloatingActionButton(
+              heroTag: "menu",
               mini: true,
               onPressed: null,
               backgroundColor: Theme.of(context).colorScheme.surface,

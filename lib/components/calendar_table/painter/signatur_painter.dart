@@ -25,7 +25,7 @@ class SignaturePainerWrapper extends ConsumerWidget {
     return CustomPaint(
         painter: SignaturePainter(
             points: currentDrawings,
-            drawingList: activeCalendar.drawingList,
+            drawingList: activeCalendar.allVisibleDrawings,
             color: activeColor,
             strokeWidth: activeWidth),
         size: const Size(calWidth, calHeight));

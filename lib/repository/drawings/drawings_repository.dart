@@ -1,12 +1,22 @@
 import 'package:pencalendar/models/Calendar.dart';
+import 'package:pencalendar/models/calendar_layer.dart';
 import 'package:pencalendar/models/single_draw.dart';
 
 abstract class DrawingsRepository {
-  List<SingleDraw> loadDrawings(int year);
+  Future<void> createSingleCalendarDrawings(Calendar? calendar, CalendarLayer calendarLayer, SingleDraw singleDraw);
 
-  Future<void> createSingleCalendarDrawings(Calendar? calendar, SingleDraw singleDraw, String id);
+  Future<void> deleteSingleCalendarDrawings(Calendar? calendar, CalendarLayer calendarLayer, SingleDraw singleDraw);
 
-  Future<void> deleteSingleCalendarDrawings(Calendar? calendar, SingleDraw singleDraw);
+  Future<void> deleteCalendarDrawings(Calendar? calendar, CalendarLayer calendarLayer, List<SingleDraw> singleDrawList);
 
-  Future<void> deleteSingleCalendarDrawingList(Calendar? calendar, List<SingleDraw> singleDraw);
+  Future<void> deleteSingleCalendarDrawingList(
+      Calendar? calendar, CalendarLayer calendarLayer, List<SingleDraw> singleDraw);
+
+  Future<List<CalendarLayer>> loadAllCalendarLayer(int year);
+
+  Future<int> createNewCalendarLayer(CalendarLayer calendarLayer);
+
+  Future<void> saveAllCalendarLayer(List<CalendarLayer> calendarLayer);
+
+  Future<void> clearCalendarLayer(CalendarLayer calendarLayer);
 }
