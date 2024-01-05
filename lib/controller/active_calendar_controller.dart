@@ -125,6 +125,18 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     state = state;
   }
 
+  Future<void> deleteLayer(CalendarLayer calendarLayer) async {
+    assert(state != null);
+    await _ref.read(drawingsRepositoryProvider).deleteCalendarLayer(calendarLayer);
+    state!.layerList.remove(calendarLayer);
+    state = state;
+
+    if (calendarLayer.isWriteActive) {
+      // if user deleted the active write calendar, then switch again
+      switchWritableLayer(state!.layerList.first);
+    }
+  }
+
   Future<void> switchVisibility(bool isVisible, CalendarLayer calendarLayer) async {
     assert(state != null);
     if (calendarLayer.isWriteActive) {

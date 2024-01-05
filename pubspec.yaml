@@ -33,6 +33,7 @@ dependencies:
   rate_my_app: ^2.0.0
   responsive_spacing: ^1.1.0
   share_plus: 7.2.1
+  flutter_slidable: ^3.0.1
   design_system:
     path: packages/design_system/
   localizations:

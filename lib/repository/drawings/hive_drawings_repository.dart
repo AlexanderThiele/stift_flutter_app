@@ -87,6 +87,13 @@ class HiveDrawingsRepository extends DrawingsRepository {
   }
 
   @override
+  Future<void> deleteCalendarLayer(CalendarLayer calendarLayer) async {
+    await clearCalendarLayer(calendarLayer);
+    final layerBox = await _getLayerBox();
+    layerBox.delete(calendarLayer.localKey);
+  }
+
+  @override
   Future<void> saveAllCalendarLayer(List<CalendarLayer> calendarLayer) async {
     final box = await _getLayerBox();
     for (final layer in calendarLayer) {

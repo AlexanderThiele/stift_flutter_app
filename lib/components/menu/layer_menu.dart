@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/models/calendar_layer.dart';
 import 'package:pencalendar/models/opened_tab.dart';
@@ -45,8 +46,10 @@ class LayerMenu extends ConsumerWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextField(
+                                    autofocus: true,
                                     controller: controller,
                                     maxLines: 1,
+                                    maxLength: 24,
                                     decoration:
                                         InputDecoration(label: Text("Assign a name to the layer"), hintText: "🏝️"),
                                   )
@@ -112,7 +115,25 @@ class LayerMenu extends ConsumerWidget {
                   ),
                   switch (layer.name) {
                     "" => Text("📆", style: Theme.of(context).textTheme.titleLarge),
-                    _ => Text(layer.name, style: Theme.of(context).textTheme.titleSmall)
+                    _ => Slidable(
+                        startActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            CustomSlidableAction(
+                              flex: 5,
+                              onPressed: (context) {
+                                ref.read(activeCalendarControllerProvider.notifier).deleteLayer(layer);
+                              },
+                              backgroundColor: const Color(0xFFFE4A49),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.all(0),
+                              child: const Icon(Icons.delete, size: 16),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                            constraints: const BoxConstraints(minWidth: 48),
+                            child: Text(layer.name, style: Theme.of(context).textTheme.titleSmall)))
                   },
                   SizedBox(width: context.spacingConfig.padding.size),
                 ],

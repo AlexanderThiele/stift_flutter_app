@@ -16,6 +16,8 @@ abstract class DrawingsRepository {
 
   Future<int> createNewCalendarLayer(CalendarLayer calendarLayer);
 
+  Future<void> deleteCalendarLayer(CalendarLayer calendarLayer);
+
   Future<void> saveAllCalendarLayer(List<CalendarLayer> calendarLayer);
 
   Future<void> clearCalendarLayer(CalendarLayer calendarLayer);
