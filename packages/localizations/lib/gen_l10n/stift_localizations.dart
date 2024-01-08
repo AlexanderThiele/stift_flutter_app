@@ -161,6 +161,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MAYBE LATER'**
   String get rateAppRateLaterButton;
+
+  /// No description provided for @layersFeatureTitleName.
+  ///
+  /// In en, this message translates to:
+  /// **'Layers'**
+  String get layersFeatureTitleName;
+
+  /// No description provided for @layerNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New Layer'**
+  String get layerNew;
+
+  /// No description provided for @layerExplainTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Layers Explained'**
+  String get layerExplainTitle;
+
+  /// No description provided for @layerExplainText.
+  ///
+  /// In en, this message translates to:
+  /// **'In our app, layers are like transparent sheets that you can stack on top of each other. Each layer represents a different category of appointments, such as work, personal, or social events. You can turn layers on or off to focus on specific types of appointments or to see your entire schedule at once. This layering system allows you to organize your schedule with greater flexibility and clarity.'**
+  String get layerExplainText;
+
+  /// No description provided for @layerTextFieldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign a name to the layer'**
+  String get layerTextFieldTitle;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'Ok'**
+  String get ok;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

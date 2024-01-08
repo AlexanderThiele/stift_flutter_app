@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:localizations/localizations.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/models/calendar_layer.dart';
 import 'package:pencalendar/models/opened_tab.dart';
@@ -29,7 +30,7 @@ class LayerMenu extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Layers",
+                    context.l10n.layersFeatureTitleName,
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox(width: 4),
@@ -40,18 +41,24 @@ class LayerMenu extends ConsumerWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text("New Layer"),
+                              title: Text(context.l10n.layerNew),
                               content: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  ExpansionTile(
+                                    title: Text(context.l10n.layerExplainTitle),
+                                    shape: const Border(),
+                                    tilePadding: EdgeInsets.zero,
+                                    children: [Text(context.l10n.layerExplainText)],
+                                  ),
                                   TextField(
                                     autofocus: true,
                                     controller: controller,
                                     maxLines: 1,
                                     maxLength: 24,
                                     decoration:
-                                        InputDecoration(label: Text("Assign a name to the layer"), hintText: "🏝️"),
+                                        InputDecoration(label: Text(context.l10n.layerTextFieldTitle), hintText: "🏝️"),
                                   )
                                 ],
                               ),
@@ -60,7 +67,7 @@ class LayerMenu extends ConsumerWidget {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text("Cancel")),
+                                    child: Text(context.l10n.cancel)),
                                 TextButton(
                                     onPressed: () async {
                                       final navigator = Navigator.of(context);
@@ -69,7 +76,7 @@ class LayerMenu extends ConsumerWidget {
                                           .createLayer(controller.text);
                                       navigator.pop();
                                     },
-                                    child: Text("Ok"))
+                                    child: Text(context.l10n.ok))
                               ],
                             );
                           },

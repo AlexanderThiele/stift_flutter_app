@@ -40,4 +40,26 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get rateAppRateLaterButton => 'Später vielleicht';
+
+  @override
+  String get layersFeatureTitleName => 'Ebenen';
+
+  @override
+  String get layerNew => 'Neue Ebene';
+
+  @override
+  String get layerExplainTitle => 'Ebene Erklärt';
+
+  @override
+  String get layerExplainText =>
+      'Ebenen sind wie transparente Blätter, die du übereinander stapeln kannst. Jede Ebene steht für eine andere Terminkategorie, z. B. Arbeit, privat oder eine Ebene pro Person. Du kannst die Ebenen ein- oder ausschalten, um sich auf bestimmte Arten von Terminen zu konzentrieren oder um deinen gesamten Terminplan auf einmal zu sehen. Mit diesem Schichtensystem kannst du deinen Terminplan flexibler und übersichtlicher gestalten.';
+
+  @override
+  String get layerTextFieldTitle => 'Gib der Ebene einen Namen';
+
+  @override
+  String get cancel => 'Abbrechen';
+
+  @override
+  String get ok => 'Ok';
 }

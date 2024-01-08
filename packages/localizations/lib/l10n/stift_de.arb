@@ -31,5 +31,12 @@
   "rateAppText": "Wenn dir diese App gefällt, nehm dir bitte ein paar Sekunden, um sie zu bewerten!\nEs hilft uns wirklich und es sollte wirklich schnell gehen.",
   "rateAppRateButton": "Bewerten",
   "rateAppRateNoButton": "Nein Danke",
-  "rateAppRateLaterButton": "Später vielleicht"
+  "rateAppRateLaterButton": "Später vielleicht",
+  "layersFeatureTitleName": "Ebenen",
+  "layerNew": "Neue Ebene",
+  "layerExplainTitle": "Ebene Erklärt",
+  "layerExplainText": "Ebenen sind wie transparente Blätter, die du übereinander stapeln kannst. Jede Ebene steht für eine andere Terminkategorie, z. B. Arbeit, privat oder eine Ebene pro Person. Du kannst die Ebenen ein- oder ausschalten, um sich auf bestimmte Arten von Terminen zu konzentrieren oder um deinen gesamten Terminplan auf einmal zu sehen. Mit diesem Schichtensystem kannst du deinen Terminplan flexibler und übersichtlicher gestalten.",
+  "layerTextFieldTitle": "Gib der Ebene einen Namen",
+  "cancel": "Abbrechen",
+  "ok": "Ok"
 }

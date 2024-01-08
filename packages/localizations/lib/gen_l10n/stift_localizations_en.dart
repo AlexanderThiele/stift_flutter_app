@@ -40,4 +40,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rateAppRateLaterButton => 'MAYBE LATER';
+
+  @override
+  String get layersFeatureTitleName => 'Layers';
+
+  @override
+  String get layerNew => 'New Layer';
+
+  @override
+  String get layerExplainTitle => 'Layers Explained';
+
+  @override
+  String get layerExplainText =>
+      'In our app, layers are like transparent sheets that you can stack on top of each other. Each layer represents a different category of appointments, such as work, personal, or social events. You can turn layers on or off to focus on specific types of appointments or to see your entire schedule at once. This layering system allows you to organize your schedule with greater flexibility and clarity.';
+
+  @override
+  String get layerTextFieldTitle => 'Assign a name to the layer';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get ok => 'Ok';
 }
