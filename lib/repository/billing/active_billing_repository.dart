@@ -5,7 +5,13 @@ class ActiveBillingRepository extends BillingRepository {
   final StiftBilling _billing = StiftBilling();
 
   @override
-  void init() {
-    _billing.load();
+  Future<bool> init() async {
+    // _billing.load();
+    return true;
+  }
+
+  @override
+  bool get hasPremium {
+    return true;
   }
 }

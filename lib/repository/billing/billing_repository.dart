@@ -1,3 +1,5 @@
 abstract class BillingRepository {
-  void init();
+  Future<bool> init();
+
+  bool get hasPremium;
 }

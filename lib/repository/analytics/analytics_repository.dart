@@ -21,7 +21,8 @@ enum AnalyticEvent {
 
 enum AnalyticsScreenView {
   defaultCalendar("default_calendar"),
-  share("share");
+  share("share"),
+  paywall("paywall");
 
   const AnalyticsScreenView(this.name);
 

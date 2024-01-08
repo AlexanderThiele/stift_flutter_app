@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:localizations/localizations.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
+import 'package:pencalendar/controller/feature_controller.dart';
 import 'package:pencalendar/models/calendar_layer.dart';
 import 'package:pencalendar/models/opened_tab.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
+import 'package:pencalendar/provider/router_provider.dart';
 import 'package:responsive_spacing/responsive_spacing.dart';
 
 class LayerMenu extends ConsumerWidget {
@@ -16,6 +19,9 @@ class LayerMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activeSubMenu = ref.watch(activeSubMenuProvider);
     final activeCalendar = ref.watch(activeCalendarControllerProvider);
+    final activeFeatures = ref.watch(activeFeatureControllerProvider);
+
+    final canCreateMoreLayers = (activeCalendar?.layerList.length ?? 0) < activeFeatures.numberOfLayers;
     return Container(
       margin: const EdgeInsets.only(left: 8, top: 8 + 108 + 8),
       child: Card(
@@ -30,7 +36,11 @@ class LayerMenu extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    context.l10n.layersFeatureTitleName,
+                    switch (activeFeatures.activePremium) {
+                      true => context.l10n.layerNew,
+                      false =>
+                        "${context.l10n.layerNew} ${activeCalendar?.layerList.length}/${activeFeatures.numberOfLayers}"
+                    },
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox(width: 4),
@@ -46,20 +56,31 @@ class LayerMenu extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  ExpansionTile(
-                                    title: Text(context.l10n.layerExplainTitle),
-                                    shape: const Border(),
-                                    tilePadding: EdgeInsets.zero,
-                                    children: [Text(context.l10n.layerExplainText)],
-                                  ),
-                                  TextField(
-                                    autofocus: true,
-                                    controller: controller,
-                                    maxLines: 1,
-                                    maxLength: 24,
-                                    decoration:
-                                        InputDecoration(label: Text(context.l10n.layerTextFieldTitle), hintText: "🏝️"),
-                                  )
+                                  if (canCreateMoreLayers)
+                                    ExpansionTile(
+                                      title: Text(context.l10n.layerExplainTitle),
+                                      shape: const Border(),
+                                      tilePadding: EdgeInsets.zero,
+                                      children: [Text(context.l10n.layerExplainText)],
+                                    ),
+                                  if (canCreateMoreLayers)
+                                    TextField(
+                                      autofocus: true,
+                                      controller: controller,
+                                      maxLines: 1,
+                                      maxLength: 24,
+                                      decoration: InputDecoration(
+                                          label: Text(context.l10n.layerTextFieldTitle), hintText: "🏝️"),
+                                    ),
+                                  if (!canCreateMoreLayers) ...[
+                                    Text(
+                                      "Unlock Unlimited Layers",
+                                      style: Theme.of(context).textTheme.titleMedium,
+                                    ),
+                                    Text(
+                                        "Our free plan allows you to experience the power of layered appointments, organizing your schedule with up to ${activeFeatures.numberOfLayers} layers. However, to create unlimited layers and truly maximize the efficiency of your planning, you can avail of our one-time purchase option.",
+                                        style: Theme.of(context).textTheme.bodyMedium)
+                                  ]
                                 ],
                               ),
                               actions: [
@@ -71,12 +92,20 @@ class LayerMenu extends ConsumerWidget {
                                 TextButton(
                                     onPressed: () async {
                                       final navigator = Navigator.of(context);
-                                      await ref
-                                          .read(activeCalendarControllerProvider.notifier)
-                                          .createLayer(controller.text);
-                                      navigator.pop();
+                                      if (canCreateMoreLayers) {
+                                        await ref
+                                            .read(activeCalendarControllerProvider.notifier)
+                                            .createLayer(controller.text);
+                                        navigator.pop();
+                                      } else {
+                                        navigator.pop();
+                                        GoRouter.of(context).push(AppRoute.paywall.path);
+                                      }
                                     },
-                                    child: Text(context.l10n.ok))
+                                    child: switch (canCreateMoreLayers) {
+                                      true => Text(context.l10n.ok),
+                                      false => Text("View Price")
+                                    })
                               ],
                             );
                           },
