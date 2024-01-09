@@ -38,5 +38,30 @@
   "layerExplainText": "Ebenen sind wie transparente Blätter, die du übereinander stapeln kannst. Jede Ebene steht für eine andere Terminkategorie, z. B. Arbeit, privat oder eine Ebene pro Person. Du kannst die Ebenen ein- oder ausschalten, um sich auf bestimmte Arten von Terminen zu konzentrieren oder um deinen gesamten Terminplan auf einmal zu sehen. Mit diesem Schichtensystem kannst du deinen Terminplan flexibler und übersichtlicher gestalten.",
   "layerTextFieldTitle": "Gib der Ebene einen Namen",
   "cancel": "Abbrechen",
-  "ok": "Ok"
+  "ok": "Ok",
+  "premiumLayersTitle": "Unbegrenzte Ebenen freischalten",
+  "premiumLayersText": "Unser kostenloser Plan ermöglicht es dir, die Ebenen zu entdecken und deinen Plan mit bis zu {numberOfFreeLayers} Ebenen zu organisieren. Wenn du jedoch eine unbegrenzte Anzahl von Ebenen erstellen und die Effizienz deiner Planung wirklich maximieren möchtest, kannst du unseren einmal Kauf nutzen.",
+  "@premiumLayersText": {
+    "placeholders": {
+      "numberOfFreeLayers": {
+        "type": "num",
+        "example": "2"
+      }
+    }
+  },
+  "premiumViewPriceButton": "Preis anschauen",
+  "premiumGoToPremiumPage": "Premium",
+  "premiumLifeTimeTitle": "Lifetime",
+  "premiumLifeTimeBullet1": "1 Zahlung, alle Funktionen, unbegrenzter Zugang",
+  "premiumLifeTimeBullet2": "Starte heute, spare für immer",
+  "premiumPurchaseButton": "Jetzt starten",
+  "premiumDiscount": "{discount} Rabatt",
+  "@premiumDiscount": {
+    "placeholders": {
+      "discount": {
+        "type": "String",
+        "example": "50%"
+      }
+    }
+  }
 }

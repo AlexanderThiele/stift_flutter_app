@@ -62,4 +62,35 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get ok => 'Ok';
+
+  @override
+  String get premiumLayersTitle => 'Unbegrenzte Ebenen freischalten';
+
+  @override
+  String premiumLayersText(num numberOfFreeLayers) {
+    return 'Unser kostenloser Plan ermöglicht es dir, die Ebenen zu entdecken und deinen Plan mit bis zu $numberOfFreeLayers Ebenen zu organisieren. Wenn du jedoch eine unbegrenzte Anzahl von Ebenen erstellen und die Effizienz deiner Planung wirklich maximieren möchtest, kannst du unseren einmal Kauf nutzen.';
+  }
+
+  @override
+  String get premiumViewPriceButton => 'Preis anschauen';
+
+  @override
+  String get premiumGoToPremiumPage => 'Premium';
+
+  @override
+  String get premiumLifeTimeTitle => 'Lifetime';
+
+  @override
+  String get premiumLifeTimeBullet1 => '1 Zahlung, alle Funktionen, unbegrenzter Zugang';
+
+  @override
+  String get premiumLifeTimeBullet2 => 'Starte heute, spare für immer';
+
+  @override
+  String get premiumPurchaseButton => 'Jetzt starten';
+
+  @override
+  String premiumDiscount(String discount) {
+    return '$discount Rabatt';
+  }
 }

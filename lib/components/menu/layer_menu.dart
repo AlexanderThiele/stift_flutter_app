@@ -25,7 +25,6 @@ class LayerMenu extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.only(left: 8, top: 8 + 108 + 8),
       child: Card(
-        color: Theme.of(context).colorScheme.surface,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,11 +73,10 @@ class LayerMenu extends ConsumerWidget {
                                     ),
                                   if (!canCreateMoreLayers) ...[
                                     Text(
-                                      "Unlock Unlimited Layers",
+                                      context.l10n.premiumLayersTitle,
                                       style: Theme.of(context).textTheme.titleMedium,
                                     ),
-                                    Text(
-                                        "Our free plan allows you to experience the power of layered appointments, organizing your schedule with up to ${activeFeatures.numberOfLayers} layers. However, to create unlimited layers and truly maximize the efficiency of your planning, you can avail of our one-time purchase option.",
+                                    Text(context.l10n.premiumLayersText(activeFeatures.numberOfLayers),
                                         style: Theme.of(context).textTheme.bodyMedium)
                                   ]
                                 ],
@@ -104,7 +102,7 @@ class LayerMenu extends ConsumerWidget {
                                     },
                                     child: switch (canCreateMoreLayers) {
                                       true => Text(context.l10n.ok),
-                                      false => Text("View Price")
+                                      false => Text(context.l10n.premiumViewPriceButton)
                                     })
                               ],
                             );

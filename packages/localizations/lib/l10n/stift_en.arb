@@ -38,5 +38,30 @@
   "layerExplainText": "In our app, layers are like transparent sheets that you can stack on top of each other. Each layer represents a different category of appointments, such as work, personal, or social events. You can turn layers on or off to focus on specific types of appointments or to see your entire schedule at once. This layering system allows you to organize your schedule with greater flexibility and clarity.",
   "layerTextFieldTitle": "Assign a name to the layer",
   "cancel": "Cancel",
-  "ok": "Ok"
+  "ok": "Ok",
+  "premiumLayersTitle": "Unlock Unlimited Layers",
+  "premiumLayersText": "Our free plan allows you to experience the power of layered appointments, organizing your schedule with up to {numberOfFreeLayers} layers. However, to create unlimited layers and truly maximize the efficiency of your planning, you can avail of our one-time purchase option.",
+  "@premiumLayersText": {
+    "placeholders": {
+      "numberOfFreeLayers": {
+        "type": "num",
+        "example": "2"
+      }
+    }
+  },
+  "premiumViewPriceButton": "View Price",
+  "premiumGoToPremiumPage": "Premium",
+  "premiumLifeTimeTitle": "Lifetime",
+  "premiumLifeTimeBullet1": "1 payment, all functions, unlimited access",
+  "premiumLifeTimeBullet2": "Start today, save forever",
+  "premiumPurchaseButton": "Start now",
+  "premiumDiscount": "{discount} Discount",
+  "@premiumDiscount": {
+    "placeholders": {
+      "discount": {
+        "type": "String",
+        "example": "50%"
+      }
+    }
+  }
 }

@@ -62,4 +62,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ok => 'Ok';
+
+  @override
+  String get premiumLayersTitle => 'Unlock Unlimited Layers';
+
+  @override
+  String premiumLayersText(num numberOfFreeLayers) {
+    return 'Our free plan allows you to experience the power of layered appointments, organizing your schedule with up to $numberOfFreeLayers layers. However, to create unlimited layers and truly maximize the efficiency of your planning, you can avail of our one-time purchase option.';
+  }
+
+  @override
+  String get premiumViewPriceButton => 'View Price';
+
+  @override
+  String get premiumGoToPremiumPage => 'Premium';
+
+  @override
+  String get premiumLifeTimeTitle => 'Lifetime';
+
+  @override
+  String get premiumLifeTimeBullet1 => '1 payment, all functions, unlimited access';
+
+  @override
+  String get premiumLifeTimeBullet2 => 'Start today, save forever';
+
+  @override
+  String get premiumPurchaseButton => 'Start now';
+
+  @override
+  String premiumDiscount(String discount) {
+    return '$discount Discount';
+  }
 }

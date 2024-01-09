@@ -33,29 +33,27 @@ class TopRightCornerMenu extends ConsumerWidget {
                 onPressed: () {
                   ref.read(activeCalendarControllerProvider.notifier).changeYear(year - 1);
                 },
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                elevation: 0,
+                elevation: 1,
                 child: const Icon(Icons.arrow_back)),
-            Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: const BorderRadius.all(Radius.circular(8))),
-                child: Text("$year", style: Theme.of(context).textTheme.titleLarge)),
+            Card(
+                surfaceTintColor: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("$year", style: Theme.of(context).textTheme.titleLarge),
+                )),
             FloatingActionButton(
                 heroTag: "year.forward",
                 mini: true,
                 onPressed: () {
                   ref.read(activeCalendarControllerProvider.notifier).changeYear(year + 1);
                 },
-                elevation: 0,
-                backgroundColor: Theme.of(context).colorScheme.surface,
+                elevation: 1,
                 child: const Icon(Icons.arrow_forward)),
             FloatingActionButton(
               heroTag: "menu",
               mini: true,
               onPressed: null,
-              backgroundColor: Theme.of(context).colorScheme.surface,
+              elevation: 1,
               child: PopupMenuButton<int>(
                 itemBuilder: (context) {
                   return [
@@ -79,6 +77,10 @@ class TopRightCornerMenu extends ConsumerWidget {
                       value: 20,
                       child: Text(context.l10n.sendFeedbackButton),
                     ),
+                    PopupMenuItem(
+                      value: 40,
+                      child: Text(context.l10n.premiumGoToPremiumPage),
+                    ),
                   ];
                 },
                 onSelected: (value) {
@@ -99,6 +101,9 @@ class TopRightCornerMenu extends ConsumerWidget {
                       break;
                     case 30:
                       GoRouter.of(context).push(AppRoute.shareCalendar.path);
+                      break;
+                    case 40:
+                      GoRouter.of(context).push(AppRoute.paywall.path);
                       break;
                   }
                 },

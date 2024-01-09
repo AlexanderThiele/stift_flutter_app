@@ -12,7 +12,10 @@ enum AnalyticEvent {
   changeYear("change_year"),
   howItWorks("how_it_works"),
   rateApp("rate_app"),
-  shareCalendar("share_calendar");
+  shareCalendar("share_calendar"),
+  addLayer("add_layer"),
+  deleteLayer("delete_layer"),
+  ;
 
   const AnalyticEvent(this.name);
 

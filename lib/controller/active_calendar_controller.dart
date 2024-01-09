@@ -121,6 +121,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     };
     final calendarLayer = CalendarLayer.fromUserCreation(-1, clearedName);
     await _ref.read(drawingsRepositoryProvider).createNewCalendarLayer(calendarLayer);
+    _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.addLayer);
     state!.addLayer(calendarLayer);
     state = state;
   }
@@ -128,6 +129,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
   Future<void> deleteLayer(CalendarLayer calendarLayer) async {
     assert(state != null);
     await _ref.read(drawingsRepositoryProvider).deleteCalendarLayer(calendarLayer);
+    _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.deleteLayer);
     state!.layerList.remove(calendarLayer);
     state = state;
 

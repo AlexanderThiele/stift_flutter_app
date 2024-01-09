@@ -23,134 +23,137 @@ class FancySelectionMenu extends ConsumerWidget {
         margin: const EdgeInsets.all(8),
         height: 108,
         width: 108,
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            shape: BoxShape.rectangle,
-            borderRadius: const BorderRadius.all(Radius.circular(20))),
-        child: GridView.count(
-          crossAxisCount: 3,
-          children: [
-            IconButton(
-              onPressed: () {
-                if (activeShader.index >= ShaderType.values.length - 1) {
-                  ref.read(activeShaderProvider.notifier).state = ShaderType.values.first;
-                } else {
-                  ref.read(activeShaderProvider.notifier).state = ShaderType.values[activeShader.index + 1];
-                }
-              },
-              iconSize: 18,
-              icon: Builder(builder: (context) {
-                return switch (activeShader) {
-                  ShaderType.none => const Icon(
-                      Icons.animation,
-                      color: Colors.grey,
-                    ),
-                  ShaderType.focus => const Icon(
-                      Icons.animation,
-                      color: Colors.blue,
-                    ),
-                  ShaderType.focusFast => const Icon(
-                      Icons.animation,
-                      color: Colors.red,
-                    ),
-                  ShaderType.kishimisu => const Icon(
-                      Icons.animation,
-                      color: Colors.amber,
-                    ),
-                  ShaderType.jwibullori => const Icon(
-                      Icons.animation,
-                      color: Colors.green,
-                    ),
-                  ShaderType.fractalcineshader => const Icon(
-                      Icons.animation,
-                      color: Colors.cyan,
-                    ),
-                  ShaderType.uiGlitch => const Icon(
-                      Icons.animation,
-                      color: Colors.tealAccent,
-                    ),
-                };
-              }),
-            ),
-            IconButton(
-              onPressed: () {
-                ref.read(activeTouchProvider.notifier).state = !touchDrawEnabled;
-              },
-              iconSize: 18,
-              icon: Builder(builder: (context) {
-                if (touchDrawEnabled) {
-                  return const Icon(Icons.touch_app);
-                }
-                return const Icon(Icons.do_not_touch);
-              }),
-            ),
-            IconButton(
-              onPressed: () {
-                ref.read(activeBrushProvider.notifier).state = Brush.eraser;
-              },
-              icon: const Icon(
-                FontAwesomeIcons.eraser,
+        decoration: const BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: Card(
+          color: Theme.of(context).colorScheme.surface,
+          elevation: 1,
+          surfaceTintColor: Colors.transparent,
+          child: GridView.count(
+            crossAxisCount: 3,
+            children: [
+              IconButton(
+                onPressed: () {
+                  if (activeShader.index >= ShaderType.values.length - 1) {
+                    ref.read(activeShaderProvider.notifier).state = ShaderType.values.first;
+                  } else {
+                    ref.read(activeShaderProvider.notifier).state = ShaderType.values[activeShader.index + 1];
+                  }
+                },
+                iconSize: 18,
+                icon: Builder(builder: (context) {
+                  return switch (activeShader) {
+                    ShaderType.none => const Icon(
+                        Icons.animation,
+                        color: Colors.grey,
+                      ),
+                    ShaderType.focus => const Icon(
+                        Icons.animation,
+                        color: Colors.blue,
+                      ),
+                    ShaderType.focusFast => const Icon(
+                        Icons.animation,
+                        color: Colors.red,
+                      ),
+                    ShaderType.kishimisu => const Icon(
+                        Icons.animation,
+                        color: Colors.amber,
+                      ),
+                    ShaderType.jwibullori => const Icon(
+                        Icons.animation,
+                        color: Colors.green,
+                      ),
+                    ShaderType.fractalcineshader => const Icon(
+                        Icons.animation,
+                        color: Colors.cyan,
+                      ),
+                    ShaderType.uiGlitch => const Icon(
+                        Icons.animation,
+                        color: Colors.tealAccent,
+                      ),
+                  };
+                }),
               ),
-              color: brush == Brush.eraser
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary,
-              iconSize: 18,
-            ),
-            IconButton(
-              onPressed: () {
-                ref.read(activeCalendarControllerProvider.notifier).deleteLast();
-              },
-              color: Theme.of(context).colorScheme.primary,
-              icon: const Icon(Icons.undo),
-              iconSize: 18,
-            ),
+              IconButton(
+                onPressed: () {
+                  ref.read(activeTouchProvider.notifier).state = !touchDrawEnabled;
+                },
+                iconSize: 18,
+                icon: Builder(builder: (context) {
+                  if (touchDrawEnabled) {
+                    return const Icon(Icons.touch_app);
+                  }
+                  return const Icon(Icons.do_not_touch);
+                }),
+              ),
+              IconButton(
+                onPressed: () {
+                  ref.read(activeBrushProvider.notifier).state = Brush.eraser;
+                },
+                icon: const Icon(
+                  FontAwesomeIcons.eraser,
+                ),
+                color: brush == Brush.eraser
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.secondary,
+                iconSize: 18,
+              ),
+              IconButton(
+                onPressed: () {
+                  ref.read(activeCalendarControllerProvider.notifier).deleteLast();
+                },
+                color: Theme.of(context).colorScheme.primary,
+                icon: const Icon(Icons.undo),
+                iconSize: 18,
+              ),
 
-            /// Color
-            GestureDetector(
-              onTap: () {
-                final activeSubMenu = ref.read(activeSubMenuProvider);
-                ref.read(activeSubMenuProvider.notifier).state =
-                    activeSubMenu == OpenedTab.color ? OpenedTab.none : OpenedTab.color;
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: color, shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade400, width: 1)),
+              /// Color
+              GestureDetector(
+                onTap: () {
+                  final activeSubMenu = ref.read(activeSubMenuProvider);
+                  ref.read(activeSubMenuProvider.notifier).state =
+                      activeSubMenu == OpenedTab.color ? OpenedTab.none : OpenedTab.color;
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: color, shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade400, width: 1)),
+                ),
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                ref.read(activeBrushProvider.notifier).state = Brush.pen;
-              },
-              icon: const Icon(
-                Icons.brush,
+              IconButton(
+                onPressed: () {
+                  ref.read(activeBrushProvider.notifier).state = Brush.pen;
+                },
+                icon: const Icon(
+                  Icons.brush,
+                ),
+                color: brush == Brush.pen
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.secondary,
+                iconSize: 18,
               ),
-              color:
-                  brush == Brush.pen ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
-              iconSize: 18,
-            ),
 
-            IconButton(
-              onPressed: () {
-                final activeSubMenu = ref.read(activeSubMenuProvider);
-                ref.read(activeSubMenuProvider.notifier).state =
-                    activeSubMenu == OpenedTab.layers ? OpenedTab.none : OpenedTab.layers;
-              },
-              icon: const Icon(FontAwesomeIcons.layerGroup),
-              iconSize: 18,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            IconButton(
-              onPressed: () {
-                final activeSubMenu = ref.read(activeSubMenuProvider);
-                ref.read(activeSubMenuProvider.notifier).state =
-                    activeSubMenu == OpenedTab.pen ? OpenedTab.none : OpenedTab.pen;
-              },
-              icon: const Icon(Icons.line_weight),
-              iconSize: 18,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            Container(),
-          ],
+              IconButton(
+                onPressed: () {
+                  final activeSubMenu = ref.read(activeSubMenuProvider);
+                  ref.read(activeSubMenuProvider.notifier).state =
+                      activeSubMenu == OpenedTab.layers ? OpenedTab.none : OpenedTab.layers;
+                },
+                icon: const Icon(FontAwesomeIcons.layerGroup),
+                iconSize: 18,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              IconButton(
+                onPressed: () {
+                  final activeSubMenu = ref.read(activeSubMenuProvider);
+                  ref.read(activeSubMenuProvider.notifier).state =
+                      activeSubMenu == OpenedTab.pen ? OpenedTab.none : OpenedTab.pen;
+                },
+                icon: const Icon(Icons.line_weight),
+                iconSize: 18,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              Container(),
+            ],
+          ),
         ),
       ),
     );

@@ -203,6 +203,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ok'**
   String get ok;
+
+  /// No description provided for @premiumLayersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Unlimited Layers'**
+  String get premiumLayersTitle;
+
+  /// No description provided for @premiumLayersText.
+  ///
+  /// In en, this message translates to:
+  /// **'Our free plan allows you to experience the power of layered appointments, organizing your schedule with up to {numberOfFreeLayers} layers. However, to create unlimited layers and truly maximize the efficiency of your planning, you can avail of our one-time purchase option.'**
+  String premiumLayersText(num numberOfFreeLayers);
+
+  /// No description provided for @premiumViewPriceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View Price'**
+  String get premiumViewPriceButton;
+
+  /// No description provided for @premiumGoToPremiumPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premiumGoToPremiumPage;
+
+  /// No description provided for @premiumLifeTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get premiumLifeTimeTitle;
+
+  /// No description provided for @premiumLifeTimeBullet1.
+  ///
+  /// In en, this message translates to:
+  /// **'1 payment, all functions, unlimited access'**
+  String get premiumLifeTimeBullet1;
+
+  /// No description provided for @premiumLifeTimeBullet2.
+  ///
+  /// In en, this message translates to:
+  /// **'Start today, save forever'**
+  String get premiumLifeTimeBullet2;
+
+  /// No description provided for @premiumPurchaseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start now'**
+  String get premiumPurchaseButton;
+
+  /// No description provided for @premiumDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'{discount} Discount'**
+  String premiumDiscount(String discount);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
