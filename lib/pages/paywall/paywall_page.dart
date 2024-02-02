@@ -49,7 +49,10 @@ class _AlreadyPurchasedPaywall extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(context.l10n.premiumAlreadyPurchasedTitle, style: Theme.of(context).textTheme.titleLarge),
-                  Text(context.l10n.premiumAlreadyPurchasedText, style: Theme.of(context).textTheme.bodyMedium)
+                  const SizedBox(height: 8),
+                  Text("⭐️⭐️⭐️⭐️⭐️", style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 8),
+                  Text(context.l10n.premiumAlreadyPurchasedText, style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
             ),
