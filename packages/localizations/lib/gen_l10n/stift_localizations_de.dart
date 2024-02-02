@@ -93,4 +93,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String premiumDiscount(String discount) {
     return '$discount Rabatt';
   }
+
+  @override
+  String get premiumAlreadyPurchasedTitle => 'Du hast Premium!';
+
+  @override
+  String get premiumAlreadyPurchasedText =>
+      'Danke, dass du uns unterstützt. Wir arbeiten hart daran, diese App noch besser zu machen!';
+
+  @override
+  String get termsOfServiceTitle => 'AGBs';
+
+  @override
+  String get privacyPolicyTitle => 'Datenschutzbestimmungen';
+
+  @override
+  String get restore => 'Kauf Wiederherstellen';
+
+  @override
+  String get purchaseInProgressSnackbarText => 'Der Kauf wird bearbeitet. Einen moment noch.';
 }

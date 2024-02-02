@@ -6,9 +6,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/src/router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:localizations/localizations.dart';
-import 'package:pencalendar/controller/billing_controller.dart';
+import 'package:pencalendar/controller/premium_purchase_notifier.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/provider/router_provider.dart';
 import 'package:pencalendar/provider/shared_preference_provider.dart';
@@ -54,13 +55,14 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
-    ref.read(billingControllerProvider.notifier).initBilling();
+    ref.read(premiumPurchaseProvider.notifier).initBilling();
+    ref.read(premiumPurchaseInProgressProvider.notifier).init();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final router = ref.read(routerProvider);
+    final GoRouter router = ref.read(routerProvider);
     return MaterialApp.router(
       localizationsDelegates: myLocalizationsDelegates,
       supportedLocales: myLocales,

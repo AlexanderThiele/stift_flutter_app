@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localizations/localizations.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
-import 'package:pencalendar/controller/feature_controller.dart';
+import 'package:pencalendar/controller/feature_notifier.dart';
 import 'package:pencalendar/models/calendar_layer.dart';
 import 'package:pencalendar/models/opened_tab.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
@@ -19,7 +19,7 @@ class LayerMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activeSubMenu = ref.watch(activeSubMenuProvider);
     final activeCalendar = ref.watch(activeCalendarControllerProvider);
-    final activeFeatures = ref.watch(activeFeatureControllerProvider);
+    final activeFeatures = ref.watch(activeFeatureNotifierProvider);
 
     final canCreateMoreLayers = (activeCalendar?.layerList.length ?? 0) < activeFeatures.numberOfLayers;
     return Container(

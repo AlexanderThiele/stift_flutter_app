@@ -10,7 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  in_app_purchase: ^3.1.11
+  linkfive_purchases:
+    path: ../../../../linkfive/flutter-purchases-sdk/packages/linkfive_purchases
 
 dev_dependencies:
   flutter_test:

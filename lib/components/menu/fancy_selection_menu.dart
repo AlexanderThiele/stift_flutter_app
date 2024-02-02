@@ -130,17 +130,7 @@ class FancySelectionMenu extends ConsumerWidget {
                     : Theme.of(context).colorScheme.secondary,
                 iconSize: 18,
               ),
-
-              IconButton(
-                onPressed: () {
-                  final activeSubMenu = ref.read(activeSubMenuProvider);
-                  ref.read(activeSubMenuProvider.notifier).state =
-                      activeSubMenu == OpenedTab.layers ? OpenedTab.none : OpenedTab.layers;
-                },
-                icon: const Icon(FontAwesomeIcons.layerGroup),
-                iconSize: 18,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              Container(),
               IconButton(
                 onPressed: () {
                   final activeSubMenu = ref.read(activeSubMenuProvider);
@@ -151,7 +141,16 @@ class FancySelectionMenu extends ConsumerWidget {
                 iconSize: 18,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              Container(),
+              IconButton(
+                onPressed: () {
+                  final activeSubMenu = ref.read(activeSubMenuProvider);
+                  ref.read(activeSubMenuProvider.notifier).state =
+                      activeSubMenu == OpenedTab.layers ? OpenedTab.none : OpenedTab.layers;
+                },
+                icon: const Icon(FontAwesomeIcons.layerGroup),
+                iconSize: 18,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ],
           ),
         ),

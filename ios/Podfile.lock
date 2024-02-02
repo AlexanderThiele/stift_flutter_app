@@ -6,6 +6,8 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - country_codes (0.0.1):
     - Flutter
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/Analytics (10.17.0):
     - Firebase/Core
   - Firebase/Auth (10.17.0):
@@ -150,11 +152,15 @@ PODS:
     - FlutterMacOS
   - in_app_review (0.2.0):
     - Flutter
+  - linkfive_purchases (0.0.1):
+    - Flutter
   - nanopb (2.30909.1):
     - nanopb/decode (= 2.30909.1)
     - nanopb/encode (= 2.30909.1)
   - nanopb/decode (2.30909.1)
   - nanopb/encode (2.30909.1)
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -175,6 +181,7 @@ PODS:
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - country_codes (from `.symlinks/plugins/country_codes/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -183,6 +190,8 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
+  - linkfive_purchases (from `.symlinks/plugins/linkfive_purchases/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - rate_my_app (from `.symlinks/plugins/rate_my_app/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
@@ -215,6 +224,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   country_codes:
     :path: ".symlinks/plugins/country_codes/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_auth:
@@ -232,6 +243,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/in_app_purchase_storekit/darwin"
   in_app_review:
     :path: ".symlinks/plugins/in_app_review/ios"
+  linkfive_purchases:
+    :path: ".symlinks/plugins/linkfive_purchases/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   rate_my_app:
@@ -251,6 +266,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   cloud_firestore: c0e21891b99d3ac3d91abfe476ac88830a7c9939
   country_codes: b0900f46ad686281d5dab438e354e44ad10f5941
+  device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
   firebase_analytics: d6f520c1030d2c1215851f6e332d39a489a30bd2
   firebase_auth: 6a41305f668ac6f9bcbefdedfcba5aacb8367e92
@@ -273,7 +289,9 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
   in_app_purchase_storekit: 4fb7ee9e824b1f09107fbfbbce8c4b276366dc43
   in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
+  linkfive_purchases: bc2ebd52ffba5e76b1dccc7c916053b1094b51a5
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
+  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   PromisesSwift: 28dca69a9c40779916ac2d6985a0192a5cb4a265

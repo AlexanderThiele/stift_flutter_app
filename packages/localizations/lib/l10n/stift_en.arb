@@ -63,5 +63,11 @@
         "example": "50%"
       }
     }
-  }
+  },
+  "premiumAlreadyPurchasedTitle": "You have Premium!",
+  "premiumAlreadyPurchasedText": "Thank you for supporting us. We are working hard to make this app even better!",
+  "termsOfServiceTitle": "Terms of Service",
+  "privacyPolicyTitle": "Privacy Policy",
+  "restore": "Restore Purchase",
+  "purchaseInProgressSnackbarText": "Purchase in Progress, please wait."
 }

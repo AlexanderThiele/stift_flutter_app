@@ -257,6 +257,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{discount} Discount'**
   String premiumDiscount(String discount);
+
+  /// No description provided for @premiumAlreadyPurchasedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You have Premium!'**
+  String get premiumAlreadyPurchasedTitle;
+
+  /// No description provided for @premiumAlreadyPurchasedText.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for supporting us. We are working hard to make this app even better!'**
+  String get premiumAlreadyPurchasedText;
+
+  /// No description provided for @termsOfServiceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfServiceTitle;
+
+  /// No description provided for @privacyPolicyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicyTitle;
+
+  /// No description provided for @restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchase'**
+  String get restore;
+
+  /// No description provided for @purchaseInProgressSnackbarText.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase in Progress, please wait.'**
+  String get purchaseInProgressSnackbarText;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
