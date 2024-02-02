@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -91,76 +92,84 @@ class _PurchasePaywall extends ConsumerWidget {
             ListView(
               children: [
                 for (final offer in premiumOffer.productDetailList)
-                  switch (offer.productType) {
+                  switch (LinkFiveProductType.OneTimePurchase) {
                     LinkFiveProductType.OneTimePurchase => Stack(children: [
-                        Card(
-                          margin: const EdgeInsets.only(left: 16, top: 22, right: 16),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                            child: Column(
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(context.l10n.premiumLifeTimeTitle,
-                                        style: Theme.of(context).textTheme.titleLarge),
-                                    const Spacer(),
-                                    Text(offer.oneTimePurchasePrice.priceCurrencySymbol,
-                                        style: Theme.of(context).textTheme.titleMedium),
-                                    Text("${offer.oneTimePurchasePrice.priceAmountMicros ~/ 1000000}",
-                                        style: Theme.of(context).textTheme.displayMedium),
-                                    Text(",${offer.oneTimePurchasePrice.priceAmountMicros % 1000000 ~/ 10000}",
-                                        style: Theme.of(context).textTheme.titleMedium),
-                                  ],
+                        LayoutBuilder(builder: (context, constraint) {
+                          return Center(
+                            child: SizedBox(
+                              width: min(550, constraint.maxWidth),
+                              child: Card(
+                                margin: const EdgeInsets.only(left: 16, top: 22, right: 16),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(context.l10n.premiumLifeTimeTitle,
+                                              style: Theme.of(context).textTheme.titleLarge),
+                                          const Spacer(),
+                                          Text(offer.oneTimePurchasePrice.priceCurrencySymbol,
+                                              style: Theme.of(context).textTheme.titleMedium),
+                                          Text("${offer.oneTimePurchasePrice.priceAmountMicros ~/ 1000000}",
+                                              style: Theme.of(context).textTheme.displayMedium),
+                                          Text(",${offer.oneTimePurchasePrice.priceAmountMicros % 1000000 ~/ 10000}",
+                                              style: Theme.of(context).textTheme.titleMedium),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.check_circle_outline,
+                                              size: 16, color: Theme.of(context).colorScheme.secondary),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                              child: Text(
+                                            context.l10n.premiumLifeTimeBullet1,
+                                            style: Theme.of(context).textTheme.bodyMedium,
+                                          )),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.check_circle_outline,
+                                              size: 16, color: Theme.of(context).colorScheme.secondary),
+                                          const SizedBox(width: 8),
+                                          Expanded(child: Text(context.l10n.premiumLifeTimeBullet2)),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 24),
+                                      SizedBox(
+                                          width: double.infinity,
+                                          child: ElevatedButton(
+                                              onPressed: () {
+                                                ref.read(premiumOfferProvider.notifier).purchase(offer);
+                                              },
+                                              child: Text(context.l10n.premiumPurchaseButton)))
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Icon(Icons.check_circle_outline,
-                                        size: 16, color: Theme.of(context).colorScheme.secondary),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                        child: Text(
-                                      context.l10n.premiumLifeTimeBullet1,
-                                      style: Theme.of(context).textTheme.bodyMedium,
-                                    )),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Icon(Icons.check_circle_outline,
-                                        size: 16, color: Theme.of(context).colorScheme.secondary),
-                                    const SizedBox(width: 8),
-                                    Expanded(child: Text(context.l10n.premiumLifeTimeBullet2)),
-                                  ],
-                                ),
-                                const SizedBox(height: 24),
-                                SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          ref.read(premiumOfferProvider.notifier).purchase(offer);
-                                        },
-                                        child: Text(context.l10n.premiumPurchaseButton)))
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        Center(
+                          );
+                        }),
+                        Align(
+                            alignment: Alignment.topCenter,
                             child: Card(
-                          color: Theme.of(context).colorScheme.primary,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              context.l10n.premiumDiscount("46%"),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                            ),
-                          ),
-                        ))
+                              color: Theme.of(context).colorScheme.primary,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  context.l10n.premiumDiscount("46%"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall
+                                      ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                ),
+                              ),
+                            ))
                       ]),
                     _ => const SizedBox()
                   },
