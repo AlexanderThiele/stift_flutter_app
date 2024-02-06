@@ -95,7 +95,7 @@ class _PurchasePaywall extends ConsumerWidget {
             ListView(
               children: [
                 for (final offer in premiumOffer.productDetailList)
-                  switch (LinkFiveProductType.OneTimePurchase) {
+                  switch (offer.productType) {
                     LinkFiveProductType.OneTimePurchase => Stack(children: [
                         LayoutBuilder(builder: (context, constraint) {
                           return Center(
