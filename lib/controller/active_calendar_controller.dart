@@ -124,6 +124,7 @@ class ActiveCalendarController extends StateNotifier<CalendarWithDrawings?> {
     _ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.addLayer);
     state!.addLayer(calendarLayer);
     state = state;
+    _ref.read(activeCalendarControllerProvider.notifier).switchWritableLayer(calendarLayer);
   }
 
   Future<void> deleteLayer(CalendarLayer calendarLayer) async {

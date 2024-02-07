@@ -33,7 +33,7 @@
   "rateAppRateNoButton": "Nein Danke",
   "rateAppRateLaterButton": "Später vielleicht",
   "layersFeatureTitleName": "Ebenen",
-  "layerNew": "Neue Ebene",
+  "layerNew": "Ebenen",
   "layerExplainTitle": "Ebene Erklärt",
   "layerExplainText": "Ebenen sind wie transparente Blätter, die du übereinander stapeln kannst. Jede Ebene steht für eine andere Terminkategorie, z. B. Arbeit, privat oder eine Ebene pro Person. Du kannst die Ebenen ein- oder ausschalten, um sich auf bestimmte Arten von Terminen zu konzentrieren oder um deinen gesamten Terminplan auf einmal zu sehen. Mit diesem Schichtensystem kannst du deinen Terminplan flexibler und übersichtlicher gestalten.",
   "layerTextFieldTitle": "Gib der Ebene einen Namen",
@@ -69,5 +69,7 @@
   "termsOfServiceTitle": "AGBs",
   "privacyPolicyTitle": "Datenschutzbestimmungen",
   "restore": "Kauf Wiederherstellen",
-  "purchaseInProgressSnackbarText": "Der Kauf wird bearbeitet. Einen moment noch."
+  "purchaseInProgressSnackbarText": "Der Kauf wird bearbeitet. Einen moment noch.",
+  "bottomSheetDeleteButton": "Löschen",
+  "bottomSheetCancelButton": "Abbrechen"
 }

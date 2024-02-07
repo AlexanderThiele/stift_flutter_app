@@ -33,7 +33,7 @@
   "rateAppRateNoButton": "NO THANKS",
   "rateAppRateLaterButton": "MAYBE LATER",
   "layersFeatureTitleName": "Layers",
-  "layerNew": "New Layer",
+  "layerNew": "Layers",
   "layerExplainTitle": "Layers Explained",
   "layerExplainText": "In our app, layers are like transparent sheets that you can stack on top of each other. Each layer represents a different category of appointments, such as work, personal, or social events. You can turn layers on or off to focus on specific types of appointments or to see your entire schedule at once. This layering system allows you to organize your schedule with greater flexibility and clarity.",
   "layerTextFieldTitle": "Assign a name to the layer",
@@ -69,5 +69,7 @@
   "termsOfServiceTitle": "Terms of Service",
   "privacyPolicyTitle": "Privacy Policy",
   "restore": "Restore Purchase",
-  "purchaseInProgressSnackbarText": "Purchase in Progress, please wait."
+  "purchaseInProgressSnackbarText": "Purchase in Progress, please wait.",
+  "bottomSheetDeleteButton": "Delete",
+  "bottomSheetCancelButton": "Cancel"
 }

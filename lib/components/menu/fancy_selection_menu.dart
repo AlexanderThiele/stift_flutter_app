@@ -93,8 +93,8 @@ class FancySelectionMenu extends ConsumerWidget {
                   FontAwesomeIcons.eraser,
                 ),
                 color: brush == Brush.eraser
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.secondary,
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).colorScheme.primary,
                 iconSize: 18,
               ),
               IconButton(
@@ -126,8 +126,8 @@ class FancySelectionMenu extends ConsumerWidget {
                   Icons.brush,
                 ),
                 color: brush == Brush.pen
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.secondary,
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).colorScheme.primary,
                 iconSize: 18,
               ),
               Container(),

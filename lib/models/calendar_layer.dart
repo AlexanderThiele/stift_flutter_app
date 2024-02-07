@@ -46,3 +46,7 @@ class CalendarLayer {
     });
   }
 }
+
+extension CalendarLayerUtil on CalendarLayer {
+  bool get isDeletable => name != "";
+}

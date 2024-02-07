@@ -45,7 +45,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get layersFeatureTitleName => 'Layers';
 
   @override
-  String get layerNew => 'New Layer';
+  String get layerNew => 'Layers';
 
   @override
   String get layerExplainTitle => 'Layers Explained';
@@ -112,4 +112,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get purchaseInProgressSnackbarText => 'Purchase in Progress, please wait.';
+
+  @override
+  String get bottomSheetDeleteButton => 'Delete';
+
+  @override
+  String get bottomSheetCancelButton => 'Cancel';
 }
