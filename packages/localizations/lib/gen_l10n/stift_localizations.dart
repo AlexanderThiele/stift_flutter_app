@@ -171,7 +171,7 @@ abstract class AppLocalizations {
   /// No description provided for @layerNew.
   ///
   /// In en, this message translates to:
-  /// **'New Layer'**
+  /// **'Layers'**
   String get layerNew;
 
   /// No description provided for @layerExplainTitle.
@@ -293,6 +293,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Purchase in Progress, please wait.'**
   String get purchaseInProgressSnackbarText;
+
+  /// No description provided for @bottomSheetDeleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get bottomSheetDeleteButton;
+
+  /// No description provided for @bottomSheetCancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get bottomSheetCancelButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
