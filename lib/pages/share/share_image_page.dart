@@ -9,6 +9,7 @@ import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
+import 'package:pencalendar/controller/rate_app_notifier.dart';
 import 'package:pencalendar/repository/analytics/analytics_repository.dart';
 import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:responsive_spacing/responsive_spacing.dart';
@@ -26,7 +27,7 @@ class _ShareImagePage extends ConsumerState<ShareImagePage> {
 
   bool buttonLoading = false;
 
-  _shareCalendar(Rect position) async {
+  Future<void> _shareCalendar(Rect position) async {
     setState(() {
       buttonLoading = true;
     });
@@ -92,13 +93,14 @@ class _ShareImagePage extends ConsumerState<ShareImagePage> {
                     true => const SizedBox(width: 16, height: 16, child: CircularProgressIndicator()),
                     false => Text(context.l10n.shareNow)
                   },
-                  onPressed: () {
+                  onPressed: () async {
                     if (buttonLoading) {
                       return;
                     }
                     ref.read(analyticsRepositoryProvider).trackEvent(AnalyticEvent.shareCalendar);
                     final box = context.findRenderObject() as RenderBox?;
-                    _shareCalendar(box!.localToGlobal(Offset.zero) & box.size);
+                    await _shareCalendar(box!.localToGlobal(Offset.zero) & box.size);
+                    await ref.read(rateAppNotifierProvider.notifier).maybeOpenAppReview();
                   },
                 );
               });

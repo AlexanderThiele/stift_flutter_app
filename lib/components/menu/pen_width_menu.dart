@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/opened_tab.dart';
 import 'package:pencalendar/provider/active_menu_provider.dart';
 
@@ -24,6 +25,7 @@ class PenWidthMenu extends ConsumerWidget {
                 child: Slider(
                   onChanged: (newWidth) {
                     ref.read(activeWidthProvider.notifier).state = (newWidth * 2).roundToDouble() / 2.0;
+                    ref.read(activeBrushProvider.notifier).state = Brush.pen;
                   },
                   value: activeWidth,
                   min: 0.5,
