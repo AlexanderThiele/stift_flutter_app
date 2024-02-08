@@ -42,7 +42,7 @@ class LayerMenu extends ConsumerWidget {
                       },
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
-                    const SizedBox(width: 4),
+                    const Spacer(),
                     InkWell(
                         onTap: () {
                           final controller = TextEditingController();
@@ -110,7 +110,7 @@ class LayerMenu extends ConsumerWidget {
                           );
                         },
                         child: const Padding(
-                          padding: EdgeInsets.all(4.0),
+                          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                           child: Icon(Icons.add, size: 16),
                         )),
                   ],
@@ -137,6 +137,7 @@ class LayerMenu extends ConsumerWidget {
                     },
                     onLongPress: () {
                       showModalBottomSheet(
+                        useSafeArea: true,
                         context: context,
                         builder: (context) {
                           return Column(
