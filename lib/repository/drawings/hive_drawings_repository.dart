@@ -66,9 +66,10 @@ class HiveDrawingsRepository extends DrawingsRepository {
     );
     if (layerList.isEmpty) {
       final defaultLayer = CalendarLayer(name: "", isWriteActive: true, isVisible: true);
-      _saveCalendarLayer(defaultLayer);
+      await _saveCalendarLayer(defaultLayer);
       layerList.add(defaultLayer);
-      saveAllCalendarLayer(layerList);
+      await saveAllCalendarLayer(layerList);
+      await migrateDefaultCalendar(defaultLayer);
     }
 
     for (final calendarLayer in layerList) {
@@ -98,7 +99,7 @@ class HiveDrawingsRepository extends DrawingsRepository {
     final box = await _getLayerBox();
     for (final layer in calendarLayer) {
       if (layer.localKey >= 0) {
-        box.put(layer.localKey, layer.toHive);
+        await box.put(layer.localKey, layer.toHive);
       }
     }
   }
@@ -127,8 +128,15 @@ class HiveDrawingsRepository extends DrawingsRepository {
   }
 
   Future<Box> _getDrawingsBox(CalendarLayer calendarLayer) async {
-    final layerName = base64.encode(utf8.encode(calendarLayer.name));
+    final layerName = calendarLayer.localKey.toString();
     return await Hive.openBox<String>("$hiveDrawingsYearBox$layerName");
+  }
+
+  Future<void> migrateDefaultCalendar(CalendarLayer defaultLayer) async {
+    final defaultBox = await Hive.openBox<String>("drawings");
+    final toNewBox = await _getDrawingsBox(defaultLayer);
+    await toNewBox.addAll(defaultBox.values);
+    await defaultBox.clear();
   }
 
   Future<Box> _getLayerBox() => Hive.openBox<String>(hiveLayerDataBox);
