@@ -1,7 +1,7 @@
 name: billing
 description: "A new Flutter project."
 version: 0.0.1
-homepage:
+homepage: https://www.linkfive.io
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -10,8 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  linkfive_purchases:
-    path: ../../../../linkfive/flutter-purchases-sdk/packages/linkfive_purchases
+  linkfive_purchases: 4.0.0-1.beta
 
 dev_dependencies:
   flutter_test:

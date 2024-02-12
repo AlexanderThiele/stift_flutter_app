@@ -7,7 +7,7 @@ class ActiveBillingRepository extends BillingRepository {
     return LinkFivePurchasesImpl().init(
       LinkFiveKey().apiKey,
       logLevel: LinkFiveLogLevel.DEBUG,
-      env: LinkFiveEnvironment.STAGING,
+      env: LinkFiveEnvironment.PRODUCTION,
     );
   }
 
