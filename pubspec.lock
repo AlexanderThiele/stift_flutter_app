@@ -710,10 +710,11 @@ packages:
   linkfive_purchases:
     dependency: transitive
     description:
-      path: "../../linkfive/flutter-purchases-sdk/packages/linkfive_purchases"
-      relative: true
-    source: path
-    version: "3.0.1"
+      name: linkfive_purchases
+      sha256: "932d6355c2a592be5a78df877d54d541001a75421f50a50604c294d22e8bf012"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0-1.beta"
   lints:
     dependency: transitive
     description:
