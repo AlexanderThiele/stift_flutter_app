@@ -127,7 +127,7 @@ class HiveDrawingsRepository extends DrawingsRepository {
   }
 
   Future<Box> _getDrawingsBox(CalendarLayer calendarLayer) async {
-    final layerName = utf8.encode(calendarLayer.name);
+    final layerName = base64.encode(utf8.encode(calendarLayer.name));
     return await Hive.openBox<String>("$hiveDrawingsYearBox$layerName");
   }
 
