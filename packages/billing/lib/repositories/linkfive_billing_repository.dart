@@ -1,7 +1,7 @@
 import 'package:billing/billing.dart';
 import 'package:billing/keys/linkfive_key.dart';
 
-class ActiveBillingRepository extends BillingRepository {
+class LinkFiveBillingRepository extends BillingRepository {
   @override
   Future<LinkFiveActiveProducts> load() async {
     return LinkFivePurchasesImpl().init(

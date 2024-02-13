@@ -16,6 +16,7 @@ final analyticsRepositoryProvider = Provider<AnalyticsRepository>((ref) => Fireb
 final drawingsRepositoryProvider = Provider<DrawingsRepository>((ref) => HiveDrawingsRepository(ref));
 
 final sharedPrefUtilityProvider =
-Provider<SharedPrefRepository>((ref) => SharedPrefRepository(ref.watch(sharedPrefInstanceProvider)));
+    Provider<SharedPrefRepository>((ref) => SharedPrefRepository(ref.watch(sharedPrefInstanceProvider)));
 
-final billingRepositoryProvider = Provider<BillingRepository>((ref) => ActiveBillingRepository());
+final billingRepositoryProvider = Provider<BillingRepository>((ref) => LinkFiveBillingRepository());
+//final billingRepositoryProvider = Provider<BillingRepository>((ref) => AlwaysProBillingRepository());
