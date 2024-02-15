@@ -71,5 +71,9 @@
   "restore": "Kauf Wiederherstellen",
   "purchaseInProgressSnackbarText": "Der Kauf wird bearbeitet. Einen moment noch.",
   "bottomSheetDeleteButton": "Löschen",
-  "bottomSheetCancelButton": "Abbrechen"
+  "bottomSheetCancelButton": "Abbrechen",
+  "updateDialogTitle": "Neues Update Verfügbar",
+  "updateDialogText": "Es ist eine neue Version der App verfügbar.",
+  "updateDialogButtonUpdate": "Aktualisieren",
+  "updateDialogButtonLater": "Später"
 }

@@ -5,6 +5,8 @@ import 'package:pencalendar/repository/analytics/analytics_repository.dart';
 import 'package:pencalendar/repository/analytics/firebase_analytics_repository.dart';
 import 'package:pencalendar/repository/auth/auth_repository.dart';
 import 'package:pencalendar/repository/auth/firebase_auth_repository.dart';
+import 'package:pencalendar/repository/config/config_repository.dart';
+import 'package:pencalendar/repository/config/fb_remote_config_repository.dart';
 import 'package:pencalendar/repository/drawings/drawings_repository.dart';
 import 'package:pencalendar/repository/drawings/hive_drawings_repository.dart';
 import 'package:pencalendar/repository/shared_pref_repository.dart';
@@ -20,3 +22,5 @@ final sharedPrefUtilityProvider =
 
 final billingRepositoryProvider = Provider<BillingRepository>((ref) => LinkFiveBillingRepository());
 //final billingRepositoryProvider = Provider<BillingRepository>((ref) => AlwaysProBillingRepository());
+
+final configRepositoryProvider = Provider<ConfigRepository>((ref) => FBRemoteConfigRepository());

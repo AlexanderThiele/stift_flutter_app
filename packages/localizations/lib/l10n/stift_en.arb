@@ -71,5 +71,9 @@
   "restore": "Restore Purchase",
   "purchaseInProgressSnackbarText": "Purchase in Progress, please wait.",
   "bottomSheetDeleteButton": "Delete",
-  "bottomSheetCancelButton": "Cancel"
+  "bottomSheetCancelButton": "Cancel",
+  "updateDialogTitle": "New Update Available",
+  "updateDialogText": "There is a newer version of app available please update it now.",
+  "updateDialogButtonUpdate": "Update Now",
+  "updateDialogButtonLater": "Later"
 }

@@ -118,4 +118,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bottomSheetCancelButton => 'Cancel';
+
+  @override
+  String get updateDialogTitle => 'New Update Available';
+
+  @override
+  String get updateDialogText => 'There is a newer version of app available please update it now.';
+
+  @override
+  String get updateDialogButtonUpdate => 'Update Now';
+
+  @override
+  String get updateDialogButtonLater => 'Later';
 }

@@ -305,6 +305,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get bottomSheetCancelButton;
+
+  /// No description provided for @updateDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Update Available'**
+  String get updateDialogTitle;
+
+  /// No description provided for @updateDialogText.
+  ///
+  /// In en, this message translates to:
+  /// **'There is a newer version of app available please update it now.'**
+  String get updateDialogText;
+
+  /// No description provided for @updateDialogButtonUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get updateDialogButtonUpdate;
+
+  /// No description provided for @updateDialogButtonLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateDialogButtonLater;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

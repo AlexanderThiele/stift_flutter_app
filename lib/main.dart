@@ -13,6 +13,7 @@ import 'package:pencalendar/controller/premium_purchase_notifier.dart';
 import 'package:pencalendar/firebase_options.dart';
 import 'package:pencalendar/provider/router_provider.dart';
 import 'package:pencalendar/provider/shared_preference_provider.dart';
+import 'package:pencalendar/repository/repository_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -57,6 +58,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     ref.read(premiumPurchaseProvider.notifier).initBilling();
     ref.read(premiumPurchaseInProgressProvider.notifier).init();
+    ref.read(configRepositoryProvider).init();
     super.initState();
   }
 
