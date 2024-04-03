@@ -66,10 +66,6 @@ class TopRightCornerMenu extends ConsumerWidget {
                       child: Text(context.l10n.shareCalendar),
                     ),
                     PopupMenuItem(
-                      value: 0,
-                      child: Text(context.l10n.clearYearButton),
-                    ),
-                    PopupMenuItem(
                       value: 10,
                       child: Text(context.l10n.rateAppButton),
                     ),

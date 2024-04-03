@@ -1,35 +1,36 @@
+import 'package:design_system/atoms/ds_colors.dart';
 import 'package:flutter/material.dart';
 
 // https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51
 final ThemeData lightTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(0xFF2C304D),
+      seedColor: color10,
       brightness: Brightness.light,
-      primary: const Color(0xFF2C304D),
-      onPrimary: const Color(0xFFFFFFFF),
-      secondary: const Color(0xFF3AADB4),
-      onSecondary: const Color(0xFFFFFFFF),
-      tertiary: const Color(0xFFE9C46A),
-      onTertiary: const Color(0xFFFFFFFF),
-      error: const Color(0xFFE76F51),
-      onError: Colors.white,
-      background: const Color(0xFFFCF9F0),
-      onBackground: const Color(0xFF2C304D),
-      surface: const Color(0xFFFCF9F0),
-      onSurface: const Color(0xFF2C304D),
-      surfaceTint: const Color(0xFF3AADB4),
+      primary: color10,
+      onPrimary: color1000,
+      secondary: color20,
+      onSecondary: color1000,
+      tertiary: color30,
+      onTertiary: color1000,
+      error: color40,
+      onError: color1000,
+      background: color900,
+      onBackground: color10,
+      surface: color900,
+      onSurface: color10,
+      surfaceTint: color20,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Color(0xFFFCF9F0),
-      foregroundColor: Colors.black,
+      backgroundColor: color900,
+      foregroundColor: color0,
     ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(Color(0xFF2C304D)),
-        foregroundColor: MaterialStatePropertyAll(Color(0xFFFFFFFF)),
+        backgroundColor: MaterialStatePropertyAll(color10),
+        foregroundColor: MaterialStatePropertyAll(color1000),
       ),
     ),
     cardTheme: const CardTheme(),
-    popupMenuTheme: const PopupMenuThemeData(surfaceTintColor: Color(0xFF3AADB4)),
-    appBarTheme: const AppBarTheme(surfaceTintColor: Color(0xFF3AADB4)),
-    progressIndicatorTheme: const ProgressIndicatorThemeData(circularTrackColor: Color(0xFFFFFFFF)));
+    popupMenuTheme: const PopupMenuThemeData(surfaceTintColor: color20),
+    appBarTheme: const AppBarTheme(surfaceTintColor: color20),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(circularTrackColor: color1000));

@@ -9,15 +9,17 @@ class PremiumPurchaseNotifier extends Notifier<bool?> {
     final activeProducts = await ref.read(billingRepositoryProvider).load();
     state = activeProducts.isNotEmpty;
     print("Billing initialized $state");
-
-    ref.read(billingRepositoryProvider).purchaseStream().listen((LinkFiveActiveProducts event) {
-      print("Purchase Update $event");
-      state = event.isNotEmpty;
-    });
   }
 
   @override
   bool? build() {
+    final purchaseStream = ref.read(billingRepositoryProvider).purchaseStream().listen((LinkFiveActiveProducts event) {
+      print("Purchase Update $event");
+      state = event.isNotEmpty;
+    });
+    ref.onDispose(() {
+      purchaseStream.cancel();
+    });
     return null;
   }
 }
@@ -47,14 +49,15 @@ final premiumPurchaseInProgressProvider =
     NotifierProvider<PremiumPurchaseInProgressNotifier, bool>(() => PremiumPurchaseInProgressNotifier());
 
 class PremiumPurchaseInProgressNotifier extends Notifier<bool> {
-  init() {
-    ref.read(billingRepositoryProvider).purchaseInProgressStream().listen((bool isPurchaseInProgress) {
-      state = isPurchaseInProgress;
-    });
-  }
-
   @override
   bool build() {
+    final streamSub =
+        ref.read(billingRepositoryProvider).purchaseInProgressStream().listen((bool isPurchaseInProgress) {
+      state = isPurchaseInProgress;
+    });
+    ref.onDispose(() {
+      streamSub.cancel();
+    });
     return false;
   }
 }

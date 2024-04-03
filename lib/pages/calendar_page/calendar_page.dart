@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pencalendar/components/calendar_table/interactive_paint_view.dart';
 import 'package:pencalendar/components/menu/color_palette_menu.dart';
-import 'package:pencalendar/components/menu/fancy_selection_menu.dart';
 import 'package:pencalendar/components/menu/layer_menu.dart';
 import 'package:pencalendar/components/menu/pen_width_menu.dart';
+import 'package:pencalendar/components/menu/top_left_corner_menu.dart';
 import 'package:pencalendar/components/menu/top_right_corner_menu.dart';
 import 'package:pencalendar/components/wrapper/rate_app_wrapper.dart';
 import 'package:pencalendar/components/wrapper/startup_dialog_wrapper.dart';
@@ -32,7 +32,7 @@ class CalendarPage extends ConsumerWidget {
                   SafeArea(child: ColorPaletteMenu()),
                   const SafeArea(child: PenWidthMenu()),
                   const SafeArea(child: LayerMenu()),
-                  const SafeArea(child: FancySelectionMenu()),
+                  const SafeArea(child: TopLeftCornerMenu()),
                 ],
               ),
             );

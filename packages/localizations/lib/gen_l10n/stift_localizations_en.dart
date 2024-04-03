@@ -102,6 +102,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Thank you for supporting us. We are working hard to make this app even better!';
 
   @override
+  String get premiumFeature1 => 'Unlimited Layers';
+
+  @override
+  String get premiumFeature2 => 'No Ads';
+
+  @override
+  String get premiumFeature3 => 'And of course, you help the developers to further develop this app ❤️';
+
+  @override
+  String get premiumFeatureMore => 'More functions are currently being developed';
+
+  @override
   String get termsOfServiceTitle => 'Terms of Service';
 
   @override

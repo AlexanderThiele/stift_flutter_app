@@ -57,7 +57,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     ref.read(premiumPurchaseProvider.notifier).initBilling();
-    ref.read(premiumPurchaseInProgressProvider.notifier).init();
     ref.read(configRepositoryProvider).init();
     super.initState();
   }

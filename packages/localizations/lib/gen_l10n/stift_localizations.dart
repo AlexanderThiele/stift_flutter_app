@@ -270,6 +270,30 @@ abstract class AppLocalizations {
   /// **'Thank you for supporting us. We are working hard to make this app even better!'**
   String get premiumAlreadyPurchasedText;
 
+  /// No description provided for @premiumFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Layers'**
+  String get premiumFeature1;
+
+  /// No description provided for @premiumFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'No Ads'**
+  String get premiumFeature2;
+
+  /// No description provided for @premiumFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'And of course, you help the developers to further develop this app ❤️'**
+  String get premiumFeature3;
+
+  /// No description provided for @premiumFeatureMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More functions are currently being developed'**
+  String get premiumFeatureMore;
+
   /// No description provided for @termsOfServiceTitle.
   ///
   /// In en, this message translates to:

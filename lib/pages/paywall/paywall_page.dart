@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linkfive_purchases/models/linkfive_products.dart';
 import 'package:linkfive_purchases/models/product_type.dart';
 import 'package:localizations/localizations.dart';
 import 'package:pencalendar/controller/premium_purchase_notifier.dart';
@@ -56,7 +58,8 @@ class _AlreadyPurchasedPaywall extends ConsumerWidget {
                 ],
               ),
             ),
-          )
+          ),
+          const IncludedFeaturesCard(),
         ],
       ),
     );
@@ -66,7 +69,7 @@ class _AlreadyPurchasedPaywall extends ConsumerWidget {
 class _PurchasePaywall extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final premiumOffer = ref.watch(premiumOfferProvider);
+    final LinkFiveProducts? premiumOffer = ref.watch(premiumOfferProvider);
     final purchaseInProgress = ref.watch(premiumPurchaseInProgressProvider);
 
     if (premiumOffer == null) {
@@ -94,6 +97,7 @@ class _PurchasePaywall extends ConsumerWidget {
           children: [
             ListView(
               children: [
+                const IncludedFeaturesCard(),
                 for (final offer in premiumOffer.productDetailList)
                   switch (offer.productType) {
                     LinkFiveProductType.OneTimePurchase => Stack(children: [
@@ -121,20 +125,9 @@ class _PurchasePaywall extends ConsumerWidget {
                                               style: Theme.of(context).textTheme.titleMedium),
                                         ],
                                       ),
-                                      const SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.check_circle_outline,
-                                              size: 16, color: Theme.of(context).colorScheme.secondary),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                              child: Text(
-                                            context.l10n.premiumLifeTimeBullet1,
-                                            style: Theme.of(context).textTheme.bodyMedium,
-                                          )),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 8),
+                                      const DsGutter.column(),
+                                      DsBulletPoint.check(context.l10n.premiumLifeTimeBullet1),
+                                      const DsGutter.column(),
                                       Row(
                                         children: [
                                           Icon(Icons.check_circle_outline,
@@ -252,6 +245,35 @@ class _PrivacyTosRow extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class IncludedFeaturesCard extends StatelessWidget {
+  const IncludedFeaturesCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Premium Features", style: Theme.of(context).textTheme.titleLarge),
+            const DsGutter.column(),
+            DsBulletPoint.round(context.l10n.premiumFeature1),
+            const DsGutter.column(),
+            DsBulletPoint.round(context.l10n.premiumFeature2),
+            const DsGutter.column(),
+            DsBulletPoint.round(context.l10n.premiumFeature3),
+            const DsGutter.column(),
+            DsBulletPoint.round(context.l10n.premiumFeatureMore),
+            const DsGutter.column(),
+          ],
+        ),
+      ),
     );
   }
 }

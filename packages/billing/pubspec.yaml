@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  linkfive_purchases: 4.0.0-1.beta
+  linkfive_purchases: 4.0.0
 
 dev_dependencies:
   flutter_test:
