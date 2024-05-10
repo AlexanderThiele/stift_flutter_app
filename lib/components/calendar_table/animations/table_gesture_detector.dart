@@ -125,7 +125,6 @@ class TableGestureDetector {
     if (_scaleGestureRecognizer.pointerCount < 2) {
       lastScale = null;
     }
-    print("---------------onUpOrCancelEvent");
   }
 
   void _onInteractionStart(ScaleStartDetails details) {
