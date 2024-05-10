@@ -87,6 +87,7 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> with Ticke
     }
     return Offset(dx, dy);
   }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -140,8 +141,13 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> with Ticke
                         _tableAnimations.onDownEvent(event);
                       },
                       onPointerMove: (PointerMoveEvent event) {
-                        _tableAnimations.onMoveEvent(event);
-                        onPointerMove(event, setState);
+                        final drawingEnabled = _tableAnimations.onMoveEvent(event);
+                        if (drawingEnabled || enforceStylus) {
+                          onPointerMove(event, setState);
+                        } else {
+                          // reset current drawings because the finger can also come later
+                          resetState();
+                        }
                       },
                       onPointerUp: (PointerUpEvent event) {
                         onPointerUp(event, setState);
@@ -219,7 +225,6 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> with Ticke
       }
     }
 
-    print("draw");
     // if stylus is enforced, don't accept any events that are not stylus
     // enforceStylus is true whenever we start to draw with a stylus.
     if (enforceStylus == true && originalEvent.kind != PointerDeviceKind.stylus) {
@@ -255,14 +260,8 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> with Ticke
   }
 
   void onPointerUp(PointerUpEvent event, StateSetter setState) {
-    if (false) {
-      //zoomEnabled) {
-      return;
-    }
-
     if (currentDrawings.isEmpty) {
       // do nothing if empty
-
       resetState();
       return;
     }

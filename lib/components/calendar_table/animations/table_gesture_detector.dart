@@ -27,7 +27,7 @@ class TableGestureDetector {
 
   /// initial position
   final TransformationController transformationController =
-      TransformationController(Matrix4.translation(vm.Vector3(25, 25, 0)));
+      TransformationController(Matrix4.translation(vm.Vector3(5, 25, 0)));
 
   TableGestureDetector(this._tickerProvider);
 
@@ -69,7 +69,6 @@ class TableGestureDetector {
 
   /// for all additional gesture detectors
   void onDownEvent(PointerDownEvent event) {
-    print("onDownEvent $event");
     _scaleGestureRecognizer.addPointer(event);
     _scaleGestureRecognizer.handleEvent(event);
     if (_scaleGestureRecognizer.pointerCount > 1) {
@@ -83,7 +82,8 @@ class TableGestureDetector {
     }
   }
 
-  void onMoveEvent(PointerMoveEvent event) {
+  /// Returns true if drawing is enabled.
+  bool onMoveEvent(PointerMoveEvent event) {
     // print("onMoveEvent $event");
     _scaleGestureRecognizer.handleEvent(event);
     if (_scaleGestureRecognizer.pointerCount > 1) {
@@ -114,7 +114,10 @@ class TableGestureDetector {
         ..setEntry(0, 3, newCalenderPositionX)
         ..setEntry(1, 3, newCalenderPositionY);
       lastScale = currentScale;
+    } else {
+      return true;
     }
+    return false;
   }
 
   void onUpOrCancel(PointerEvent event) {
