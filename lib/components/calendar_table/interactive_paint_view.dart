@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pencalendar/components/calendar_table/animations/table_gesture_detector.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/components/shader/splash_shader.dart';
@@ -54,8 +56,8 @@ class _InteractivePaintView extends StatefulWidget {
   State<_InteractivePaintView> createState() => _InteractivePaintViewState();
 }
 
-class _InteractivePaintViewState extends State<_InteractivePaintView> {
-  bool zoomEnabled = true;
+class _InteractivePaintViewState extends State<_InteractivePaintView> with TickerProviderStateMixin {
+  bool zoomEnabled = false;
   double zoomLevel = 1;
 
   List<TouchData> currentDrawings = [];
@@ -65,6 +67,8 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
   // if this is set to true, then we filter all non stylus events and do
   // not allow any events that are not stylus
   bool enforceStylus = false;
+
+  late final _tableAnimations = TableGestureDetector(this);
 
   Offset calculateOffsetInFrame(Offset offset) {
     double dx = offset.dx;
@@ -83,7 +87,6 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     }
     return Offset(dx, dy);
   }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -92,8 +95,14 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
         clipBehavior: Clip.hardEdge,
         maxScale: 20,
         minScale: 0.5,
+        panEnabled: false,
         boundaryMargin: EdgeInsets.all(constraints.maxWidth),
-        onInteractionStart: (ScaleStartDetails event) {
+        //scaleEnabled: zoomEnabled,
+        scaleEnabled: false,
+        transformationController: _tableAnimations.transformationController,
+        /*onInteractionStart: (ScaleStartDetails event) {
+          // _tableAnimations.startAnimate(_tableAnimations.doubleTap());
+          print("startoo");
           if (event.pointerCount == 1) {
             setState(() {
               zoomEnabled = false;
@@ -110,55 +119,68 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
           setState(() {
             zoomEnabled = true;
           });
-        },
-        scaleEnabled: zoomEnabled,
-        panEnabled: false,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 25),
-          child: Stack(children: [
-            CalTable(year: widget.selectedYear, publicHolidays: widget.publicHolidays),
-            StatefulBuilder(
-              // this is the actual drawing listener
-              builder: (BuildContext context, StateSetter setState) => Stack(
-                children: [
-                  if (widget.activeShaderType != ShaderType.none)
-                    SplashSmallShader(
-                      mousePosition: lastTouchOffset,
-                      activeShaderType: widget.activeShaderType,
-                    ),
-                  Listener(
-                    onPointerMove: (event) {
-                      onPointerMove(event, setState);
-                    },
-                    onPointerUp: (event) {
-                      onPointerUp(event, setState);
-                    },
-                    child: Stack(children: [
-                      SignaturePainerWrapper(currentDrawings),
-                      Builder(
-                        builder: (context) {
-                          if (lastInfoEvent == null) {
-                            return const SizedBox();
-                          }
-                          if (widget.activeBrush != Brush.eraser) {
-                            return const SizedBox();
-                          }
-                          return Positioned(
-                              left: lastInfoEvent!.localPosition.dx - 9,
-                              top: lastInfoEvent!.localPosition.dy - 9,
-                              child: Icon(
-                                FontAwesomeIcons.eraser,
-                                color: Colors.black.withOpacity(0.5),
-                                size: 18,
-                              ));
-                        },
+        },*/
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 25),
+            Stack(children: [
+              CalTable(year: widget.selectedYear, publicHolidays: widget.publicHolidays),
+              StatefulBuilder(
+                // this is the actual drawing listener
+                builder: (BuildContext context, StateSetter setState) => Stack(
+                  children: [
+                    if (widget.activeShaderType != ShaderType.none)
+                      SplashSmallShader(
+                        mousePosition: lastTouchOffset,
+                        activeShaderType: widget.activeShaderType,
                       ),
-                    ]),
-                  )
-                ],
+                    Listener(
+                      onPointerDown: (PointerDownEvent event) {
+                        _tableAnimations.onDownEvent(event);
+                      },
+                      onPointerMove: (PointerMoveEvent event) {
+                        _tableAnimations.onMoveEvent(event);
+                        onPointerMove(event, setState);
+                      },
+                      onPointerUp: (PointerUpEvent event) {
+                        onPointerUp(event, setState);
+                        _tableAnimations.onUpOrCancel(event);
+                      },
+                      onPointerCancel: (PointerCancelEvent event) {
+                        print("cancel");
+                        _tableAnimations.onUpOrCancel(event);
+                      },
+                      onPointerSignal: (PointerSignalEvent event) {
+                        print("onPointerSignal $event");
+                      },
+                      child: Stack(children: [
+                        SignaturePainerWrapper(currentDrawings),
+                        Builder(
+                          builder: (context) {
+                            if (lastInfoEvent == null) {
+                              return const SizedBox();
+                            }
+                            if (widget.activeBrush != Brush.eraser) {
+                              return const SizedBox();
+                            }
+                            return Positioned(
+                                left: lastInfoEvent!.localPosition.dx - 9,
+                                top: lastInfoEvent!.localPosition.dy - 9,
+                                child: Icon(
+                                  FontAwesomeIcons.eraser,
+                                  color: Colors.black.withOpacity(0.5),
+                                  size: 18,
+                                ));
+                          },
+                        ),
+                      ]),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ]),
+            ]),
+          ],
         ),
       );
     });
@@ -172,7 +194,8 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     // print(event.pressureMin); 0
     // print(event.pressureMax); 4,1666 apple pencil gen 2
     // print(event.size);
-    if (zoomEnabled) {
+    if (false) {
+      //zoomEnabled) {
       return;
     }
 
@@ -191,10 +214,12 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
     // that is not a stylus
     if (widget.touchDrawEnabled == false) {
       if (originalEvent.kind != PointerDeviceKind.stylus) {
+        _tableAnimations.fingerMove(event);
         return;
       }
     }
 
+    print("draw");
     // if stylus is enforced, don't accept any events that are not stylus
     // enforceStylus is true whenever we start to draw with a stylus.
     if (enforceStylus == true && originalEvent.kind != PointerDeviceKind.stylus) {
@@ -230,10 +255,10 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> {
   }
 
   void onPointerUp(PointerUpEvent event, StateSetter setState) {
-    if (zoomEnabled) {
+    if (false) {
+      //zoomEnabled) {
       return;
     }
-    AppLogger.d("points ${currentDrawings.length}");
 
     if (currentDrawings.isEmpty) {
       // do nothing if empty
