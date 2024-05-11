@@ -1,15 +1,22 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:pencalendar/components/calendar_table/widgets/cal_cell.dart';
+import 'package:pencalendar/controller/calendar_color_controller.dart';
 import 'package:pencalendar/models/public_holiday.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 
 class CalTable extends StatefulWidget {
   final int year;
   final List<PublicHoliday> publicHolidays;
+  final CalendarColorOption calendarColor;
   late final DateTime firstDayOfYear = DateTime(year);
 
-  CalTable({required this.year, required this.publicHolidays, super.key});
+  CalTable({
+    required this.year,
+    required this.publicHolidays,
+    super.key,
+    required this.calendarColor,
+  });
 
   @override
   State<CalTable> createState() => _CalTableState();
@@ -21,28 +28,13 @@ class _CalTableState extends State<CalTable> {
   final double cellWidth = calWidth / 12;
   final DateTime now = DateTime.now();
 
-  final List<Color> monthColors = [
-    Colors.blue.shade300,
-    Colors.blue.shade100,
-    Colors.teal.shade500,
-    Colors.teal.shade300,
-    Colors.green.shade400,
-    Colors.green.shade200,
-    Colors.yellow.shade300,
-    Colors.orange.shade200,
-    Colors.orange.shade500,
-    Colors.red.shade200,
-    Colors.red.shade400,
-    Colors.purple.shade300,
-    Colors.blue.shade300
-  ];
-
   /// This will cache the cells for the next build
   late List<List<CalCellHolder>> cachedAllCells = allCells;
 
   List<List<CalCellHolder>> get allCells {
     List<List<CalCellHolder>> list = [];
 
+    final monthColors = widget.calendarColor.calendarColors;
     // every month
     for (int i = 0; i < 12; i++) {
       List<CalCellHolder> dayList = [];
@@ -99,8 +91,9 @@ class _CalTableState extends State<CalTable> {
 
   @override
   void didUpdateWidget(CalTable oldWidget) {
-    final bool isSameWidgetData =
-        widget.publicHolidays.equals(oldWidget.publicHolidays) && widget.year == oldWidget.year;
+    final bool isSameWidgetData = widget.publicHolidays.equals(oldWidget.publicHolidays) &&
+        widget.year == oldWidget.year &&
+        widget.calendarColor == oldWidget.calendarColor;
     if (!isSameWidgetData) {
       // widget data has changed. refresh the table cache
       cachedAllCells = allCells;

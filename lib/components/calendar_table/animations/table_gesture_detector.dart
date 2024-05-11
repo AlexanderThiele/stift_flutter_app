@@ -107,12 +107,8 @@ class TableGestureDetector {
       final newCalenderPositionY =
           calenderPositionAfterMoveY + (newFocalOnViewScaledY - initialFocalPointOnViewScaledY) * currentScale;
 
-      transformationController.value = Matrix4.copy(transformationController.value)
-        ..setEntry(0, 0, currentScale)
-        ..setEntry(1, 1, currentScale)
-        ..setEntry(2, 2, currentScale)
-        ..setEntry(0, 3, newCalenderPositionX)
-        ..setEntry(1, 3, newCalenderPositionY);
+      transformationController.value = Matrix4(currentScale, 0, 0, 0, 0, currentScale, 0, 0, 0, 0, currentScale, 0,
+          newCalenderPositionX, newCalenderPositionY, 0, 1);
       lastScale = currentScale;
     } else {
       return true;
@@ -158,9 +154,4 @@ class TableGestureDetector {
     transformationController.value = Matrix4.copy(transformationController.value)
       ..translate(vm.Vector3(event.delta.dx / curScale, event.delta.dy / curScale, 0));
   }
-}
-
-class MyScaleGestureRecognizer extends ScaleGestureRecognizer {
-  @override
-  void addAllowedPointer(PointerDownEvent event) {}
 }

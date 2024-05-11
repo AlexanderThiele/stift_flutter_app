@@ -7,9 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pencalendar/components/calendar_table/animations/table_gesture_detector.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
+import 'package:pencalendar/components/menu/above_calendar_menu.dart';
 import 'package:pencalendar/components/shader/splash_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
+import 'package:pencalendar/controller/calendar_color_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
 import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/public_holiday.dart';
@@ -30,14 +32,9 @@ class InteractivePaintView extends ConsumerWidget {
     final touchDrawEnabled = ref.watch(activeTouchProvider);
     final publicHolidays = ref.watch(publicHolidayControllerProvider);
     final activeShaderType = ref.watch(activeShaderProvider);
-    return _InteractivePaintView(
-      selectedYear,
-      activeBrush,
-      touchDrawEnabled,
-      activeCalendarController,
-      publicHolidays ?? [],
-      activeShaderType,
-    );
+    final calendarColor = ref.watch(calendarColorProvider);
+    return _InteractivePaintView(selectedYear, activeBrush, touchDrawEnabled, activeCalendarController,
+        publicHolidays ?? [], activeShaderType, calendarColor);
   }
 }
 
@@ -48,9 +45,17 @@ class _InteractivePaintView extends StatefulWidget {
   final ActiveCalendarController activeCalendarController;
   final List<PublicHoliday> publicHolidays;
   final ShaderType activeShaderType;
+  final CalendarColorOption calendarColor;
 
-  const _InteractivePaintView(this.selectedYear, this.activeBrush, this.touchDrawEnabled, this.activeCalendarController,
-      this.publicHolidays, this.activeShaderType);
+  const _InteractivePaintView(
+    this.selectedYear,
+    this.activeBrush,
+    this.touchDrawEnabled,
+    this.activeCalendarController,
+    this.publicHolidays,
+    this.activeShaderType,
+    this.calendarColor,
+  );
 
   @override
   State<_InteractivePaintView> createState() => _InteractivePaintViewState();
@@ -94,12 +99,9 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> with Ticke
       return InteractiveViewer(
         constrained: false,
         clipBehavior: Clip.hardEdge,
-        maxScale: 20,
-        minScale: 0.5,
         panEnabled: false,
-        boundaryMargin: EdgeInsets.all(constraints.maxWidth),
-        //scaleEnabled: zoomEnabled,
         scaleEnabled: false,
+        boundaryMargin: EdgeInsets.all(constraints.maxWidth),
         transformationController: _tableAnimations.transformationController,
         /*onInteractionStart: (ScaleStartDetails event) {
           // _tableAnimations.startAnimate(_tableAnimations.doubleTap());
@@ -125,8 +127,13 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> with Ticke
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 25),
+            const AboveCalendarMenu(),
             Stack(children: [
-              CalTable(year: widget.selectedYear, publicHolidays: widget.publicHolidays),
+              CalTable(
+                year: widget.selectedYear,
+                publicHolidays: widget.publicHolidays,
+                calendarColor: widget.calendarColor,
+              ),
               StatefulBuilder(
                 // this is the actual drawing listener
                 builder: (BuildContext context, StateSetter setState) => Stack(

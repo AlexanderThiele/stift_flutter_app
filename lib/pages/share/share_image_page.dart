@@ -8,6 +8,7 @@ import 'package:localizations/localizations.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
+import 'package:pencalendar/controller/calendar_color_controller.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
 import 'package:pencalendar/controller/rate_app_notifier.dart';
 import 'package:pencalendar/repository/analytics/analytics_repository.dart';
@@ -57,6 +58,7 @@ class _ShareImagePage extends ConsumerState<ShareImagePage> {
   Widget build(BuildContext context) {
     final int selectedYear = ref.watch(activeCalendarYearProvider);
     final publicHolidays = ref.watch(publicHolidayControllerProvider);
+    final calendarColor = ref.watch(calendarColorProvider);
     return ResponsiveScaffold(
       appBar: AppBar(
         title: Text(context.l10n.shareCalendar),
@@ -80,7 +82,11 @@ class _ShareImagePage extends ConsumerState<ShareImagePage> {
                           key: globalKey,
                           child: Stack(
                             children: [
-                              CalTable(year: selectedYear, publicHolidays: publicHolidays ?? []),
+                              CalTable(
+                                year: selectedYear,
+                                publicHolidays: publicHolidays ?? [],
+                                calendarColor: calendarColor,
+                              ),
                               const SignaturePainerWrapper([]),
                             ],
                           ),
