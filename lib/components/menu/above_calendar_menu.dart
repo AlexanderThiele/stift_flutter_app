@@ -1,3 +1,6 @@
+import 'package:design_system/atoms/ds_calendar_color_option.dart';
+import 'package:design_system/atoms/ds_gutter.dart';
+import 'package:design_system/buttons/ds_calendar_color_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -48,31 +51,21 @@ class _AboveCalendarMenuState extends ConsumerState<AboveCalendarMenu> with Tick
         ),
         Row(
           children: [
-            GestureDetector(
+            DsCalendarColorButton(
+              height: menuHeight,
+              calendarColorOption: DsCalendarColorOption.standard,
               onTap: () {
-                ref.read(calendarColorProvider.notifier).changeColorOption(CalendarColorOption.standard);
+                ref.read(calendarColorProvider.notifier).changeColorOption(DsCalendarColorOption.standard);
               },
-              child: Container(
-                height: menuHeight,
-                width: 48,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: CalendarColorOption.standard.calendarColors),
-                    border: Border.all(color: Theme.of(context).colorScheme.primary)),
-              ),
             ),
-            const SizedBox(width: 8),
-            GestureDetector(
+            const DsGutter.row(),
+            DsCalendarColorButton(
+              height: menuHeight,
+              calendarColorOption: DsCalendarColorOption.blackWhite,
               onTap: () {
-                ref.read(calendarColorProvider.notifier).changeColorOption(CalendarColorOption.blackWhite);
+                ref.read(calendarColorProvider.notifier).changeColorOption(DsCalendarColorOption.blackWhite);
               },
-              child: Container(
-                height: menuHeight,
-                width: 48,
-                decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Colors.black, Colors.white]),
-                    border: Border.all(color: Theme.of(context).colorScheme.primary)),
-              ),
-            )
+            ),
           ],
         ).animate(
           controller: animationController,

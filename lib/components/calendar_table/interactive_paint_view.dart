@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:design_system/atoms/ds_calendar_color_option.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +46,7 @@ class _InteractivePaintView extends StatefulWidget {
   final ActiveCalendarController activeCalendarController;
   final List<PublicHoliday> publicHolidays;
   final ShaderType activeShaderType;
-  final CalendarColorOption calendarColor;
+  final DsCalendarColorOption calendarColor;
 
   const _InteractivePaintView(
     this.selectedYear,

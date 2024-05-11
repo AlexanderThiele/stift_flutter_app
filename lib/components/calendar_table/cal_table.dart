@@ -1,14 +1,14 @@
 import 'package:collection/collection.dart';
+import 'package:design_system/atoms/ds_calendar_color_option.dart';
 import 'package:flutter/material.dart';
 import 'package:pencalendar/components/calendar_table/widgets/cal_cell.dart';
-import 'package:pencalendar/controller/calendar_color_controller.dart';
 import 'package:pencalendar/models/public_holiday.dart';
 import 'package:pencalendar/utils/const/cal_size.dart';
 
 class CalTable extends StatefulWidget {
   final int year;
   final List<PublicHoliday> publicHolidays;
-  final CalendarColorOption calendarColor;
+  final DsCalendarColorOption calendarColor;
   late final DateTime firstDayOfYear = DateTime(year);
 
   CalTable({
