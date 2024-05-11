@@ -40,6 +40,7 @@ class _CalTableState extends State<CalTable> {
       List<CalCellHolder> dayList = [];
       dayList.add(CalCellHolder(
         color: monthColors[i],
+        textColor: calculateTextColor(monthColors[i]),
         cellType: CellType.month,
         dateTime: DateTime(widget.firstDayOfYear.year, i + 1),
         now: now,
@@ -59,8 +60,10 @@ class _CalTableState extends State<CalTable> {
         if (day.weekday == 6 || day.weekday == 7) {
           color = monthColors[i];
         }
+
         dayList.add(CalCellHolder(
             color: color,
+            textColor: calculateTextColor(color),
             cellType: cellType,
             dateTime: day,
             now: now,
@@ -87,6 +90,14 @@ class _CalTableState extends State<CalTable> {
     }
 
     return tableRows;
+  }
+
+  Color calculateTextColor(Color backgroundColor) {
+    // Calculate relative luminance
+    double luminance = 0.2126 * backgroundColor.red + 0.7152 * backgroundColor.green + 0.0722 * backgroundColor.blue;
+
+    // Choose text color based on luminance
+    return luminance > (0.45 * 255) ? Colors.black : Colors.white;
   }
 
   @override

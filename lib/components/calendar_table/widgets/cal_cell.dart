@@ -4,6 +4,7 @@ import 'package:pencalendar/models/public_holiday.dart';
 
 class CalCellHolder {
   final Color color;
+  final Color textColor;
   final DateTime dateTime;
   final DateTime now;
   final CellType cellType;
@@ -11,6 +12,7 @@ class CalCellHolder {
 
   CalCellHolder({
     required this.color,
+    required this.textColor,
     required this.dateTime,
     required this.now,
     required this.cellType,
@@ -22,17 +24,23 @@ class CalCellHolder {
       return EmptyCell(height: height);
     }
     if (cellType == CellType.month) {
-      return CalCellMonth(height: height, color: color, dateTime: dateTime, context: context);
+      return CalCellMonth(
+        height: height,
+        color: color,
+        textColor: textColor,
+        dateTime: dateTime,
+        context: context,
+      );
     }
 
     return CalCellDay(
       height: height,
       color: color,
+      textColor: textColor,
       dateTime: dateTime,
       isToday: dateTime.year == now.year && dateTime.month == now.month && dateTime.day == now.day,
       dayOfMonth: DateFormat("d").format(dateTime),
       dayOfWeek: DateFormat("E").format(dateTime).substring(0, 2),
-      textStyle: Theme.of(context).textTheme.bodySmall,
       publicHoliday: publicHoliday,
     );
   }
@@ -42,10 +50,10 @@ class CalCellDay extends TableCell {
   CalCellDay({
     required double height,
     required Color color,
+    required Color textColor,
     required DateTime dateTime,
     required final String dayOfMonth,
     required final String dayOfWeek,
-    required final TextStyle? textStyle,
     required final bool isToday,
     PublicHoliday? publicHoliday,
     super.key,
@@ -70,12 +78,12 @@ class CalCellDay extends TableCell {
                         children: [
                           Text(
                             dayOfMonth,
-                            style: Theme.of(context).textTheme.bodyMedium?.apply(fontWeightDelta: 2),
+                            style: Theme.of(context).textTheme.bodyMedium?.apply(fontWeightDelta: 2, color: textColor),
                           ),
                           const SizedBox(width: 4),
                           Text(
                             dayOfWeek,
-                            style: Theme.of(context).textTheme.bodySmall?.apply(fontSizeDelta: -3),
+                            style: Theme.of(context).textTheme.bodySmall?.apply(fontSizeDelta: -3, color: textColor),
                           ),
                         ],
                       ),
@@ -90,7 +98,7 @@ class CalCellDay extends TableCell {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall
-                                      ?.apply(fontSizeDelta: -3, color: Theme.of(context).colorScheme.onBackground)),
+                                      ?.apply(fontSizeDelta: -3, color: textColor)),
                             ],
                           ),
                         )
@@ -107,6 +115,7 @@ class CalCellMonth extends TableCell {
   CalCellMonth({
     required double height,
     required Color color,
+    required Color textColor,
     required DateTime dateTime,
     required BuildContext context,
     super.key,
@@ -118,8 +127,7 @@ class CalCellMonth extends TableCell {
               alignment: Alignment.center,
               child: Text(
                 DateFormat("MMMM").format(dateTime),
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+                  style: Theme.of(context).textTheme.titleLarge?.apply(color: textColor)),
             ),
           ),
         );

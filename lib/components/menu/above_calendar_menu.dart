@@ -51,21 +51,16 @@ class _AboveCalendarMenuState extends ConsumerState<AboveCalendarMenu> with Tick
         ),
         Row(
           children: [
-            DsCalendarColorButton(
-              height: menuHeight,
-              calendarColorOption: DsCalendarColorOption.standard,
-              onTap: () {
-                ref.read(calendarColorProvider.notifier).changeColorOption(DsCalendarColorOption.standard);
-              },
-            ),
-            const DsGutter.row(),
-            DsCalendarColorButton(
-              height: menuHeight,
-              calendarColorOption: DsCalendarColorOption.blackWhite,
-              onTap: () {
-                ref.read(calendarColorProvider.notifier).changeColorOption(DsCalendarColorOption.blackWhite);
-              },
-            ),
+            for (final calendarOption in DsCalendarColorOption.values) ...[
+              DsCalendarColorButton(
+                height: menuHeight,
+                calendarColorOption: calendarOption,
+                onTap: () {
+                  ref.read(calendarColorProvider.notifier).changeColorOption(calendarOption);
+                },
+              ),
+              const DsGutter.row(),
+            ],
           ],
         ).animate(
           controller: animationController,
@@ -80,7 +75,7 @@ class _AboveCalendarMenuState extends ConsumerState<AboveCalendarMenu> with Tick
           autoPlay: true,
           target: menuOpen ? 1 : 0,
         ),
-        SizedBox(height: 2)
+        SizedBox(height: 4),
       ],
     );
   }
