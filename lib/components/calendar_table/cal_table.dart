@@ -12,9 +12,9 @@ class CalTable extends StatefulWidget {
   late final DateTime firstDayOfYear = DateTime(year);
 
   CalTable({
+    super.key,
     required this.year,
     required this.publicHolidays,
-    super.key,
     required this.calendarColor,
   });
 

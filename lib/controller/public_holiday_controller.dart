@@ -21,7 +21,7 @@ class PublicHolidayController extends StateNotifier<List<PublicHoliday>?> {
       AppLogger.d("Locale null");
       return;
     }
-    final sharedPref = _ref.read(sharedPrefUtilityProvider);
+    final sharedPref = _ref.read(sharedPrefProvider);
     final year = _ref.read(activeCalendarYearProvider);
     final countryCode = locale.countryCode;
     if (countryCode != null) {

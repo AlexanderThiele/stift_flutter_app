@@ -8,13 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPrefRepository {
   final SharedPreferences _sharedPreferences;
 
-  final String publicHolidayKey = "public.holiday.{{country_code}}.{{year}}";
+  final String _publicHolidayKey = "public.holiday.{{country_code}}.{{year}}";
+  final String _calendarColor = "calendarColor";
 
   SharedPrefRepository(this._sharedPreferences);
 
   /// either load local or from remote
   Future<List<PublicHoliday>> loadPublicHoliday(int year, String countryCode) async {
-    final key = publicHolidayKey
+    final key = _publicHolidayKey
         .replaceAll("{{country_code}}", countryCode.toLowerCase())
         .replaceAll("{{year}}", year.toString());
     String? localSaved = _sharedPreferences.getString(key);
@@ -41,5 +42,13 @@ class SharedPrefRepository {
 
     final List<dynamic> jsonList = jsonDecode(localSaved);
     return jsonList.map((json) => PublicHoliday.fromJson(json as Map<String, dynamic>)).toList();
+  }
+
+  void setCalendarColor(String calendarColorString) {
+    _sharedPreferences.setString(_calendarColor, calendarColorString);
+  }
+
+  String? getCalendarColor() {
+    return _sharedPreferences.getString(_calendarColor);
   }
 }
