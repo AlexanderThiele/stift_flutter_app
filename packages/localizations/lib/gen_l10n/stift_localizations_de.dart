@@ -64,6 +64,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ok => 'Ok';
 
   @override
+  String get premiumCalendarColorTitle => 'Alle Kalender Freischalten';
+
+  @override
+  String get premiumCalendarColorText =>
+      'Unser kostenloser Plan erlaubt dir die Verwendung der Standardfarben. Wenn du jedoch alle Kalenderfarben verwenden möchten, kannst Du unser einmaliges Angebot nutzen.';
+
+  @override
   String get premiumLayersTitle => 'Unbegrenzte Ebenen freischalten';
 
   @override

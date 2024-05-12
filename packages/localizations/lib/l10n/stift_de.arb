@@ -39,6 +39,8 @@
   "layerTextFieldTitle": "Gib der Ebene einen Namen",
   "cancel": "Abbrechen",
   "ok": "Ok",
+  "premiumCalendarColorTitle": "Alle Kalender Freischalten",
+  "premiumCalendarColorText": "Unser kostenloser Plan erlaubt dir die Verwendung der Standardfarben. Wenn du jedoch alle Kalenderfarben verwenden möchten, kannst Du unser einmaliges Angebot nutzen.",
   "premiumLayersTitle": "Unbegrenzte Ebenen freischalten",
   "premiumLayersText": "Unser kostenloser Plan ermöglicht es dir, die Ebenen zu entdecken und deinen Plan mit bis zu {numberOfFreeLayers} Ebenen zu organisieren. Wenn du jedoch eine unbegrenzte Anzahl von Ebenen erstellen und die Effizienz deiner Planung wirklich maximieren möchtest, kannst du unseren einmal Kauf nutzen.",
   "@premiumLayersText": {
@@ -51,6 +53,7 @@
   },
   "premiumViewPriceButton": "Preis anschauen",
   "premiumGoToPremiumPage": "Premium",
+
   "premiumLifeTimeTitle": "Lifetime",
   "premiumLifeTimeBullet1": "1 Zahlung, alle Funktionen, unbegrenzter Zugang",
   "premiumLifeTimeBullet2": "Starte heute, spare für immer",

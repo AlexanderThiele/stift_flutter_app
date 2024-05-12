@@ -20,6 +20,16 @@ class DsCalendarColorButton extends StatelessWidget {
             gradient: LinearGradient(colors: calendarColorOption.calendarColorsForButton),
             border: Border.all(color: Theme.of(context).colorScheme.primary),
             borderRadius: BorderRadius.circular(6)),
+        child: calendarColorOption.premium
+            ? const Align(
+                alignment: Alignment.topRight,
+                child: Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                  size: 16,
+                ),
+              )
+            : null,
       ),
     );
   }

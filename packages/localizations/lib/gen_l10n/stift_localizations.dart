@@ -204,6 +204,18 @@ abstract class AppLocalizations {
   /// **'Ok'**
   String get ok;
 
+  /// No description provided for @premiumCalendarColorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock All Calendars'**
+  String get premiumCalendarColorTitle;
+
+  /// No description provided for @premiumCalendarColorText.
+  ///
+  /// In en, this message translates to:
+  /// **'Our free plan allows you to use the standard colours. However, if you want to use all calendar colours, you can use our one-time purchase.'**
+  String get premiumCalendarColorText;
+
   /// No description provided for @premiumLayersTitle.
   ///
   /// In en, this message translates to:

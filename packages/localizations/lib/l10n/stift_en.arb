@@ -39,6 +39,8 @@
   "layerTextFieldTitle": "Assign a name to the layer",
   "cancel": "Cancel",
   "ok": "Ok",
+  "premiumCalendarColorTitle": "Unlock All Calendars",
+  "premiumCalendarColorText": "Our free plan allows you to use the standard colours. However, if you want to use all calendar colours, you can use our one-time purchase.",
   "premiumLayersTitle": "Unlock Unlimited Layers",
   "premiumLayersText": "Our free plan allows you to experience the power of layered appointments, organizing your schedule with up to {numberOfFreeLayers} layers. However, to create unlimited layers and truly maximize the efficiency of your planning, you can avail of our one-time purchase option.",
   "@premiumLayersText": {

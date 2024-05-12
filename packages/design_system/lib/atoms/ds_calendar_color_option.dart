@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
 enum DsCalendarColorOption {
-  standard,
-  grey,
-  greenTea,
-  mistyRose,
-  azul,
-  green,
-  volcano,
-  pastel,
-  bluePint,
-  apricotSunset;
+  standard(false),
+  grey(false),
+  greenTea(true),
+  mistyRose(true),
+  azul(true),
+  green(true),
+  volcano(true),
+  pastel(true),
+  bluePint(true),
+  apricotSunset(true),
+  ;
+
+  final bool premium;
+
+  const DsCalendarColorOption(this.premium);
 
   List<Color> get calendarColors {
     return switch (this) {

@@ -64,6 +64,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ok => 'Ok';
 
   @override
+  String get premiumCalendarColorTitle => 'Unlock All Calendars';
+
+  @override
+  String get premiumCalendarColorText =>
+      'Our free plan allows you to use the standard colours. However, if you want to use all calendar colours, you can use our one-time purchase.';
+
+  @override
   String get premiumLayersTitle => 'Unlock Unlimited Layers';
 
   @override
