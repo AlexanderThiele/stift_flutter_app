@@ -9,7 +9,8 @@ enum DsCalendarColorOption {
   green,
   volcano,
   pastel,
-  ;
+  bluePint,
+  apricotSunset;
 
   List<Color> get calendarColors {
     return switch (this) {
@@ -115,6 +116,36 @@ enum DsCalendarColorOption {
           const Color(0xffE4C1F9),
           const Color(0xffFF99C8),
           const Color(0xffFEC8C3),
+        ],
+      DsCalendarColorOption
+            .bluePint => // use colors /7bdff2-b2f7ef-eff7f6-f7d6e0-f2b5d4-f0a6ca-f0a6ca-f9c0c4-f9c0c4-f9c0c4-f9c0c4-f9c0c4
+        [
+          const Color(0xff7BDFF2),
+          const Color(0xff7BDFF2),
+          const Color(0xff97ebf1),
+          const Color(0xff97ebf1),
+          const Color(0xffB2F7EF),
+          const Color(0xffB2F7EF),
+          const Color(0xffF7D6E0),
+          const Color(0xffF7D6E0),
+          const Color(0xfff5c6da),
+          const Color(0xfff5c6da),
+          const Color(0xffF2B5D4),
+          const Color(0xffF2B5D4),
+        ],
+      DsCalendarColorOption.apricotSunset => [
+          const Color(0xffF4F1DE),
+          const Color(0xffF4F1DE),
+          const Color(0xffEAB69F),
+          const Color(0xffEAB69F),
+          const Color(0xffE07A5F),
+          const Color(0xffE07A5F),
+          const Color(0xff81B29A),
+          const Color(0xff81B29A),
+          const Color(0xffBABF95),
+          const Color(0xffBABF95),
+          const Color(0xffF2CC8F),
+          const Color(0xffF2CC8F),
         ],
     };
   }
