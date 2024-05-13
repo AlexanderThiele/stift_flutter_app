@@ -104,7 +104,7 @@ class _PurchasePaywall extends ConsumerWidget {
                         LayoutBuilder(builder: (context, constraint) {
                           return Center(
                             child: SizedBox(
-                              width: min(550, constraint.maxWidth),
+                              width: min(Metrics.boxMaxWidth, constraint.maxWidth),
                               child: Card(
                                 margin: const EdgeInsets.only(left: 16, top: 22, right: 16),
                                 child: Padding(
@@ -254,26 +254,33 @@ class IncludedFeaturesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Premium Features", style: Theme.of(context).textTheme.titleLarge),
-            const DsGutter.column(),
-            DsBulletPoint.round(context.l10n.premiumFeature1),
-            const DsGutter.column(),
-            DsBulletPoint.round(context.l10n.premiumFeature2),
-            const DsGutter.column(),
-            DsBulletPoint.round(context.l10n.premiumFeature3),
-            const DsGutter.column(),
-            DsBulletPoint.round(context.l10n.premiumFeatureMore),
-            const DsGutter.column(),
-          ],
+    return LayoutBuilder(builder: (context, constraint) {
+      return Center(
+        child: SizedBox(
+          width: min(Metrics.boxMaxWidth, constraint.maxWidth),
+          child: Card(
+            margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Premium Features", style: Theme.of(context).textTheme.titleLarge),
+                  const DsGutter.column(),
+                  DsBulletPoint.round(context.l10n.premiumFeature1),
+                  const DsGutter.column(),
+                  DsBulletPoint.round(context.l10n.premiumFeature2),
+                  const DsGutter.column(),
+                  DsBulletPoint.round(context.l10n.premiumFeature3),
+                  const DsGutter.column(),
+                  DsBulletPoint.round(context.l10n.premiumFeatureMore),
+                  const DsGutter.column(),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

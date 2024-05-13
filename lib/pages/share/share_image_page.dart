@@ -8,7 +8,7 @@ import 'package:localizations/localizations.dart';
 import 'package:pencalendar/components/calendar_table/cal_table.dart';
 import 'package:pencalendar/components/calendar_table/painter/signatur_painter.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
-import 'package:pencalendar/controller/calendar_color_controller.dart';
+import 'package:pencalendar/controller/calendar_color_notifier.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
 import 'package:pencalendar/controller/rate_app_notifier.dart';
 import 'package:pencalendar/repository/analytics/analytics_repository.dart';

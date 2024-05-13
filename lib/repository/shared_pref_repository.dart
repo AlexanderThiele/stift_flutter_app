@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pencalendar/models/public_holiday.dart';
 import 'package:pencalendar/utils/app_logger.dart';
@@ -10,6 +11,8 @@ class SharedPrefRepository {
 
   final String _publicHolidayKey = "public.holiday.{{country_code}}.{{year}}";
   final String _calendarColor = "calendarColor";
+  final String _activePencilColor = "activePencilColor";
+  final String _activePencilWidth = "activePencilWidth";
 
   SharedPrefRepository(this._sharedPreferences);
 
@@ -50,5 +53,25 @@ class SharedPrefRepository {
 
   String? getCalendarColor() {
     return _sharedPreferences.getString(_calendarColor);
+  }
+
+  void setActivePencilColor(Color color) {
+    _sharedPreferences.setInt(_activePencilColor, color.value);
+  }
+
+  Color? getActivePencilColor() {
+    final intColor = _sharedPreferences.getInt(_activePencilColor);
+    if (intColor != null) {
+      return Color(intColor);
+    }
+    return null;
+  }
+
+  void setActivePencilWidth(double width) {
+    _sharedPreferences.setDouble(_activePencilWidth, width);
+  }
+
+  double? getActivePencilWidth() {
+    return _sharedPreferences.getDouble(_activePencilWidth);
   }
 }

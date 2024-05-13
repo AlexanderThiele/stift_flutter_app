@@ -66,7 +66,7 @@ class _ColorGridItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       onTap: () {
-        ref.read(activeColorProvider.notifier).state = color;
+        ref.read(activeColorProvider.notifier).setNewColor(color);
         ref.read(activeBrushProvider.notifier).state = Brush.pen;
         ref.read(activeSubMenuProvider.notifier).state = OpenedTab.none;
       },

@@ -12,7 +12,7 @@ import 'package:pencalendar/components/menu/above_calendar_menu.dart';
 import 'package:pencalendar/components/shader/splash_shader.dart';
 import 'package:pencalendar/controller/active_calendar_controller.dart';
 import 'package:pencalendar/controller/active_year_controller.dart';
-import 'package:pencalendar/controller/calendar_color_controller.dart';
+import 'package:pencalendar/controller/calendar_color_notifier.dart';
 import 'package:pencalendar/controller/public_holiday_controller.dart';
 import 'package:pencalendar/models/brush.dart';
 import 'package:pencalendar/models/public_holiday.dart';

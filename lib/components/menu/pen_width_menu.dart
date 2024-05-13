@@ -24,7 +24,7 @@ class PenWidthMenu extends ConsumerWidget {
                 flex: 5,
                 child: Slider(
                   onChanged: (newWidth) {
-                    ref.read(activeWidthProvider.notifier).state = (newWidth * 2).roundToDouble() / 2.0;
+                    ref.read(activeWidthProvider.notifier).setNewWidth((newWidth * 2).roundToDouble() / 2.0);
                     ref.read(activeBrushProvider.notifier).state = Brush.pen;
                   },
                   value: activeWidth,

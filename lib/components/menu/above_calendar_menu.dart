@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:design_system/atoms/ds_calendar_color_option.dart';
-import 'package:design_system/atoms/ds_gutter.dart';
 import 'package:design_system/buttons/ds_calendar_color_button.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localizations/localizations.dart';
-import 'package:pencalendar/controller/calendar_color_controller.dart';
+import 'package:pencalendar/controller/calendar_color_notifier.dart';
 import 'package:pencalendar/controller/feature_notifier.dart';
 import 'package:pencalendar/provider/router_provider.dart';
 
@@ -73,8 +73,8 @@ class _AboveCalendarMenuState extends ConsumerState<AboveCalendarMenu> with Tick
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return AlertDialog(
-                            title: Text(context.l10n.premiumCalendarColorTitle),
+                          return DsAlertDialog(
+                            title: context.l10n.premiumCalendarColorTitle,
                             content: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
