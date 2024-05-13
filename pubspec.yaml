@@ -42,6 +42,7 @@ dependencies:
   billing:
     path: packages/billing
   package_info_plus: ^5.0.1
+  week_of_year: ^2.2.0
 
 dev_dependencies:
   flutter_test:

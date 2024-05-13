@@ -1,6 +1,9 @@
+import 'package:design_system/atoms/ds_text.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pencalendar/models/public_holiday.dart';
+import 'package:week_of_year/date_week_extensions.dart';
 
 class CalCellHolder {
   final Color color;
@@ -32,6 +35,12 @@ class CalCellHolder {
         context: context,
       );
     }
+    String? weekNumber;
+    if (dateTime.weekday == 1) {
+      // its a monday
+      // calculate the week number of datetime
+      weekNumber = dateTime.weekOfYear.toString();
+    }
 
     return CalCellDay(
       height: height,
@@ -41,6 +50,7 @@ class CalCellHolder {
       isToday: dateTime.year == now.year && dateTime.month == now.month && dateTime.day == now.day,
       dayOfMonth: DateFormat("d").format(dateTime),
       dayOfWeek: DateFormat("E").format(dateTime).substring(0, 2),
+      weekNumber: weekNumber,
       publicHoliday: publicHoliday,
     );
   }
@@ -55,6 +65,7 @@ class CalCellDay extends TableCell {
     required final String dayOfMonth,
     required final String dayOfWeek,
     required final bool isToday,
+    final String? weekNumber,
     PublicHoliday? publicHoliday,
     super.key,
   }) : super(
@@ -70,36 +81,50 @@ class CalCellDay extends TableCell {
                     }),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8),
-                  child: Row(
+                  child: Stack(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Row(
                         children: [
-                          Text(
-                            dayOfMonth,
-                            style: Theme.of(context).textTheme.bodyMedium?.apply(fontWeightDelta: 2, color: textColor),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                dayOfMonth,
+                                style:
+                                    Theme.of(context).textTheme.bodyMedium?.apply(fontWeightDelta: 2, color: textColor),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                dayOfWeek,
+                                style:
+                                    Theme.of(context).textTheme.bodySmall?.apply(fontSizeDelta: -3, color: textColor),
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            dayOfWeek,
-                            style: Theme.of(context).textTheme.bodySmall?.apply(fontSizeDelta: -3, color: textColor),
-                          ),
+                          if (publicHoliday != null) const SizedBox(width: 4),
+                          if (publicHoliday != null)
+                            Flexible(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(publicHoliday.localName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.apply(fontSizeDelta: -3, color: textColor)),
+                                ],
+                              ),
+                            )
                         ],
                       ),
-                      if (publicHoliday != null) const SizedBox(width: 4),
-                      if (publicHoliday != null)
-                        Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(publicHoliday.localName,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.apply(fontSizeDelta: -3, color: textColor)),
-                            ],
+                      if (weekNumber != null)
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: DsText.calenderInformation(weekNumber),
                           ),
                         )
                     ],
@@ -125,8 +150,7 @@ class CalCellMonth extends TableCell {
             decoration: BoxDecoration(color: color),
             child: Align(
               alignment: Alignment.center,
-              child: Text(
-                DateFormat("MMMM").format(dateTime),
+              child: Text(DateFormat("MMMM").format(dateTime),
                   style: Theme.of(context).textTheme.titleLarge?.apply(color: textColor)),
             ),
           ),
