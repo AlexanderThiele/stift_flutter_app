@@ -158,11 +158,11 @@ class _InteractivePaintViewState extends State<_InteractivePaintView> with Ticke
                         }
                       },
                       onPointerUp: (PointerUpEvent event) {
-                        _tableAnimations.onUpOrCancel(event);
+                        _tableAnimations.onUp(event);
                         onPointerUp(event, setState);
                       },
                       onPointerCancel: (PointerCancelEvent event) {
-                        _tableAnimations.onUpOrCancel(event);
+                        _tableAnimations.onCancel(event);
                       },
                       onPointerSignal: (PointerSignalEvent event) {
                         print("onPointerSignal $event");

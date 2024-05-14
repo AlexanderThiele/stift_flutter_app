@@ -23,7 +23,6 @@ class TableGestureDetector {
   late double initialViewOffsetY;
 
   Animation<Matrix4>? _animation;
-  double? lastScale;
 
   /// initial position
   final TransformationController transformationController =
@@ -71,6 +70,10 @@ class TableGestureDetector {
   void onDownEvent(PointerDownEvent event) {
     _scaleGestureRecognizer.addPointer(event);
     _scaleGestureRecognizer.handleEvent(event);
+    // we set it here as well because we use it onCancel to reset the view
+    initialScaleFactor = scaleFactor;
+    initialViewOffsetX = viewOffsetX;
+    initialViewOffsetY = viewOffsetY;
     if (_scaleGestureRecognizer.pointerCount > 1) {
       initialScaleFactor = scaleFactor;
       initialFocalPointX = focalPointX;
@@ -86,9 +89,15 @@ class TableGestureDetector {
   bool onMoveEvent(PointerMoveEvent event) {
     // print("onMoveEvent $event");
     _scaleGestureRecognizer.handleEvent(event);
+    if (_scaleGestureRecognizer.pointerCount == 1) {
+      print("move");
+      print(event.timeStamp);
+      return true;
+    }
     if (_scaleGestureRecognizer.pointerCount > 1) {
+      print(event.pointer);
+      print(_scaleGestureRecognizer.pointerCount);
       double currentScale = initialScaleFactor + _scaleGestureRecognizer.scaleFactor - 1;
-      lastScale ??= currentScale;
 
       if (currentScale < 0.5) {
         currentScale = 0.5;
@@ -109,18 +118,18 @@ class TableGestureDetector {
 
       transformationController.value = Matrix4(currentScale, 0, 0, 0, 0, currentScale, 0, 0, 0, 0, currentScale, 0,
           newCalenderPositionX, newCalenderPositionY, 0, 1);
-      lastScale = currentScale;
-    } else {
-      return true;
     }
     return false;
   }
 
-  void onUpOrCancel(PointerEvent event) {
+  void onUp(PointerEvent event) {
     _scaleGestureRecognizer.handleEvent(event);
-    if (_scaleGestureRecognizer.pointerCount < 2) {
-      lastScale = null;
-    }
+  }
+
+  void onCancel(PointerEvent event) {
+    _scaleGestureRecognizer.handleEvent(event);
+    transformationController.value = Matrix4(initialScaleFactor, 0, 0, 0, 0, initialScaleFactor, 0, 0, 0, 0,
+        initialScaleFactor, 0, initialViewOffsetX, initialViewOffsetY, 0, 1);
   }
 
   void _onInteractionStart(ScaleStartDetails details) {
