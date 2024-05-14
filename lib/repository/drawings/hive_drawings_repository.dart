@@ -70,12 +70,20 @@ class HiveDrawingsRepository extends DrawingsRepository {
       layerList.add(defaultLayer);
       await saveAllCalendarLayer(layerList);
       await migrateDefaultCalendar(defaultLayer);
+
+      // include sample data:
+      /*for (final sampleData in sampleDataList) {
+        await createSingleCalendarDrawings(
+            null, defaultLayer, SingleDraw.fromHive(int.parse(sampleData["id"] as String), sampleData));
+      }*/
     }
 
     for (final calendarLayer in layerList) {
       calendarLayer.drawingList = await _loadDrawings(year, calendarLayer);
     }
-
+    // break here to copy sample data, then run:
+    // layerList[0].drawingList.map((e)=>e.toHive).toList().toString()
+    // save to hive_sample_data.dart
     return layerList;
   }
 
